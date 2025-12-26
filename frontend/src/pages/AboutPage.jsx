@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { 
   Award, Users, Heart, Target, CheckCircle, Star, 
-  Calendar, Phone, MapPin, Clock, ArrowRight, Shield,
-  Sparkles, Zap, Building
+  Calendar, ArrowRight, Shield,
+  Sparkles, Building
 } from 'lucide-react';
 
 const AboutPage = () => {
@@ -43,44 +43,25 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80)'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-900/95 to-primary-800/90"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="py-20 bg-primary-600">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm font-semibold mb-6">
-              About Us
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Dedicated to Your
-              <span className="block text-secondary-400">Health & Recovery</span>
+            <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">About Us</span>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
+              Dedicated to Your Health & Recovery
             </h1>
-            <p className="text-xl text-white/80 leading-relaxed">
+            <p className="text-xl text-primary-100 leading-relaxed">
               For over 15 years, Chinamayi Physiotherapy Clinics has been the trusted 
               partner in health for thousands of patients across Hyderabad.
             </p>
           </div>
         </div>
-
-        {/* Wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#f9fafb"/>
-          </svg>
-        </div>
       </section>
 
       {/* Stats */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-16 bg-white border-b border-gray-200">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -89,12 +70,12 @@ const AboutPage = () => {
               { icon: Star, value: '4.9', label: 'Average Rating' },
               { icon: Building, value: '3', label: 'Clinic Locations' },
             ].map((stat, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 text-center shadow-lg">
-                <div className="w-14 h-14 bg-primary-100 rounded-xl mx-auto mb-4 flex items-center justify-center">
-                  <stat.icon className="w-7 h-7 text-primary-600" />
+              <div key={index} className="bg-gray-50 border border-gray-200 p-6 text-center">
+                <div className="w-12 h-12 bg-primary-50 border border-primary-100 mx-auto mb-4 flex items-center justify-center">
+                  <stat.icon className="w-6 h-6 text-primary-600" />
                 </div>
-                <p className="text-3xl font-bold text-gray-800">{stat.value}</p>
-                <p className="text-gray-500">{stat.label}</p>
+                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                <p className="text-gray-600 text-sm">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -102,45 +83,41 @@ const AboutPage = () => {
       </section>
 
       {/* Our Story */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50 border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <img 
                 src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80"
                 alt="Our Clinic"
-                className="rounded-2xl shadow-2xl w-full object-cover h-[500px]"
+                className="w-full object-cover h-[480px]"
               />
-              <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-secondary-100 rounded-2xl -z-10"></div>
-              <div className="absolute -top-8 -left-8 w-32 h-32 bg-primary-100 rounded-2xl -z-10"></div>
               
               {/* Experience Badge */}
-              <div className="absolute bottom-8 left-8 bg-white rounded-2xl p-6 shadow-xl">
+              <div className="absolute bottom-6 left-6 bg-white p-5 border border-gray-200">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-primary-600 rounded-xl flex items-center justify-center text-white">
-                    <Award className="w-8 h-8" />
+                  <div className="w-14 h-14 bg-primary-600 flex items-center justify-center text-white">
+                    <Award className="w-7 h-7" />
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-gray-800">15+</p>
-                    <p className="text-gray-500">Years of Excellence</p>
+                    <p className="text-2xl font-bold text-gray-900">15+</p>
+                    <p className="text-gray-600 text-sm">Years of Excellence</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div>
-              <span className="inline-block px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold mb-4">
-                Our Story
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 leading-tight">
+              <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Story</span>
+              <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-6">
                 A Legacy of Healing and Hope
               </h2>
-              <p className="text-gray-600 text-lg mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed">
                 Founded in 2010 by Dr. Priya Sharma, Chinamayi Physiotherapy Clinics 
                 began with a simple mission: to provide world-class physiotherapy care 
                 that's accessible, personalized, and effective.
               </p>
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+              <p className="text-gray-600 mb-8 leading-relaxed">
                 What started as a small clinic has grown into a leading healthcare 
                 provider, with a team of 5 expert doctors and state-of-the-art facilities. 
                 Our holistic approach combines traditional techniques with modern technology 
@@ -150,7 +127,7 @@ const AboutPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 {['Personalized Treatment', 'Modern Equipment', 'Expert Team', 'Proven Results'].map((item, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <CheckCircle className="w-5 h-5 text-primary-600" />
                     <span className="text-gray-700 font-medium">{item}</span>
                   </div>
                 ))}
@@ -161,31 +138,29 @@ const AboutPage = () => {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-4">
-              Our Values
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <div className="text-center mb-12">
+            <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Values</span>
+            <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
               What Drives Us
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 max-w-2xl mx-auto">
               Our core values guide everything we do at Chinamayi
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center"
+                className="bg-gray-50 border border-gray-200 p-6 hover:border-primary-300 transition-colors text-center"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-primary-500/30">
-                  <value.icon className="w-8 h-8 text-white" />
+                <div className="w-14 h-14 bg-primary-600 mx-auto mb-5 flex items-center justify-center">
+                  <value.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">{value.title}</h3>
-                <p className="text-gray-500">{value.desc}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{value.title}</h3>
+                <p className="text-gray-600 text-sm">{value.desc}</p>
               </div>
             ))}
           </div>
@@ -193,31 +168,29 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50 border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold mb-4">
-              Our Journey
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <div className="text-center mb-12">
+            <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Journey</span>
+            <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
               Milestones Along the Way
             </h2>
           </div>
 
           <div className="max-w-4xl mx-auto">
             {milestones.map((milestone, index) => (
-              <div key={index} className="flex gap-8 mb-8 last:mb-0">
+              <div key={index} className="flex gap-6 mb-6 last:mb-0">
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                  <div className="w-16 h-16 bg-primary-600 flex items-center justify-center text-white font-bold text-sm">
                     {milestone.year}
                   </div>
                   {index < milestones.length - 1 && (
-                    <div className="w-0.5 h-full bg-gray-200 mt-4"></div>
+                    <div className="w-0.5 h-full bg-gray-300 mt-2"></div>
                   )}
                 </div>
-                <div className="flex-1 bg-gray-50 rounded-2xl p-6 hover:bg-primary-50 transition-colors">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{milestone.title}</h3>
-                  <p className="text-gray-600">{milestone.desc}</p>
+                <div className="flex-1 bg-white border border-gray-200 p-5 hover:border-primary-300 transition-colors">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">{milestone.title}</h3>
+                  <p className="text-gray-600 text-sm">{milestone.desc}</p>
                 </div>
               </div>
             ))}
@@ -226,22 +199,20 @@ const AboutPage = () => {
       </section>
 
       {/* Leadership Team */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-4">
-              Leadership
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <div className="text-center mb-12">
+            <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Leadership</span>
+            <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
               Meet Our Leaders
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {team.map((member, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-white border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-md transition-all"
               >
                 <div className="h-64 overflow-hidden">
                   <img 
@@ -250,10 +221,10 @@ const AboutPage = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800">{member.name}</h3>
-                  <p className="text-primary-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-500 text-sm">{member.desc}</p>
+                <div className="p-5">
+                  <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
+                  <p className="text-primary-600 text-sm font-medium mb-3">{member.role}</p>
+                  <p className="text-gray-600 text-sm">{member.desc}</p>
                 </div>
               </div>
             ))}
@@ -262,39 +233,29 @@ const AboutPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-primary-600">
         <div className="container mx-auto px-4">
-          <div className="relative rounded-3xl overflow-hidden">
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80)'
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-600/95 to-secondary-600/95"></div>
-            </div>
-            
-            <div className="relative z-10 py-16 px-8 md:py-20 md:px-16 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to Experience Our Care?
-              </h2>
-              <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Join thousands of patients who have found relief and recovery at Chinamayi.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link 
-                  to="/book" 
-                  className="bg-white text-primary-600 hover:bg-gray-100 font-bold py-4 px-10 rounded-xl transition-colors shadow-lg"
-                >
-                  Book Appointment
-                </Link>
-                <Link 
-                  to="/doctors" 
-                  className="border-2 border-white text-white hover:bg-white/10 font-bold py-4 px-10 rounded-xl transition-colors"
-                >
-                  Meet Our Doctors
-                </Link>
-              </div>
+          <div className="max-w-2xl mx-auto text-center">
+            <Calendar className="w-12 h-12 text-white mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Ready to Experience Our Care?
+            </h2>
+            <p className="text-primary-100 mb-8">
+              Join thousands of patients who have found relief and recovery at Chinamayi.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                to="/book" 
+                className="bg-white text-primary-600 hover:bg-primary-50 font-medium py-3 px-8 transition-colors"
+              >
+                Book Appointment
+              </Link>
+              <Link 
+                to="/doctors" 
+                className="border border-white/50 text-white hover:bg-white/10 font-medium py-3 px-8 transition-colors flex items-center gap-2"
+              >
+                Meet Our Doctors <ArrowRight size={16} />
+              </Link>
             </div>
           </div>
         </div>

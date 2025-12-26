@@ -48,8 +48,8 @@ const Navbar = () => {
             </a>
             <div className="w-px h-4 bg-gray-200"></div>
             <div className="flex items-center gap-2 text-gray-600">
-              <div className="w-7 h-7 rounded-full bg-secondary-50 flex items-center justify-center">
-                <Clock size={12} className="text-secondary-600" />
+              <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
+                <Clock size={12} className="text-primary-600" />
               </div>
               <span className="font-medium">Mon - Sat: 9 AM - 8 PM</span>
             </div>
