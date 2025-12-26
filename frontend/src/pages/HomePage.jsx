@@ -99,7 +99,7 @@ const HomePage = () => {
       </section>
 
       {/* Feature Cards Section */}
-      <section className="py-0 -mt-20 relative z-20">
+      <section className="pb-16 -mt-20 relative z-20">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-0">
             {/* Card 1 */}
@@ -147,81 +147,97 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* About Section - Bento Grid */}
-      <section className="py-16 bg-gray-50">
+      {/* About Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-4">
-            {/* Main About Card */}
-            <div className="lg:col-span-2 bg-white p-8 shadow-sm">
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Left Column - Content */}
+            <div className="flex flex-col justify-center">
               <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">About Us</span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
                 Why Choose <span className="text-primary-600">Chinamayi?</span>
               </h2>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed text-base">
                 At Chinamayi Physiotherapy Clinics, we combine decades of expertise with 
                 compassionate care to deliver exceptional outcomes. Our holistic approach 
                 ensures every treatment is personalized to your unique needs.
               </p>
+              
+              {/* Feature Grid */}
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                <div className="flex items-start gap-3 p-4 bg-white border border-gray-200">
+                  <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                    <Heart className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Personalized Care</h4>
+                    <p className="text-gray-600 text-sm">Treatment plans tailored to you</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3 p-4 bg-white border border-gray-200">
+                  <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Modern Equipment</h4>
+                    <p className="text-gray-600 text-sm">Latest therapy technology</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3 p-4 bg-white border border-gray-200">
+                  <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Safe & Effective</h4>
+                    <p className="text-gray-600 text-sm">Evidence-based treatments</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3 p-4 bg-white border border-gray-200">
+                  <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Expert Team</h4>
+                    <p className="text-gray-600 text-sm">Certified specialists</p>
+                  </div>
+                </div>
+              </div>
+              
               <Link 
                 to="/about" 
-                className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 transition-colors text-sm"
+                className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 transition-colors text-sm w-fit"
               >
                 Learn More <ArrowRight size={16} />
               </Link>
             </div>
             
-            {/* Experience Card */}
-            <div className="bg-primary-600 p-6 text-white flex flex-col justify-center">
-              <Award className="w-10 h-10 mb-4" />
-              <h3 className="text-4xl font-bold mb-1">15+</h3>
-              <p className="text-primary-100">Years of Excellence</p>
-            </div>
-            
-            {/* Feature Cards Row */}
-            <div className="bg-white p-6 shadow-sm">
-              <div className="w-10 h-10 bg-primary-100 flex items-center justify-center mb-3">
-                <Heart className="w-5 h-5 text-primary-600" />
+            {/* Right Column - Image & Stats */}
+            <div className="flex flex-col gap-4">
+              <div className="relative h-80 lg:h-96 overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
+                  alt="Physiotherapy Session"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent"></div>
+                <div className="absolute bottom-6 left-6">
+                  <p className="text-white font-semibold text-lg">Expert Care</p>
+                  <p className="text-white/80 text-sm">Dedicated to your recovery</p>
+                </div>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-1">Personalized Care</h4>
-              <p className="text-gray-500 text-sm">Treatment plans tailored to you</p>
-            </div>
-            
-            <div className="bg-white p-6 shadow-sm">
-              <div className="w-10 h-10 bg-primary-100 flex items-center justify-center mb-3">
-                <Zap className="w-5 h-5 text-primary-600" />
+              
+              <div className="bg-primary-600 p-6 text-white">
+                <div className="flex items-center gap-4">
+                  <Award className="w-12 h-12" />
+                  <div>
+                    <h3 className="text-3xl font-bold">15+</h3>
+                    <p className="text-primary-100">Years of Excellence in Physiotherapy</p>
+                  </div>
+                </div>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-1">Modern Equipment</h4>
-              <p className="text-gray-500 text-sm">Latest therapy technology</p>
-            </div>
-            
-            <div className="bg-white p-6 shadow-sm">
-              <div className="w-10 h-10 bg-primary-100 flex items-center justify-center mb-3">
-                <Shield className="w-5 h-5 text-primary-600" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-1">Safe & Effective</h4>
-              <p className="text-gray-500 text-sm">Evidence-based treatments</p>
-            </div>
-            
-            {/* Image Card */}
-            <div className="lg:col-span-2 lg:row-span-2 overflow-hidden relative h-64 lg:h-auto">
-              <img 
-                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
-                alt="Physiotherapy Session"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6">
-                <p className="text-white font-semibold">Expert Care</p>
-                <p className="text-white/80 text-sm">Dedicated to your recovery</p>
-              </div>
-            </div>
-            
-            <div className="bg-primary-50 p-6">
-              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center mb-3">
-                <CheckCircle className="w-5 h-5 text-white" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-1">Expert Team</h4>
-              <p className="text-gray-500 text-sm">Certified specialists</p>
             </div>
           </div>
         </div>
@@ -238,24 +254,23 @@ const HomePage = () => {
           </div>
           
           {/* Bento Services Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {services.map((service, index) => {
               const IconComponent = serviceIcons[index % serviceIcons.length];
-              const isLarge = index === 0 || index === 3;
               return (
                 <div 
                   key={service.id} 
-                  className={`bg-gray-50 p-6 hover:bg-primary-50 transition-colors group ${isLarge ? 'lg:col-span-2' : ''}`}
+                  className="bg-white border border-gray-200 p-6 hover:border-primary-300 hover:shadow-md transition-all group"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-primary-100 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-600 transition-colors">
+                    <div className="w-12 h-12 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-600 group-hover:border-primary-600 transition-colors">
                       <IconComponent className="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 mb-1">{service.name}</h3>
-                      <p className="text-gray-500 text-sm mb-3">{service.description}</p>
+                      <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.name}</h3>
+                      <p className="text-gray-600 text-sm mb-4 leading-relaxed">{service.description}</p>
                       <div className="flex items-center gap-4">
-                        <span className="text-primary-600 font-bold">₹{service.price}</span>
+                        <span className="text-primary-600 font-bold text-lg">₹{service.price}</span>
                         <span className="text-gray-400 text-sm">{service.duration} mins</span>
                       </div>
                     </div>
@@ -276,7 +291,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Doctors Section - Bento Grid */}
+      {/* Doctors Section */}
       <section className="py-16 bg-primary-600">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
@@ -284,28 +299,28 @@ const HomePage = () => {
             <h2 className="text-3xl font-bold text-white mt-2">Meet Our Experts</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {doctors.map((doctor, index) => (
               <div 
                 key={doctor.id} 
-                className="bg-white/10 backdrop-blur-sm overflow-hidden hover:bg-white/20 transition-colors"
+                className="bg-white overflow-hidden hover:shadow-lg transition-shadow group"
               >
-                <div className="h-48 overflow-hidden">
+                <div className="h-56 overflow-hidden">
                   <img 
                     src={doctorImages[index % doctorImages.length]}
                     alt={doctor.full_name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-4">
-                  <span className="text-xs font-medium text-primary-200 bg-white/10 px-2 py-1">
+                <div className="p-5">
+                  <span className="text-xs font-medium text-primary-600 bg-primary-50 px-3 py-1 inline-block mb-3">
                     {doctor.specialization}
                   </span>
-                  <h3 className="font-semibold text-white mt-2">{doctor.full_name}</h3>
-                  <p className="text-primary-200 text-sm mb-3">{doctor.experience_years} years exp.</p>
+                  <h3 className="font-semibold text-gray-900 text-lg">{doctor.full_name}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{doctor.experience_years} years experience</p>
                   <Link 
                     to={`/book/${doctor.id}`} 
-                    className="block w-full text-center bg-white text-primary-600 font-medium py-2 text-sm hover:bg-primary-50 transition-colors"
+                    className="block w-full text-center bg-primary-600 text-white font-medium py-2.5 text-sm hover:bg-primary-700 transition-colors"
                   >
                     Book Appointment
                   </Link>
@@ -315,7 +330,7 @@ const HomePage = () => {
           </div>
           
           <div className="text-center mt-8">
-            <Link to="/doctors" className="text-white hover:text-primary-200 font-medium inline-flex items-center gap-2">
+            <Link to="/doctors" className="text-white hover:text-primary-200 font-medium inline-flex items-center gap-2 border border-white/30 px-6 py-2.5 hover:bg-white/10 transition-colors">
               View All Doctors <ArrowRight size={16} />
             </Link>
           </div>
@@ -406,7 +421,7 @@ const HomePage = () => {
       </section>
 
       {/* Contact Info Bar */}
-      <section className="py-6 bg-gray-900">
+      <section className="py-6 bg-primary-900">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="flex items-center gap-3 justify-center md:justify-start">
@@ -414,7 +429,7 @@ const HomePage = () => {
                 <Phone className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-gray-400 text-xs">Call Us</p>
+                <p className="text-primary-300 text-xs">Call Us</p>
                 <p className="text-white font-medium">+91 98765 43210</p>
               </div>
             </div>
@@ -423,7 +438,7 @@ const HomePage = () => {
                 <MapPin className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-gray-400 text-xs">Visit Us</p>
+                <p className="text-primary-300 text-xs">Visit Us</p>
                 <p className="text-white font-medium">Hyderabad, India</p>
               </div>
             </div>
@@ -432,7 +447,7 @@ const HomePage = () => {
                 <Clock className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-gray-400 text-xs">Working Hours</p>
+                <p className="text-primary-300 text-xs">Working Hours</p>
                 <p className="text-white font-medium">Mon-Sat: 9AM - 8PM</p>
               </div>
             </div>
