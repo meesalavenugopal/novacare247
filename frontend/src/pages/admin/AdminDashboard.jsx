@@ -29,18 +29,18 @@ const AdminDashboard = () => {
   };
 
   const statCards = stats ? [
-    { label: 'Total Doctors', value: stats.total_doctors, icon: Stethoscope, color: 'bg-blue-500', link: '/admin/doctors' },
-    { label: 'Total Patients', value: stats.total_patients, icon: Users, color: 'bg-green-500', link: '#' },
-    { label: 'Total Bookings', value: stats.total_bookings, icon: Calendar, color: 'bg-purple-500', link: '/admin/bookings' },
-    { label: 'Pending Bookings', value: stats.pending_bookings, icon: Clock, color: 'bg-yellow-500', link: '/admin/bookings' },
-    { label: "Today's Appointments", value: stats.today_bookings, icon: TrendingUp, color: 'bg-primary-500', link: '/admin/bookings' },
-    { label: 'Active Services', value: stats.total_services, icon: Star, color: 'bg-secondary-500', link: '/admin/services' },
+    { label: 'Total Doctors', value: stats.total_doctors, icon: Stethoscope, link: '/admin/doctors' },
+    { label: 'Total Patients', value: stats.total_patients, icon: Users, link: '#' },
+    { label: 'Total Bookings', value: stats.total_bookings, icon: Calendar, link: '/admin/bookings' },
+    { label: 'Pending Bookings', value: stats.pending_bookings, icon: Clock, link: '/admin/bookings' },
+    { label: "Today's Appointments", value: stats.today_bookings, icon: TrendingUp, link: '/admin/bookings' },
+    { label: 'Active Services', value: stats.total_services, icon: Star, link: '/admin/services' },
   ] : [];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent"></div>
       </div>
     );
   }
@@ -48,8 +48,8 @@ const AdminDashboard = () => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-600">Welcome back! Here's what's happening today.</p>
+        <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
+        <p className="text-gray-600 text-sm">Welcome back! Here's what's happening today.</p>
       </div>
 
       {/* Stats Grid */}
@@ -58,25 +58,25 @@ const AdminDashboard = () => {
           <Link 
             key={index}
             to={stat.link}
-            className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-shadow"
+            className="bg-white border border-gray-200 p-6 hover:border-primary-300 transition-colors"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center`}>
-                <stat.icon className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center">
+                <stat.icon className="w-5 h-5 text-primary-600" />
               </div>
             </div>
-            <h3 className="text-3xl font-bold text-gray-800">{stat.value}</h3>
+            <h3 className="text-2xl font-bold text-gray-800">{stat.value}</h3>
             <p className="text-gray-600 text-sm">{stat.label}</p>
           </Link>
         ))}
       </div>
 
       {/* Today's Appointments */}
-      <div className="bg-white rounded-xl shadow">
-        <div className="p-6 border-b">
+      <div className="bg-white border border-gray-200">
+        <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-800">Today's Appointments</h2>
-            <Link to="/admin/bookings" className="text-primary-600 hover:underline text-sm">
+            <Link to="/admin/bookings" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
               View All
             </Link>
           </div>
@@ -87,23 +87,23 @@ const AdminDashboard = () => {
               {todayBookings.slice(0, 5).map((booking) => (
                 <div 
                   key={booking.id}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-4 bg-gray-50 border border-gray-100"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-semibold">
+                    <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 font-semibold">
                       {booking.patient_name?.charAt(0) || 'P'}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-800">{booking.patient_name}</p>
-                      <p className="text-sm text-gray-500">{booking.patient_phone}</p>
+                      <p className="font-medium text-gray-800 text-sm">{booking.patient_name}</p>
+                      <p className="text-xs text-gray-500">{booking.patient_phone}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-gray-800">{booking.booking_time}</p>
-                    <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                      booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                      booking.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-gray-100 text-gray-700'
+                    <p className="font-medium text-gray-800 text-sm">{booking.booking_time}</p>
+                    <span className={`inline-block px-2 py-1 text-xs font-medium ${
+                      booking.status === 'confirmed' ? 'bg-primary-50 text-primary-700 border border-primary-100' :
+                      booking.status === 'pending' ? 'bg-yellow-50 text-yellow-700 border border-yellow-100' :
+                      'bg-gray-50 text-gray-700 border border-gray-100'
                     }`}>
                       {booking.status}
                     </span>
@@ -113,8 +113,8 @@ const AdminDashboard = () => {
             </div>
           ) : (
             <div className="text-center py-8 text-gray-500">
-              <Calendar className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-              <p>No appointments scheduled for today</p>
+              <Calendar className="w-10 h-10 mx-auto mb-2 text-gray-400" />
+              <p className="text-sm">No appointments scheduled for today</p>
             </div>
           )}
         </div>

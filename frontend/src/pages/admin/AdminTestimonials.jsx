@@ -52,15 +52,15 @@ const AdminTestimonials = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
         </div>
       ) : testimonials.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-6">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white rounded-xl shadow p-6">
+            <div key={testimonial.id} className="bg-white border border-gray-200 p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-semibold text-lg">
+                  <div className="w-12 h-12 bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 font-semibold text-lg">
                     {testimonial.patient_name.charAt(0)}
                   </div>
                   <div>
@@ -72,7 +72,7 @@ const AdminTestimonials = () => {
                     </div>
                   </div>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                <span className={`px-2 py-1 text-xs font-medium ${
                   testimonial.is_approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                 }`}>
                   {testimonial.is_approved ? 'Approved' : 'Pending'}
@@ -89,7 +89,7 @@ const AdminTestimonials = () => {
                   {!testimonial.is_approved && (
                     <button
                       onClick={() => handleApprove(testimonial.id, true)}
-                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg"
+                      className="p-2 text-green-600 hover:bg-green-50"
                       title="Approve"
                     >
                       <Check size={18} />
@@ -98,7 +98,7 @@ const AdminTestimonials = () => {
                   {testimonial.is_approved && (
                     <button
                       onClick={() => handleApprove(testimonial.id, false)}
-                      className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg"
+                      className="p-2 text-yellow-600 hover:bg-yellow-50"
                       title="Unapprove"
                     >
                       <X size={18} />
@@ -106,7 +106,7 @@ const AdminTestimonials = () => {
                   )}
                   <button
                     onClick={() => handleDelete(testimonial.id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                    className="p-2 text-red-600 hover:bg-red-50"
                     title="Delete"
                   >
                     <Trash2 size={18} />
@@ -117,7 +117,7 @@ const AdminTestimonials = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow p-12 text-center">
+        <div className="bg-white border border-gray-200 p-12 text-center">
           <Star className="w-12 h-12 mx-auto mb-4 text-gray-400" />
           <p className="text-gray-600">No testimonials yet</p>
         </div>

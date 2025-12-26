@@ -126,10 +126,10 @@ const AdminDoctors = () => {
       </div>
 
       {/* Doctors Table */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="bg-white border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -149,7 +149,7 @@ const AdminDoctors = () => {
                   <tr key={doctor.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-semibold">
+                        <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 font-semibold">
                           {doctor.user?.full_name?.charAt(0) || 'D'}
                         </div>
                         <div>
@@ -162,7 +162,7 @@ const AdminDoctors = () => {
                     <td className="px-6 py-4 text-gray-600">{doctor.experience_years} years</td>
                     <td className="px-6 py-4 text-gray-600">₹{doctor.consultation_fee}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      <span className={`px-2 py-1 text-xs font-medium ${
                         doctor.is_available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                       }`}>
                         {doctor.is_available ? 'Available' : 'Unavailable'}
@@ -172,13 +172,13 @@ const AdminDoctors = () => {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleEdit(doctor)}
-                          className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                          className="p-2 text-gray-600 hover:bg-gray-100"
                         >
                           <Edit size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(doctor.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                          className="p-2 text-red-600 hover:bg-red-50"
                         >
                           <Trash2 size={18} />
                         </button>
@@ -195,7 +195,7 @@ const AdminDoctors = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white border border-gray-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-semibold text-gray-800">
                 {editingDoctor ? 'Edit Doctor' : 'Add New Doctor'}

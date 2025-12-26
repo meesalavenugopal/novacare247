@@ -108,14 +108,14 @@ const AdminServices = () => {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           <div className="col-span-full flex items-center justify-center h-64">
-            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
           </div>
         ) : (
           services.map((service) => (
-            <div key={service.id} className="bg-white rounded-xl shadow p-6">
+            <div key={service.id} className="bg-white border border-gray-200 p-6">
               <div className="flex items-start justify-between mb-4">
                 <h3 className="font-semibold text-gray-800">{service.name}</h3>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                <span className={`px-2 py-1 text-xs font-medium ${
                   service.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                 }`}>
                   {service.is_active ? 'Active' : 'Inactive'}
@@ -124,11 +124,11 @@ const AdminServices = () => {
               <p className="text-gray-600 text-sm mb-4 line-clamp-2">{service.description}</p>
               <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                 <div className="flex items-center gap-1">
-                  <Clock size={16} />
+                  <Clock size={16} className="text-primary-600" />
                   {service.duration} mins
                 </div>
                 <div className="flex items-center gap-1">
-                  <IndianRupee size={16} />
+                  <IndianRupee size={16} className="text-primary-600" />
                   {service.price}
                 </div>
               </div>
@@ -141,7 +141,7 @@ const AdminServices = () => {
                 </button>
                 <button
                   onClick={() => handleDelete(service.id)}
-                  className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg text-sm"
+                  className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 text-sm"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -154,7 +154,7 @@ const AdminServices = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full">
+          <div className="bg-white border border-gray-200 max-w-lg w-full">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-semibold text-gray-800">
                 {editingService ? 'Edit Service' : 'Add New Service'}

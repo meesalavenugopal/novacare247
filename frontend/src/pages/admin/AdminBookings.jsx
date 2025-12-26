@@ -67,13 +67,13 @@ const AdminBookings = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow p-4 mb-6">
+      <div className="bg-white border border-gray-200 p-4 mb-6">
         <div className="flex flex-wrap gap-2">
           {filters.map((f) => (
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
                 filter === f.value
                   ? 'bg-primary-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -86,10 +86,10 @@ const AdminBookings = () => {
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="bg-white border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
           </div>
         ) : bookings.length > 0 ? (
           <div className="overflow-x-auto">
@@ -124,7 +124,7 @@ const AdminBookings = () => {
                     </td>
                     <td className="px-6 py-4 text-gray-600">Doctor #{booking.doctor_id}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
+                      <span className={`px-2 py-1 text-xs font-medium ${getStatusColor(booking.status)}`}>
                         {booking.status}
                       </span>
                     </td>
@@ -132,7 +132,7 @@ const AdminBookings = () => {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => setSelectedBooking(booking)}
-                          className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                          className="p-2 text-gray-600 hover:bg-gray-100"
                           title="View Details"
                         >
                           <Eye size={18} />
@@ -141,14 +141,14 @@ const AdminBookings = () => {
                           <>
                             <button
                               onClick={() => updateBookingStatus(booking.id, 'confirmed')}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg"
+                              className="p-2 text-green-600 hover:bg-green-50"
                               title="Confirm"
                             >
                               <Check size={18} />
                             </button>
                             <button
                               onClick={() => updateBookingStatus(booking.id, 'cancelled')}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                              className="p-2 text-red-600 hover:bg-red-50"
                               title="Cancel"
                             >
                               <X size={18} />
@@ -158,7 +158,7 @@ const AdminBookings = () => {
                         {booking.status === 'confirmed' && (
                           <button
                             onClick={() => updateBookingStatus(booking.id, 'completed')}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                            className="p-2 text-primary-600 hover:bg-primary-50"
                             title="Mark Complete"
                           >
                             <Check size={18} />
@@ -182,7 +182,7 @@ const AdminBookings = () => {
       {/* Booking Details Modal */}
       {selectedBooking && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full">
+          <div className="bg-white border border-gray-200 max-w-lg w-full">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-semibold text-gray-800">Booking #{selectedBooking.id}</h2>
               <button onClick={() => setSelectedBooking(null)} className="text-gray-400 hover:text-gray-600">
@@ -206,7 +206,7 @@ const AdminBookings = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Status</p>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedBooking.status)}`}>
+                  <span className={`px-2 py-1 text-xs font-medium ${getStatusColor(selectedBooking.status)}`}>
                     {selectedBooking.status}
                   </span>
                 </div>
@@ -247,7 +247,7 @@ const AdminBookings = () => {
                     </button>
                     <button
                       onClick={() => updateBookingStatus(selectedBooking.id, 'cancelled')}
-                      className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg flex-1"
+                      className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 flex-1"
                     >
                       Cancel Booking
                     </button>

@@ -136,15 +136,15 @@ const BookingPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-8 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-12 h-12 text-green-600" />
+          <div className="max-w-lg mx-auto bg-white border border-gray-200 p-8 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 bg-primary-50 border border-primary-100 flex items-center justify-center">
+              <CheckCircle className="w-8 h-8 text-primary-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Booking Confirmed!</h2>
             <p className="text-gray-600 mb-6">
               Your appointment has been successfully booked. You will receive a confirmation shortly.
             </p>
-            <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+            <div className="bg-gray-50 border border-gray-200 p-4 mb-6 text-left">
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Booking ID:</strong> #{bookingId}
               </p>
@@ -161,13 +161,13 @@ const BookingPage = () => {
             <div className="flex gap-4">
               <button
                 onClick={() => navigate('/')}
-                className="btn-outline flex-1"
+                className="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 transition-colors"
               >
                 Go Home
               </button>
               <button
                 onClick={() => navigate('/check-booking')}
-                className="btn-primary flex-1"
+                className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 transition-colors"
               >
                 Check Status
               </button>
@@ -179,53 +179,54 @@ const BookingPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-12">
+      <section className="py-12 bg-primary-600">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Book an Appointment</h1>
-          <p className="text-white/90">Choose your doctor and preferred time slot</p>
+          <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Schedule Visit</span>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-2">Book an Appointment</h1>
+          <p className="text-primary-100">Choose your doctor and preferred time slot</p>
         </div>
       </section>
 
       {/* Progress Steps */}
-      <div className="bg-white border-b">
+      <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-center gap-4">
             <div className={`flex items-center gap-2 ${step >= 1 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>1</div>
-              <span className="hidden sm:inline font-medium">Select Doctor</span>
+              <div className={`w-8 h-8 flex items-center justify-center font-semibold ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>1</div>
+              <span className="hidden sm:inline font-medium text-sm">Select Doctor</span>
             </div>
-            <div className={`w-12 h-0.5 ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            <div className={`w-12 h-px ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
             <div className={`flex items-center gap-2 ${step >= 2 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>2</div>
-              <span className="hidden sm:inline font-medium">Choose Slot</span>
+              <div className={`w-8 h-8 flex items-center justify-center font-semibold ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>2</div>
+              <span className="hidden sm:inline font-medium text-sm">Choose Slot</span>
             </div>
-            <div className={`w-12 h-0.5 ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            <div className={`w-12 h-px ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
             <div className={`flex items-center gap-2 ${step >= 3 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>3</div>
-              <span className="hidden sm:inline font-medium">Your Details</span>
+              <div className={`w-8 h-8 flex items-center justify-center font-semibold ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>3</div>
+              <span className="hidden sm:inline font-medium text-sm">Your Details</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <section className="py-8">
+      <section className="py-8 bg-gray-50">
         <div className="container mx-auto px-4">
           {/* Step 1: Select Doctor */}
           {step === 1 && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">Select a Doctor</h2>
+              <h2 className="text-lg font-semibold text-gray-800 mb-6">Select a Doctor</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {doctors.map((doctor) => (
                   <button
                     key={doctor.id}
                     onClick={() => handleDoctorSelect(doctor)}
-                    className="bg-white rounded-xl shadow p-6 text-left hover:shadow-lg transition-shadow border-2 border-transparent hover:border-primary-500"
+                    className="bg-white border border-gray-200 p-6 text-left hover:border-primary-300 transition-colors"
                   >
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                      <div className="w-14 h-14 bg-primary-600 flex items-center justify-center text-white text-xl font-bold">
                         {doctor.full_name.charAt(0)}
                       </div>
                       <div>
@@ -246,14 +247,14 @@ const BookingPage = () => {
             <div>
               <button
                 onClick={() => { setStep(1); setSelectedDoctor(null); }}
-                className="text-primary-600 hover:underline mb-4 flex items-center gap-1"
+                className="text-primary-600 hover:text-primary-700 mb-4 flex items-center gap-1 text-sm font-medium"
               >
-                <ChevronLeft size={18} /> Change Doctor
+                <ChevronLeft size={16} /> Change Doctor
               </button>
 
-              <div className="bg-white rounded-xl shadow p-6 mb-6">
+              <div className="bg-white border border-gray-200 p-6 mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                  <div className="w-14 h-14 bg-primary-600 flex items-center justify-center text-white text-xl font-bold">
                     {selectedDoctor.full_name.charAt(0)}
                   </div>
                   <div>
@@ -266,28 +267,28 @@ const BookingPage = () => {
 
               <div className="grid lg:grid-cols-2 gap-6">
                 {/* Calendar */}
-                <div className="bg-white rounded-xl shadow p-6">
+                <div className="bg-white border border-gray-200 p-6">
                   <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <Calendar size={20} className="text-primary-600" />
+                    <Calendar size={18} className="text-primary-600" />
                     Select Date
                   </h3>
                   
                   <div className="flex items-center justify-between mb-4">
                     <button 
                       onClick={goToPreviousWeek}
-                      className="p-2 hover:bg-gray-100 rounded-lg"
+                      className="p-2 hover:bg-gray-100 transition-colors"
                       disabled={weekStart <= startOfWeek(new Date(), { weekStartsOn: 1 })}
                     >
-                      <ChevronLeft size={20} />
+                      <ChevronLeft size={18} />
                     </button>
-                    <span className="font-medium text-gray-700">
+                    <span className="font-medium text-gray-700 text-sm">
                       {format(weekStart, 'MMM d')} - {format(addDays(weekStart, 6), 'MMM d, yyyy')}
                     </span>
                     <button 
                       onClick={goToNextWeek}
-                      className="p-2 hover:bg-gray-100 rounded-lg"
+                      className="p-2 hover:bg-gray-100 transition-colors"
                     >
-                      <ChevronRight size={20} />
+                      <ChevronRight size={18} />
                     </button>
                   </div>
 
@@ -303,12 +304,12 @@ const BookingPage = () => {
                           key={date.toISOString()}
                           onClick={() => !isDisabled && handleDateSelect(date)}
                           disabled={isDisabled}
-                          className={`p-3 rounded-lg text-center transition-colors ${
+                          className={`p-3 text-center transition-colors ${
                             isSelected
                               ? 'bg-primary-600 text-white'
                               : isDisabled
                               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                              : 'hover:bg-primary-100 text-gray-700'
+                              : 'hover:bg-primary-50 text-gray-700 border border-gray-200'
                           }`}
                         >
                           <div className="text-xs">{format(date, 'EEE')}</div>
@@ -320,16 +321,16 @@ const BookingPage = () => {
                 </div>
 
                 {/* Time Slots */}
-                <div className="bg-white rounded-xl shadow p-6">
+                <div className="bg-white border border-gray-200 p-6">
                   <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <Clock size={20} className="text-primary-600" />
+                    <Clock size={18} className="text-primary-600" />
                     Available Slots for {format(selectedDate, 'MMM d, yyyy')}
                   </h3>
 
                   {loading ? (
                     <div className="text-center py-8">
-                      <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full mx-auto"></div>
-                      <p className="mt-2 text-gray-500">Loading slots...</p>
+                      <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent mx-auto"></div>
+                      <p className="mt-2 text-gray-500 text-sm">Loading slots...</p>
                     </div>
                   ) : availableSlots.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2">
@@ -338,11 +339,11 @@ const BookingPage = () => {
                           key={index}
                           onClick={() => slot.available && handleTimeSelect(slot.time)}
                           disabled={!slot.available}
-                          className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                          className={`py-2 px-3 text-sm font-medium transition-colors ${
                             slot.time === selectedTime
                               ? 'bg-primary-600 text-white'
                               : slot.available
-                              ? 'bg-primary-50 text-primary-700 hover:bg-primary-100'
+                              ? 'bg-primary-50 text-primary-700 hover:bg-primary-100 border border-primary-100'
                               : 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
                           }`}
                         >
@@ -351,7 +352,7 @@ const BookingPage = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-center text-gray-500 py-8">
+                    <p className="text-center text-gray-500 py-8 text-sm">
                       No slots available for this date. Please select another date.
                     </p>
                   )}
@@ -365,12 +366,12 @@ const BookingPage = () => {
             <div className="max-w-2xl mx-auto">
               <button
                 onClick={() => setStep(2)}
-                className="text-primary-600 hover:underline mb-4 flex items-center gap-1"
+                className="text-primary-600 hover:text-primary-700 mb-4 flex items-center gap-1 text-sm font-medium"
               >
-                <ChevronLeft size={18} /> Change Time Slot
+                <ChevronLeft size={16} /> Change Time Slot
               </button>
 
-              <div className="bg-white rounded-xl shadow p-6 mb-6">
+              <div className="bg-white border border-gray-200 p-6 mb-6">
                 <h3 className="font-semibold text-gray-800 mb-4">Appointment Summary</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
@@ -396,13 +397,13 @@ const BookingPage = () => {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6">
+              <form onSubmit={handleSubmit} className="bg-white border border-gray-200 p-6">
                 <h3 className="font-semibold text-gray-800 mb-6">Enter Your Details</h3>
                 
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      <User size={16} className="inline mr-1" />
+                      <User size={14} className="inline mr-1" />
                       Full Name *
                     </label>
                     <input
@@ -411,14 +412,14 @@ const BookingPage = () => {
                       value={formData.patient_name}
                       onChange={handleInputChange}
                       required
-                      className="input-field"
+                      className="w-full px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
                       placeholder="Enter your full name"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      <Phone size={16} className="inline mr-1" />
+                      <Phone size={14} className="inline mr-1" />
                       Phone Number *
                     </label>
                     <input
@@ -427,14 +428,14 @@ const BookingPage = () => {
                       value={formData.patient_phone}
                       onChange={handleInputChange}
                       required
-                      className="input-field"
+                      className="w-full px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
                       placeholder="Enter your phone number"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      <Mail size={16} className="inline mr-1" />
+                      <Mail size={14} className="inline mr-1" />
                       Email (Optional)
                     </label>
                     <input
@@ -442,14 +443,14 @@ const BookingPage = () => {
                       name="patient_email"
                       value={formData.patient_email}
                       onChange={handleInputChange}
-                      className="input-field"
+                      className="w-full px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
                       placeholder="Enter your email"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      <FileText size={16} className="inline mr-1" />
+                      <FileText size={14} className="inline mr-1" />
                       Symptoms / Reason for Visit
                     </label>
                     <textarea
@@ -457,7 +458,7 @@ const BookingPage = () => {
                       value={formData.symptoms}
                       onChange={handleInputChange}
                       rows="3"
-                      className="input-field"
+                      className="w-full px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all resize-none text-sm"
                       placeholder="Briefly describe your symptoms or reason for consultation"
                     ></textarea>
                   </div>
@@ -466,16 +467,16 @@ const BookingPage = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-primary w-full mt-6 py-3 flex items-center justify-center gap-2"
+                  className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 mt-6 transition-colors flex items-center justify-center gap-2"
                 >
                   {submitting ? (
                     <>
-                      <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
+                      <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent"></div>
                       Booking...
                     </>
                   ) : (
                     <>
-                      <CheckCircle size={20} />
+                      <CheckCircle size={18} />
                       Confirm Booking
                     </>
                   )}

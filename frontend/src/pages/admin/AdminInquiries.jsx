@@ -60,21 +60,21 @@ const AdminInquiries = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
         </div>
       ) : inquiries.length > 0 ? (
-        <div className="bg-white rounded-xl shadow overflow-hidden">
+        <div className="bg-white border border-gray-200 overflow-hidden">
           <div className="divide-y">
             {inquiries.map((inquiry) => (
               <div
                 key={inquiry.id}
-                className={`p-4 hover:bg-gray-50 cursor-pointer ${!inquiry.is_read ? 'bg-blue-50' : ''}`}
+                className={`p-4 hover:bg-gray-50 cursor-pointer ${!inquiry.is_read ? 'bg-primary-50/50' : ''}`}
                 onClick={() => openInquiry(inquiry)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      !inquiry.is_read ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-600'
+                    <div className={`w-10 h-10 flex items-center justify-center ${
+                      !inquiry.is_read ? 'bg-primary-50 border border-primary-100 text-primary-600' : 'bg-gray-100 text-gray-600'
                     }`}>
                       <MessageSquare size={20} />
                     </div>
@@ -84,7 +84,7 @@ const AdminInquiries = () => {
                           {inquiry.name}
                         </p>
                         {!inquiry.is_read && (
-                          <span className="w-2 h-2 bg-primary-500 rounded-full"></span>
+                          <span className="w-2 h-2 bg-primary-500"></span>
                         )}
                       </div>
                       <p className="text-sm text-gray-500">{inquiry.subject || 'No subject'}</p>
@@ -107,7 +107,7 @@ const AdminInquiries = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow p-12 text-center">
+        <div className="bg-white border border-gray-200 p-12 text-center">
           <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-400" />
           <p className="text-gray-600">No inquiries yet</p>
         </div>
@@ -116,7 +116,7 @@ const AdminInquiries = () => {
       {/* Inquiry Details Modal */}
       {selectedInquiry && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full">
+          <div className="bg-white border border-gray-200 max-w-lg w-full">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-semibold text-gray-800">Inquiry Details</h2>
               <button onClick={() => setSelectedInquiry(null)} className="text-gray-400 hover:text-gray-600">
@@ -126,7 +126,7 @@ const AdminInquiries = () => {
 
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-semibold text-lg">
+                <div className="w-12 h-12 bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 font-semibold text-lg">
                   {selectedInquiry.name.charAt(0)}
                 </div>
                 <div>
@@ -175,7 +175,7 @@ const AdminInquiries = () => {
                 </a>
                 <button
                   onClick={() => handleDelete(selectedInquiry.id)}
-                  className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg"
+                  className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2"
                 >
                   <Trash2 size={20} />
                 </button>
