@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter, Linkedin } fr
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-primary-900 text-gray-300">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
@@ -84,7 +84,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-primary-800">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm">
             <p>&copy; 2025 Chinamayi Physiotherapy Clinics. All rights reserved.</p>
