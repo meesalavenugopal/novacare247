@@ -128,49 +128,78 @@ const HomePage = () => {
             </div>
 
             {/* Right Content - Hero Image */}
-            <div className="order-1 lg:order-2 relative">
+            <div className="order-1 lg:order-2">
               <div className="relative">
-                {/* Main Image */}
-                <div className="relative rounded-[2rem] overflow-hidden shadow-2xl shadow-primary-200/50 border-4 border-white">
-                  <img 
-                    src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80"
-                    alt="Professional Physiotherapy Session"
-                    className="w-full h-[400px] lg:h-[500px] object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/20 via-transparent to-transparent"></div>
-                </div>
-
-                {/* Floating Cards */}
-                <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-5 shadow-xl shadow-primary-200/40 border border-primary-100">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary-400 to-secondary-500 flex items-center justify-center shadow-lg shadow-secondary-500/30">
-                      <CheckCircle className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-gray-900">98%</p>
-                      <p className="text-sm text-gray-500">Recovery Rate</p>
+                {/* Main Image with Blob Shape */}
+                <div className="relative">
+                  {/* Blob Background */}
+                  <div className="absolute -inset-4 bg-gradient-to-br from-primary-200 via-primary-100 to-secondary-100 rounded-[3rem] transform rotate-6"></div>
+                  
+                  {/* Image Container */}
+                  <div className="relative bg-white p-3 rounded-[2.5rem] shadow-2xl">
+                    <img 
+                      src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80"
+                      alt="Professional Physiotherapy Session"
+                      className="w-full h-[450px] lg:h-[520px] object-cover rounded-[2rem]"
+                    />
+                    
+                    {/* Overlay Gradient */}
+                    <div className="absolute inset-3 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent rounded-[2rem]"></div>
+                    
+                    {/* Bottom Content on Image */}
+                    <div className="absolute bottom-8 left-8 right-8">
+                      <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-lg">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+                              <Activity className="w-7 h-7 text-white" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-gray-900 text-lg">Expert Care</p>
+                              <p className="text-sm text-gray-500">Personalized Treatment Plans</p>
+                            </div>
+                          </div>
+                          <div className="flex -space-x-3">
+                            {doctorImages.slice(0, 3).map((img, i) => (
+                              <img key={i} src={img} alt="" className="w-10 h-10 rounded-full border-3 border-white object-cover shadow" />
+                            ))}
+                            <div className="w-10 h-10 rounded-full bg-primary-500 border-3 border-white flex items-center justify-center text-white text-xs font-bold shadow">
+                              +2
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="absolute -top-4 -right-4 bg-white rounded-2xl p-4 shadow-xl shadow-primary-200/40 border border-primary-100">
-                  <div className="flex items-center gap-3">
-                    <div className="flex -space-x-2">
-                      {doctorImages.slice(0, 3).map((img, i) => (
-                        <img key={i} src={img} alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-sm" />
-                      ))}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">5 Expert Doctors</p>
-                      <p className="text-xs text-primary-600">Available Today</p>
+                {/* Floating Badge - Top Right */}
+                <div className="absolute -top-3 -right-3 lg:top-4 lg:-right-6 z-20">
+                  <div className="bg-white rounded-2xl p-4 shadow-xl border border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-500 rounded-xl flex items-center justify-center">
+                        <CheckCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-gray-900">98%</p>
+                        <p className="text-xs text-gray-500">Success Rate</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Decorative Elements */}
-                <div className="absolute -z-10 top-1/2 -right-8 w-20 h-20 bg-gradient-to-br from-secondary-200 to-secondary-300 rounded-full opacity-60"></div>
-                <div className="absolute -z-10 -bottom-6 right-1/4 w-14 h-14 bg-gradient-to-br from-primary-200 to-primary-300 rounded-full opacity-60"></div>
-                <div className="absolute -z-10 top-8 -left-4 w-10 h-10 bg-gradient-to-br from-primary-300 to-primary-400 rounded-full opacity-40"></div>
+                {/* Floating Badge - Left */}
+                <div className="absolute top-1/3 -left-4 lg:-left-8 z-20 hidden md:block">
+                  <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl px-5 py-4 shadow-xl shadow-primary-500/30">
+                    <div className="flex items-center gap-3">
+                      <Award className="w-8 h-8" />
+                      <div>
+                        <p className="font-bold text-lg">15+ Years</p>
+                        <p className="text-primary-100 text-sm">Experience</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

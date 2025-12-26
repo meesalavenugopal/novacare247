@@ -1,19 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Clock, Mail, MapPin } from 'lucide-react';
+import { Menu, X, Phone, Clock, Mail, ChevronRight, Calendar, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { user, logout, isAdmin } = useAuth();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Doctors', path: '/doctors' },
     { name: 'Services', path: '/services' },
-    { name: 'Book Appointment', path: '/book' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -21,88 +29,131 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Bar - Dark Teal Premium */}
-      <div className="bg-gradient-to-r from-primary-800 via-primary-700 to-primary-800 text-white py-2.5 hidden md:block">
-        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2 text-primary-100">
-              <Phone size={14} className="text-secondary-400" />
-              <span>+91 98765 43210</span>
-            </div>
-            <div className="flex items-center gap-2 text-primary-100">
-              <Mail size={14} className="text-secondary-400" />
-              <span>info@chinamayi.com</span>
-            </div>
-            <div className="flex items-center gap-2 text-primary-100">
-              <Clock size={14} className="text-secondary-400" />
-              <span>Mon - Sat: 9:00 AM - 8:00 PM</span>
+      {/* Top Bar - Elegant Minimal */}
+      <div className="bg-white border-b border-gray-100 py-2 hidden lg:block">
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-6 text-sm">
+            <a href="tel:+919876543210" className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
+              <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
+                <Phone size={12} className="text-primary-600" />
+              </div>
+              <span className="font-medium">+91 98765 43210</span>
+            </a>
+            <div className="w-px h-4 bg-gray-200"></div>
+            <a href="mailto:info@chinamayi.com" className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
+              <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
+                <Mail size={12} className="text-primary-600" />
+              </div>
+              <span className="font-medium">info@chinamayi.com</span>
+            </a>
+            <div className="w-px h-4 bg-gray-200"></div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <div className="w-7 h-7 rounded-full bg-secondary-50 flex items-center justify-center">
+                <Clock size={12} className="text-secondary-600" />
+              </div>
+              <span className="font-medium">Mon - Sat: 9 AM - 8 PM</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Link to="/check-booking" className="text-primary-100 hover:text-white transition-colors flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 bg-secondary-400 rounded-full animate-pulse"></span>
-              Check Booking Status
+            <Link 
+              to="/check-booking" 
+              className="flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors group"
+            >
+              <Calendar size={14} />
+              <span>Track Appointment</span>
+              <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Main Navbar - Dark Teal Premium */}
-      <nav className="bg-primary-900 sticky top-0 z-50 shadow-lg shadow-primary-900/20">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-4">
+      {/* Main Navbar - Clean White with Shadow on Scroll */}
+      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ? 'shadow-lg shadow-gray-200/60' : 'shadow-sm'
+      }`}>
+        <div className="container mx-auto px-6">
+          <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg shadow-secondary-500/30">
-                <svg className="w-7 h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
-                  <circle cx="50" cy="35" r="10" />
-                  <path d="M35 50 Q50 70 65 50 Q50 90 35 50" />
-                </svg>
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 group-hover:shadow-primary-500/40 transition-shadow">
+                  <svg className="w-7 h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
+                    <circle cx="50" cy="30" r="12" />
+                    <path d="M30 55 Q50 80 70 55" strokeWidth="8" stroke="currentColor" fill="none" strokeLinecap="round" />
+                    <path d="M40 70 L50 90 L60 70" strokeWidth="6" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-secondary-400 rounded-full border-2 border-white flex items-center justify-center">
+                  <Sparkles size={8} className="text-white" />
+                </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Chinamayi</h1>
-                <p className="text-xs text-primary-300">Physiotherapy Clinics</p>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                  Chinamayi
+                </h1>
+                <p className="text-[11px] font-medium text-primary-500 tracking-wide uppercase">Physiotherapy</p>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`relative px-5 py-2 font-medium text-[15px] transition-colors ${
                     isActive(link.path)
-                      ? 'bg-primary-700 text-white'
-                      : 'text-primary-200 hover:text-white hover:bg-primary-800'
+                      ? 'text-primary-600'
+                      : 'text-gray-600 hover:text-primary-600'
                   }`}
                 >
                   {link.name}
+                  {isActive(link.path) && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary-500 rounded-full"></span>
+                  )}
                 </Link>
               ))}
             </div>
 
-            {/* Auth Buttons */}
-            <div className="hidden lg:flex items-center gap-3">
+            {/* CTA & Auth */}
+            <div className="hidden lg:flex items-center gap-4">
               {user ? (
-                <>
-                  <span className="text-primary-200">Hi, {user.full_name}</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-full">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white text-xs font-bold">
+                      {user.full_name?.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">{user.full_name?.split(' ')[0]}</span>
+                  </div>
                   {isAdmin() && (
-                    <Link to="/admin" className="px-4 py-2 border border-primary-600 text-primary-200 hover:bg-primary-800 rounded-lg text-sm font-medium transition-colors">
-                      Admin Panel
+                    <Link 
+                      to="/admin" 
+                      className="px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+                    >
+                      Admin
                     </Link>
                   )}
-                  <button onClick={logout} className="px-4 py-2 bg-primary-700 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors">
+                  <button 
+                    onClick={logout} 
+                    className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
                     Logout
                   </button>
-                </>
+                </div>
               ) : (
                 <>
-                  <Link to="/login" className="text-primary-200 hover:text-white font-medium px-4 py-2 transition-colors">
-                    Login
+                  <Link 
+                    to="/login" 
+                    className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Sign In
                   </Link>
-                  <Link to="/register" className="bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-lg shadow-secondary-500/30 transition-all">
-                    Register
+                  <Link 
+                    to="/book" 
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-5 py-2.5 rounded-full font-medium text-sm shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all"
+                  >
+                    <Calendar size={16} />
+                    Book Appointment
                   </Link>
                 </>
               )}
@@ -110,57 +161,83 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 text-white"
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={24} className="text-gray-700" /> : <Menu size={24} className="text-gray-700" />}
             </button>
           </div>
+        </div>
 
-          {/* Mobile Navigation */}
-          {isOpen && (
-            <div className="lg:hidden py-4 border-t border-primary-700">
-              <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`font-medium py-3 px-4 rounded-lg transition-colors ${
-                      isActive(link.path)
-                        ? 'bg-primary-700 text-white'
-                        : 'text-primary-200 hover:bg-primary-800'
-                    }`}
+        {/* Mobile Navigation */}
+        <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
+          <div className="container mx-auto px-6 py-4 border-t border-gray-100">
+            <div className="flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`font-medium py-3 px-4 rounded-xl transition-colors ${
+                    isActive(link.path)
+                      ? 'bg-primary-50 text-primary-600'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              
+              <div className="my-3 border-t border-gray-100"></div>
+              
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3 px-4 py-2">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold">
+                      {user.full_name?.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800">{user.full_name}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
+                  </div>
+                  {isAdmin() && (
+                    <Link 
+                      to="/admin" 
+                      className="text-primary-600 font-medium px-4 py-3 hover:bg-primary-50 rounded-xl"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  <button 
+                    onClick={() => { logout(); setIsOpen(false); }} 
+                    className="text-left text-gray-600 font-medium px-4 py-3 hover:bg-gray-50 rounded-xl"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    to="/login" 
+                    className="text-gray-600 font-medium px-4 py-3 hover:bg-gray-50 rounded-xl" 
                     onClick={() => setIsOpen(false)}
                   >
-                    {link.name}
+                    Sign In
                   </Link>
-                ))}
-                <hr className="my-2 border-primary-700" />
-                {user ? (
-                  <>
-                    <span className="text-primary-200 px-4">Hi, {user.full_name}</span>
-                    {isAdmin() && (
-                      <Link to="/admin" className="text-secondary-400 font-medium px-4 py-3">
-                        Admin Panel
-                      </Link>
-                    )}
-                    <button onClick={logout} className="bg-primary-700 text-white py-3 px-4 rounded-lg font-medium mt-2">
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link to="/login" className="text-primary-200 font-medium py-3 px-4">
-                      Login
-                    </Link>
-                    <Link to="/register" className="bg-secondary-500 text-white py-3 px-4 rounded-lg font-medium text-center">
-                      Register
-                    </Link>
-                  </>
-                )}
-              </div>
+                  <Link 
+                    to="/book" 
+                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3.5 px-4 rounded-xl font-medium mt-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Calendar size={18} />
+                    Book Appointment
+                  </Link>
+                </>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </nav>
     </>
