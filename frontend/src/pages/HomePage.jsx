@@ -57,151 +57,91 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Clean Premium Design */}
-      <section className="relative min-h-[90vh] bg-gradient-to-br from-primary-50 via-white to-secondary-50/30 overflow-hidden">
-        {/* Subtle Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-[60%] h-[80%] bg-gradient-to-bl from-primary-100/60 via-primary-50/30 to-transparent rounded-bl-[100px]"></div>
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-secondary-100/50 to-transparent rounded-full -translate-x-1/3 translate-y-1/3"></div>
-          <div className="absolute top-1/4 left-1/4 w-[200px] h-[200px] bg-primary-100/30 rounded-full blur-3xl"></div>
+      {/* Hero Section - Clean Professional Design */}
+      <section className="relative min-h-[85vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
+          <img 
+            src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1200&q=80"
+            alt="Physiotherapy Professional"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[90vh] py-16">
+          <div className="min-h-[85vh] flex items-center py-16">
             {/* Left Content */}
-            <div className="order-2 lg:order-1">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary-200 px-4 py-2 rounded-full mb-8 shadow-sm">
-                <span className="w-2 h-2 bg-secondary-500 rounded-full animate-pulse"></span>
-                <span className="text-sm font-medium text-primary-700">Hyderabad's Premier Physiotherapy Clinic</span>
-              </div>
-              
+            <div className="max-w-xl">
               {/* Main Headline */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 leading-[1.1] tracking-tight">
-                Move Better.
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5 leading-tight">
+                Expert Physiotherapy
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-500">Live Better.</span>
+                <span className="text-primary-600">For Your Recovery</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-lg">
-                Expert physiotherapy care with personalized treatment plans. 
-                Our specialists help you recover faster and stay stronger.
+              <p className="text-base text-gray-600 mb-8 leading-relaxed">
+                At Chinamayi Physiotherapy Clinics, we provide personalized treatment 
+                plans to help you recover faster and live pain-free. Our experienced 
+                specialists are dedicated to your well-being.
               </p>
               
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4 mb-12">
-                <Link 
-                  to="/book" 
-                  className="group bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white py-4 px-8 rounded-full font-semibold transition-all duration-300 flex items-center gap-3 shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40"
-                >
-                  Book Appointment
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <a 
-                  href="tel:+919876543210" 
-                  className="group bg-white hover:bg-primary-50 border-2 border-primary-200 hover:border-primary-300 text-gray-700 py-4 px-8 rounded-full font-semibold transition-all duration-300 flex items-center gap-3 shadow-sm"
-                >
-                  <Phone size={20} className="text-primary-600" />
-                  +91 98765 43210
-                </a>
-              </div>
-
-              {/* Trust Indicators */}
-              <div className="flex items-center gap-8 pt-8 border-t border-primary-100">
-                <div>
-                  <p className="text-3xl font-bold text-primary-700">10K+</p>
-                  <p className="text-sm text-gray-500">Happy Patients</p>
-                </div>
-                <div className="w-px h-12 bg-primary-200"></div>
-                <div>
-                  <p className="text-3xl font-bold text-primary-700">15+</p>
-                  <p className="text-sm text-gray-500">Years Experience</p>
-                </div>
-                <div className="w-px h-12 bg-primary-200"></div>
-                <div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-3xl font-bold text-primary-700">4.9</span>
-                    <Star className="w-5 h-5 fill-secondary-400 text-secondary-400" />
-                  </div>
-                  <p className="text-sm text-gray-500">Patient Rating</p>
-                </div>
-              </div>
+              {/* CTA Button */}
+              <Link 
+                to="/services" 
+                className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-3 px-8 rounded-lg font-medium text-sm transition-all shadow-lg shadow-primary-600/30"
+              >
+                Check Our Services
+              </Link>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Right Content - Hero Image */}
-            <div className="order-1 lg:order-2">
-              <div className="relative">
-                {/* Main Image with Blob Shape */}
-                <div className="relative">
-                  {/* Blob Background */}
-                  <div className="absolute -inset-4 bg-gradient-to-br from-primary-200 via-primary-100 to-secondary-100 rounded-[3rem] transform rotate-6"></div>
-                  
-                  {/* Image Container */}
-                  <div className="relative bg-white p-3 rounded-[2.5rem] shadow-2xl">
-                    <img 
-                      src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80"
-                      alt="Professional Physiotherapy Session"
-                      className="w-full h-[450px] lg:h-[520px] object-cover rounded-[2rem]"
-                    />
-                    
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-3 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent rounded-[2rem]"></div>
-                    
-                    {/* Bottom Content on Image */}
-                    <div className="absolute bottom-8 left-8 right-8">
-                      <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
-                              <Activity className="w-7 h-7 text-white" />
-                            </div>
-                            <div>
-                              <p className="font-bold text-gray-900 text-lg">Expert Care</p>
-                              <p className="text-sm text-gray-500">Personalized Treatment Plans</p>
-                            </div>
-                          </div>
-                          <div className="flex -space-x-3">
-                            {doctorImages.slice(0, 3).map((img, i) => (
-                              <img key={i} src={img} alt="" className="w-10 h-10 rounded-full border-3 border-white object-cover shadow" />
-                            ))}
-                            <div className="w-10 h-10 rounded-full bg-primary-500 border-3 border-white flex items-center justify-center text-white text-xs font-bold shadow">
-                              +2
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating Badge - Top Right */}
-                <div className="absolute -top-3 -right-3 lg:top-4 lg:-right-6 z-20">
-                  <div className="bg-white rounded-2xl p-4 shadow-xl border border-gray-100">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-500 rounded-xl flex items-center justify-center">
-                        <CheckCircle className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold text-gray-900">98%</p>
-                        <p className="text-xs text-gray-500">Success Rate</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating Badge - Left */}
-                <div className="absolute top-1/3 -left-4 lg:-left-8 z-20 hidden md:block">
-                  <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl px-5 py-4 shadow-xl shadow-primary-500/30">
-                    <div className="flex items-center gap-3">
-                      <Award className="w-8 h-8" />
-                      <div>
-                        <p className="font-bold text-lg">15+ Years</p>
-                        <p className="text-primary-100 text-sm">Experience</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      {/* Feature Cards Section */}
+      <section className="py-0 -mt-20 relative z-20">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-0">
+            {/* Card 1 */}
+            <div className="bg-primary-400 p-6 text-white">
+              <div className="w-12 h-12 border-2 border-white/30 rounded-lg flex items-center justify-center mb-4">
+                <Heart className="w-6 h-6" />
               </div>
+              <h3 className="text-lg font-semibold mb-2">Personalized Care</h3>
+              <p className="text-white/80 text-sm mb-4">
+                Treatment plans tailored to your specific needs and recovery goals.
+              </p>
+              <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 rounded hover:bg-white/10 transition-colors">
+                Book Appointment
+              </Link>
+            </div>
+            
+            {/* Card 2 */}
+            <div className="bg-primary-500 p-6 text-white">
+              <div className="w-12 h-12 border-2 border-white/30 rounded-lg flex items-center justify-center mb-4">
+                <Phone className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Emergency Care</h3>
+              <p className="text-white/80 text-sm mb-4">
+                Quick response for urgent physiotherapy needs and consultations.
+              </p>
+              <a href="tel:+919876543210" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 rounded hover:bg-white/10 transition-colors">
+                +91 98765 43210
+              </a>
+            </div>
+            
+            {/* Card 3 */}
+            <div className="bg-primary-600 p-6 text-white">
+              <div className="w-12 h-12 border-2 border-white/30 rounded-lg flex items-center justify-center mb-4">
+                <Calendar className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Easy Booking</h3>
+              <p className="text-white/80 text-sm mb-4">
+                Schedule your appointment online at your convenience.
+              </p>
+              <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 rounded hover:bg-white/10 transition-colors">
+                Make An Appointment
+              </Link>
             </div>
           </div>
         </div>
@@ -210,11 +150,11 @@ const HomePage = () => {
       {/* Stats Section */}
       <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-700 relative overflow-hidden">
         {/* Decorative Elements */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-teal-500 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-800 rounded-full opacity-20 translate-x-1/2 translate-y-1/2"></div>
+        <div className="absolute top-0 left-0 w-64 h-64 bg-primary-500 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-800 rounded-full opacity-20 translate-x-1/2 translate-y-1/2"></div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="max-w-5xl mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
@@ -232,9 +172,9 @@ const HomePage = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-teal-50 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-primary-50 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
             {/* Left - Images */}
             <div className="relative">
               {/* Main Image */}
@@ -328,14 +268,14 @@ const HomePage = () => {
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-20 w-40 h-40 border-2 border-teal-500 rounded-full"></div>
-          <div className="absolute bottom-20 right-20 w-60 h-60 border-2 border-green-500 rounded-full"></div>
-          <div className="absolute top-1/2 left-1/2 w-80 h-80 border border-teal-300 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-20 right-20 w-60 h-60 border-2 border-secondary-500 rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 border border-primary-300 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 relative z-10">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-500 px-4 py-2 rounded-full mb-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-secondary-500 to-primary-500 px-4 py-2 rounded-full mb-4">
               <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
               <span className="text-white font-medium text-sm">Our Services</span>
             </div>
@@ -416,13 +356,13 @@ const HomePage = () => {
             backgroundImage: 'url(https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80)'
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-teal-900/95 via-teal-800/90 to-green-900/95"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/95 via-primary-800/90 to-primary-900/95"></div>
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 relative z-10">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
               <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
               <span className="text-white font-medium text-sm">Our Team</span>
             </div>
@@ -491,14 +431,14 @@ const HomePage = () => {
       {/* Testimonials Section with Carousel */}
       <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-teal-50 relative overflow-hidden">
         {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-teal-100 rounded-full opacity-50"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-green-100 rounded-full opacity-50"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-40"></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-primary-100 rounded-full opacity-50"></div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-secondary-100 rounded-full opacity-50"></div>
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-primary-100 rounded-full opacity-40"></div>
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 relative z-10">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 rounded-full mb-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-secondary-500 to-primary-500 px-4 py-2 rounded-full mb-4">
               <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
               <span className="text-white font-medium text-sm">Testimonials</span>
             </div>
@@ -592,13 +532,13 @@ const HomePage = () => {
         </div>
         
         {/* Decorative Shapes */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary-500/20 rounded-full blur-3xl"></div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center">
             {/* Icon */}
-            <div className="w-20 h-20 bg-gradient-to-br from-teal-400 to-green-400 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-teal-500/40">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary-500/40">
               <Calendar className="w-10 h-10 text-white" />
             </div>
             
@@ -630,11 +570,11 @@ const HomePage = () => {
       </section>
 
       {/* Contact Info Bar */}
-      <section className="py-10 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="flex items-center gap-4 justify-center md:justify-start">
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+      <section className="py-8 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="flex items-center gap-3 justify-center md:justify-start">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Phone className="w-6 h-6 text-white" />
               </div>
               <div>
