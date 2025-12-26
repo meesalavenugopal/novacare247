@@ -104,42 +104,42 @@ const HomePage = () => {
           <div className="grid md:grid-cols-3 gap-0">
             {/* Card 1 */}
             <div className="bg-primary-400 p-6 text-white">
-              <div className="w-12 h-12 border-2 border-white/30 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 border-2 border-white/30 flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Personalized Care</h3>
               <p className="text-white/80 text-sm mb-4">
                 Treatment plans tailored to your specific needs and recovery goals.
               </p>
-              <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 rounded hover:bg-white/10 transition-colors">
+              <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 Book Appointment
               </Link>
             </div>
             
             {/* Card 2 */}
             <div className="bg-primary-500 p-6 text-white">
-              <div className="w-12 h-12 border-2 border-white/30 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 border-2 border-white/30 flex items-center justify-center mb-4">
                 <Phone className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Emergency Care</h3>
               <p className="text-white/80 text-sm mb-4">
                 Quick response for urgent physiotherapy needs and consultations.
               </p>
-              <a href="tel:+919876543210" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 rounded hover:bg-white/10 transition-colors">
+              <a href="tel:+919876543210" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 +91 98765 43210
               </a>
             </div>
             
             {/* Card 3 */}
             <div className="bg-primary-600 p-6 text-white">
-              <div className="w-12 h-12 border-2 border-white/30 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 border-2 border-white/30 flex items-center justify-center mb-4">
                 <Calendar className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Easy Booking</h3>
               <p className="text-white/80 text-sm mb-4">
                 Schedule your appointment online at your convenience.
               </p>
-              <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 rounded hover:bg-white/10 transition-colors">
+              <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 Make An Appointment
               </Link>
             </div>
@@ -147,186 +147,116 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-700 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-primary-500 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-800 rounded-full opacity-20 translate-x-1/2 translate-y-1/2"></div>
-        
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="text-center"
-              >
-                <div className="w-16 h-16 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <stat.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-4xl font-bold text-white mb-1">{stat.value}</h3>
-                <p className="text-teal-100 font-medium">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-primary-50 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            {/* Left - Images */}
-            <div className="relative">
-              {/* Main Image */}
-              <div className="relative z-10">
-                <img 
-                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80"
-                  alt="Physiotherapy Session"
-                  className="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
-                />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-teal-900/40 via-transparent to-transparent rounded-3xl"></div>
-              </div>
-              
-              {/* Secondary Image */}
-              <div className="absolute -bottom-8 -right-8 w-48 h-48 z-20 hidden lg:block">
-                <img 
-                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=300&q=80"
-                  alt="Treatment"
-                  className="w-full h-full object-cover rounded-2xl shadow-xl border-4 border-white"
-                />
-              </div>
-              
-              {/* Decorative elements */}
-              <div className="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl -z-10 opacity-80"></div>
-              <div className="absolute -bottom-4 left-1/4 w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-xl -z-10 opacity-60"></div>
-              
-              {/* Experience Badge */}
-              <div className="absolute top-8 -right-4 bg-white rounded-2xl shadow-xl p-5 z-30">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center">
-                    <Award className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900">15+</p>
-                    <p className="text-gray-500 text-xs">Years Experience</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right - Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-teal-600 px-4 py-2 rounded-full mb-6">
-                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                <span className="text-white font-medium text-sm">About Chinamayi</span>
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Trusted Care for Your
-                <span className="bg-gradient-to-r from-teal-600 to-green-600 bg-clip-text text-transparent"> Recovery Journey</span>
+      {/* About Section - Bento Grid */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-3 gap-4">
+            {/* Main About Card */}
+            <div className="lg:col-span-2 bg-white p-8 shadow-sm">
+              <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">About Us</span>
+              <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
+                Why Choose <span className="text-primary-600">Chinamayi?</span>
               </h2>
-              
-              <p className="text-gray-600 text-lg mb-10 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed">
                 At Chinamayi Physiotherapy Clinics, we combine decades of expertise with 
                 compassionate care to deliver exceptional outcomes. Our holistic approach 
-                ensures every treatment is personalized to your unique needs and goals.
+                ensures every treatment is personalized to your unique needs.
               </p>
-              
-              {/* Features Grid */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-10">
-                {features.map((feature, index) => (
-                  <div 
-                    key={index} 
-                    className="flex items-start gap-4 p-5 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-teal-500"
-                  >
-                    <div className="w-11 h-11 bg-gradient-to-br from-teal-100 to-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <feature.icon className="w-5 h-5 text-teal-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">{feature.title}</h4>
-                      <p className="text-gray-500 text-sm leading-relaxed">{feature.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
               <Link 
                 to="/about" 
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold py-4 px-8 rounded-xl transition-all shadow-lg shadow-teal-500/30"
+                className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 transition-colors text-sm"
               >
-                Learn More About Us 
-                <ArrowRight size={18} />
+                Learn More <ArrowRight size={16} />
               </Link>
+            </div>
+            
+            {/* Experience Card */}
+            <div className="bg-primary-600 p-6 text-white flex flex-col justify-center">
+              <Award className="w-10 h-10 mb-4" />
+              <h3 className="text-4xl font-bold mb-1">15+</h3>
+              <p className="text-primary-100">Years of Excellence</p>
+            </div>
+            
+            {/* Feature Cards Row */}
+            <div className="bg-white p-6 shadow-sm">
+              <div className="w-10 h-10 bg-primary-100 flex items-center justify-center mb-3">
+                <Heart className="w-5 h-5 text-primary-600" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Personalized Care</h4>
+              <p className="text-gray-500 text-sm">Treatment plans tailored to you</p>
+            </div>
+            
+            <div className="bg-white p-6 shadow-sm">
+              <div className="w-10 h-10 bg-primary-100 flex items-center justify-center mb-3">
+                <Zap className="w-5 h-5 text-primary-600" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Modern Equipment</h4>
+              <p className="text-gray-500 text-sm">Latest therapy technology</p>
+            </div>
+            
+            <div className="bg-white p-6 shadow-sm">
+              <div className="w-10 h-10 bg-primary-100 flex items-center justify-center mb-3">
+                <Shield className="w-5 h-5 text-primary-600" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Safe & Effective</h4>
+              <p className="text-gray-500 text-sm">Evidence-based treatments</p>
+            </div>
+            
+            {/* Image Card */}
+            <div className="lg:col-span-2 lg:row-span-2 overflow-hidden relative h-64 lg:h-auto">
+              <img 
+                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
+                alt="Physiotherapy Session"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent"></div>
+              <div className="absolute bottom-6 left-6">
+                <p className="text-white font-semibold">Expert Care</p>
+                <p className="text-white/80 text-sm">Dedicated to your recovery</p>
+              </div>
+            </div>
+            
+            <div className="bg-primary-50 p-6">
+              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center mb-3">
+                <CheckCircle className="w-5 h-5 text-white" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Expert Team</h4>
+              <p className="text-gray-500 text-sm">Certified specialists</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-24 bg-white relative">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-20 w-40 h-40 border-2 border-teal-500 rounded-full"></div>
-          <div className="absolute bottom-20 right-20 w-60 h-60 border-2 border-secondary-500 rounded-full"></div>
-          <div className="absolute top-1/2 left-1/2 w-80 h-80 border border-primary-300 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-        </div>
-        
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-          {/* Section Header */}
+      {/* Services Section - Bento Grid */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-secondary-500 to-primary-500 px-4 py-2 rounded-full mb-4">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-              <span className="text-white font-medium text-sm">Our Services</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What We <span className="bg-gradient-to-r from-teal-600 to-green-600 bg-clip-text text-transparent">Offer</span>
+            <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Services</span>
+            <h2 className="text-3xl font-bold text-gray-900 mt-2">
+              What We <span className="text-primary-600">Offer</span>
             </h2>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Comprehensive physiotherapy solutions tailored to your recovery needs
-            </p>
           </div>
           
-          {/* Services Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Bento Services Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((service, index) => {
               const IconComponent = serviceIcons[index % serviceIcons.length];
-              const gradients = [
-                'from-teal-500 to-teal-600',
-                'from-green-500 to-green-600',
-                'from-blue-500 to-blue-600',
-                'from-purple-500 to-purple-600',
-                'from-orange-500 to-orange-600',
-                'from-pink-500 to-pink-600'
-              ];
+              const isLarge = index === 0 || index === 3;
               return (
                 <div 
                   key={service.id} 
-                  className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:-translate-y-2 relative overflow-hidden"
+                  className={`bg-gray-50 p-6 hover:bg-primary-50 transition-colors group ${isLarge ? 'lg:col-span-2' : ''}`}
                 >
-                  {/* Hover Background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[index % gradients.length]} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                  
-                  {/* Content */}
-                  <div className="relative z-10">
-                    {/* Icon */}
-                    <div className={`w-16 h-16 bg-gradient-to-br ${gradients[index % gradients.length]} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:bg-white/20 transition-all duration-300`}>
-                      <IconComponent className="w-8 h-8 text-white" />
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-primary-100 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-600 transition-colors">
+                      <IconComponent className="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" />
                     </div>
-                    
-                    {/* Content */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-white transition-colors">{service.name}</h3>
-                    <p className="text-gray-500 mb-6 line-clamp-2 text-sm leading-relaxed group-hover:text-white/80 transition-colors">{service.description}</p>
-                    
-                    {/* Price & Duration */}
-                    <div className="flex items-center justify-between pt-5 border-t border-gray-100 group-hover:border-white/20 transition-colors">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold text-teal-600 group-hover:text-white transition-colors">₹{service.price}</span>
-                        <span className="text-gray-400 text-sm group-hover:text-white/70 transition-colors">/ session</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-gray-400 text-sm group-hover:text-white/70 transition-colors">
-                        <Clock size={14} />
-                        <span>{service.duration} mins</span>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-900 mb-1">{service.name}</h3>
+                      <p className="text-gray-500 text-sm mb-3">{service.description}</p>
+                      <div className="flex items-center gap-4">
+                        <span className="text-primary-600 font-bold">₹{service.price}</span>
+                        <span className="text-gray-400 text-sm">{service.duration} mins</span>
                       </div>
                     </div>
                   </div>
@@ -335,79 +265,47 @@ const HomePage = () => {
             })}
           </div>
           
-          {/* View All Button */}
-          <div className="text-center mt-14">
+          <div className="text-center mt-8">
             <Link 
               to="/services" 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white font-semibold py-4 px-10 rounded-xl transition-all shadow-lg shadow-teal-500/30"
+              className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 transition-colors text-sm"
             >
-              View All Services <ArrowRight size={18} />
+              View All Services <ArrowRight size={16} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Doctors Section */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80)'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/95 via-primary-800/90 to-primary-900/95"></div>
-        </div>
-        
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-          {/* Section Header */}
+      {/* Doctors Section - Bento Grid */}
+      <section className="py-16 bg-primary-600">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-              <span className="text-white font-medium text-sm">Our Team</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Meet Our Experts
-            </h2>
-            <p className="text-teal-100 text-lg max-w-2xl mx-auto">
-              Skilled professionals dedicated to your recovery journey
-            </p>
+            <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Our Team</span>
+            <h2 className="text-3xl font-bold text-white mt-2">Meet Our Experts</h2>
           </div>
           
-          {/* Doctors Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {doctors.map((doctor, index) => (
               <div 
                 key={doctor.id} 
-                className="group bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2"
+                className="bg-white/10 backdrop-blur-sm overflow-hidden hover:bg-white/20 transition-colors"
               >
-                {/* Image */}
-                <div className="relative h-64 overflow-hidden">
+                <div className="h-48 overflow-hidden">
                   <img 
                     src={doctorImages[index % doctorImages.length]}
                     alt={doctor.full_name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-900/80 via-transparent to-transparent"></div>
-                  
-                  {/* Specialization Tag */}
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="inline-block px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-teal-700">
-                      {doctor.specialization}
-                    </span>
-                  </div>
                 </div>
-                
-                {/* Content */}
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-white mb-1">{doctor.full_name}</h3>
-                  <p className="text-teal-200 text-sm mb-4 flex items-center gap-1.5">
-                    <Award size={14} className="text-yellow-400" />
-                    {doctor.experience_years} years experience
-                  </p>
+                <div className="p-4">
+                  <span className="text-xs font-medium text-primary-200 bg-white/10 px-2 py-1">
+                    {doctor.specialization}
+                  </span>
+                  <h3 className="font-semibold text-white mt-2">{doctor.full_name}</h3>
+                  <p className="text-primary-200 text-sm mb-3">{doctor.experience_years} years exp.</p>
                   <Link 
                     to={`/book/${doctor.id}`} 
-                    className="block w-full text-center bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-400 hover:to-green-400 text-white font-medium py-3 rounded-xl transition-all duration-300"
+                    className="block w-full text-center bg-white text-primary-600 font-medium py-2 text-sm hover:bg-primary-50 transition-colors"
                   >
                     Book Appointment
                   </Link>
@@ -416,103 +314,61 @@ const HomePage = () => {
             ))}
           </div>
           
-          <div className="text-center mt-14">
-            <Link 
-              to="/doctors" 
-              className="inline-flex items-center gap-2 text-white font-semibold hover:text-teal-200 group text-lg"
-            >
-              View All Doctors 
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          <div className="text-center mt-8">
+            <Link to="/doctors" className="text-white hover:text-primary-200 font-medium inline-flex items-center gap-2">
+              View All Doctors <ArrowRight size={16} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section with Carousel */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-teal-50 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-primary-100 rounded-full opacity-50"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-secondary-100 rounded-full opacity-50"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-primary-100 rounded-full opacity-40"></div>
-        
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-          {/* Section Header */}
+      {/* Testimonials Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-secondary-500 to-primary-500 px-4 py-2 rounded-full mb-4">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-              <span className="text-white font-medium text-sm">Testimonials</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What <span className="bg-gradient-to-r from-teal-600 to-green-600 bg-clip-text text-transparent">Patients Say</span>
+            <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Testimonials</span>
+            <h2 className="text-3xl font-bold text-gray-900 mt-2">
+              What <span className="text-primary-600">Patients Say</span>
             </h2>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Real experiences from real patients who found relief with us
-            </p>
           </div>
           
-          {/* Testimonial Carousel */}
           {testimonials.length > 0 && (
-            <div className="max-w-4xl mx-auto relative">
-              {/* Main Testimonial Card */}
-              <div className="bg-white rounded-3xl p-10 md:p-14 shadow-2xl relative">
-                {/* Quote Icon */}
-                <div className="absolute -top-6 left-10">
-                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-green-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Quote className="w-6 h-6 text-white" />
-                  </div>
-                </div>
+            <div className="max-w-3xl mx-auto">
+              <div className="bg-white p-8 shadow-sm relative">
+                <Quote className="w-10 h-10 text-primary-100 absolute top-6 left-6" />
                 
-                {/* Stars */}
-                <div className="flex gap-1 mb-8 justify-center">
+                <div className="flex gap-1 mb-4 justify-center">
                   {[...Array(testimonials[currentTestimonial]?.rating || 5)].map((_, i) => (
-                    <Star key={i} className="w-6 h-6 fill-amber-400 text-amber-400" />
+                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 
-                {/* Content */}
-                <p className="text-gray-700 text-xl md:text-2xl mb-10 leading-relaxed text-center italic">
+                <p className="text-gray-700 text-lg mb-6 text-center leading-relaxed">
                   "{testimonials[currentTestimonial]?.content}"
                 </p>
                 
-                {/* Author */}
-                <div className="flex items-center justify-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-green-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-12 h-12 bg-primary-600 flex items-center justify-center text-white font-bold">
                     {testimonials[currentTestimonial]?.patient_name?.charAt(0)}
                   </div>
-                  <div className="text-left">
-                    <p className="font-bold text-gray-900 text-lg">{testimonials[currentTestimonial]?.patient_name}</p>
-                    <p className="text-teal-600 text-sm font-medium">Verified Patient</p>
+                  <div>
+                    <p className="font-semibold text-gray-900">{testimonials[currentTestimonial]?.patient_name}</p>
+                    <p className="text-primary-600 text-sm">Verified Patient</p>
                   </div>
                 </div>
-              </div>
-              
-              {/* Navigation Arrows */}
-              <button 
-                onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-teal-50 transition-colors border border-gray-100"
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-600" />
-              </button>
-              <button 
-                onClick={() => setCurrentTestimonial(prev => prev === testimonials.length - 1 ? 0 : prev + 1)}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-teal-50 transition-colors border border-gray-100"
-              >
-                <ChevronRight className="w-6 h-6 text-gray-600" />
-              </button>
-              
-              {/* Dots Indicator */}
-              <div className="flex justify-center gap-3 mt-8">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentTestimonial 
-                        ? 'bg-gradient-to-r from-teal-500 to-green-500 w-8' 
-                        : 'bg-gray-300 hover:bg-gray-400'
-                    }`}
-                  />
-                ))}
+                
+                {/* Navigation */}
+                <div className="flex justify-center gap-2 mt-6">
+                  {testimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentTestimonial(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentTestimonial ? 'bg-primary-600 w-6' : 'bg-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -520,84 +376,64 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80)'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-teal-900/95 via-teal-800/90 to-green-900/95"></div>
-        </div>
-        
-        {/* Decorative Shapes */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary-500/20 rounded-full blur-3xl"></div>
-        
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* Icon */}
-            <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary-500/40">
-              <Calendar className="w-10 h-10 text-white" />
-            </div>
-            
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              Ready to Start Your <br/>
-              <span className="bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent">Recovery Journey?</span>
+      <section className="py-16 bg-primary-600">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <Calendar className="w-12 h-12 text-white mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Ready to Start Your Recovery?
             </h2>
-            <p className="text-teal-100 text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-              Book your appointment today and take the first step towards a pain-free, 
-              active life. Our expert team is ready to help you achieve your health goals.
+            <p className="text-primary-100 mb-8">
+              Book your appointment today and take the first step towards a pain-free life.
             </p>
-            
             <div className="flex flex-wrap justify-center gap-4">
               <Link 
                 to="/book" 
-                className="bg-white text-teal-700 hover:bg-teal-50 font-bold py-5 px-12 rounded-xl transition-all text-lg shadow-2xl hover:shadow-white/20"
+                className="bg-white text-primary-600 hover:bg-primary-50 font-medium py-3 px-8 transition-colors"
               >
-                Book Appointment Now
+                Book Appointment
               </Link>
-              <Link 
-                to="/contact" 
-                className="bg-white/10 hover:bg-white/20 text-white font-bold py-5 px-12 rounded-xl transition-all text-lg border-2 border-white/30 backdrop-blur-sm"
+              <a 
+                href="tel:+919876543210" 
+                className="bg-primary-700 hover:bg-primary-800 text-white font-medium py-3 px-8 transition-colors flex items-center gap-2"
               >
-                Contact Us
-              </Link>
+                <Phone size={18} />
+                Call Now
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Contact Info Bar */}
-      <section className="py-8 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-6">
+      <section className="py-6 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-4">
             <div className="flex items-center gap-3 justify-center md:justify-start">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Phone className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
+                <Phone className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-gray-400 text-sm">Call Us</p>
-                <p className="text-xl font-semibold text-white">+91 98765 43210</p>
+                <p className="text-gray-400 text-xs">Call Us</p>
+                <p className="text-white font-medium">+91 98765 43210</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 justify-center">
-              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <MapPin className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-3 justify-center">
+              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
+                <MapPin className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-gray-400 text-sm">Visit Us</p>
-                <p className="text-xl font-semibold text-white">Hyderabad, India</p>
+                <p className="text-gray-400 text-xs">Visit Us</p>
+                <p className="text-white font-medium">Hyderabad, India</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 justify-center md:justify-end">
-              <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-                <Clock className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-3 justify-center md:justify-end">
+              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-gray-400 text-sm">Working Hours</p>
-                <p className="text-xl font-semibold text-white">Mon-Sat: 9AM - 8PM</p>
+                <p className="text-gray-400 text-xs">Working Hours</p>
+                <p className="text-white font-medium">Mon-Sat: 9AM - 8PM</p>
               </div>
             </div>
           </div>
