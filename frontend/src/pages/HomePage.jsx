@@ -243,8 +243,8 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Services Section - Bento Grid */}
-      <section className="py-16 bg-white">
+      {/* Services Section */}
+      <section className="py-20 bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Services</span>
@@ -292,7 +292,7 @@ const HomePage = () => {
       </section>
 
       {/* Doctors Section */}
-      <section className="py-16 bg-primary-600">
+      <section className="py-20 bg-primary-600">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Our Team</span>
@@ -338,7 +338,7 @@ const HomePage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Testimonials</span>
@@ -349,7 +349,7 @@ const HomePage = () => {
           
           {testimonials.length > 0 && (
             <div className="max-w-3xl mx-auto">
-              <div className="bg-white p-8 shadow-sm relative">
+              <div className="bg-gray-50 border border-gray-200 p-8 relative">
                 <Quote className="w-10 h-10 text-primary-100 absolute top-6 left-6" />
                 
                 <div className="flex gap-1 mb-4 justify-center">
