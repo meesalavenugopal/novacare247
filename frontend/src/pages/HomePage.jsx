@@ -391,13 +391,8 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 relative overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80')" }}
-        ></div>
-        <div className="absolute inset-0 bg-primary-900/85"></div>
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="py-20 bg-primary-600">
+        <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <Calendar className="w-12 h-12 text-white mx-auto mb-4" />
             <h2 className="text-3xl font-bold text-white mb-4">
