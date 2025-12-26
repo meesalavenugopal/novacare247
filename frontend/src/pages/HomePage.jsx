@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Phone, Calendar, Users, Award, Star, 
   CheckCircle, Activity, Heart, Zap, MapPin, Clock,
-  Stethoscope, Brain, Bone, Shield
+  Stethoscope, Brain, Bone, Shield, ChevronLeft, ChevronRight, Quote
 } from 'lucide-react';
 import { doctorsAPI, servicesAPI, testimonialsAPI } from '../services/api';
 
@@ -11,6 +11,7 @@ const HomePage = () => {
   const [doctors, setDoctors] = useState([]);
   const [services, setServices] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   useEffect(() => {
     loadData();
@@ -207,21 +208,23 @@ const HomePage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-6 bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-4">
+      <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-700 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-teal-500 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-800 rounded-full opacity-20 translate-x-1/2 translate-y-1/2"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className="flex items-center gap-4 px-6"
+                className="text-center"
               >
-                <div className="w-12 h-12 bg-teal-50 rounded-full flex items-center justify-center">
-                  <stat.icon className="w-5 h-5 text-teal-600" />
+                <div className="w-16 h-16 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <stat.icon className="w-8 h-8 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900">{stat.value}</h3>
-                  <p className="text-gray-500 text-sm">{stat.label}</p>
-                </div>
+                <h3 className="text-4xl font-bold text-white mb-1">{stat.value}</h3>
+                <p className="text-teal-100 font-medium">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -229,51 +232,59 @@ const HomePage = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-teal-50 overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Left - Image */}
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left - Images */}
             <div className="relative">
-              <div className="relative">
-                {/* Main Image */}
-                <div className="relative rounded-3xl overflow-hidden shadow-xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80"
-                    alt="Physiotherapy Session"
-                    className="w-full h-[550px] object-cover"
-                  />
-                  {/* Subtle overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                </div>
-                
-                {/* Floating Stats Card */}
-                <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-teal-500 rounded-xl flex items-center justify-center">
-                      <Heart className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-3xl font-bold text-gray-900">15+</p>
-                      <p className="text-gray-500 text-sm">Years Experience</p>
-                    </div>
+              {/* Main Image */}
+              <div className="relative z-10">
+                <img 
+                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80"
+                  alt="Physiotherapy Session"
+                  className="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-teal-900/40 via-transparent to-transparent rounded-3xl"></div>
+              </div>
+              
+              {/* Secondary Image */}
+              <div className="absolute -bottom-8 -right-8 w-48 h-48 z-20 hidden lg:block">
+                <img 
+                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=300&q=80"
+                  alt="Treatment"
+                  className="w-full h-full object-cover rounded-2xl shadow-xl border-4 border-white"
+                />
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl -z-10 opacity-80"></div>
+              <div className="absolute -bottom-4 left-1/4 w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-xl -z-10 opacity-60"></div>
+              
+              {/* Experience Badge */}
+              <div className="absolute top-8 -right-4 bg-white rounded-2xl shadow-xl p-5 z-30">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center">
+                    <Award className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-gray-900">15+</p>
+                    <p className="text-gray-500 text-xs">Years Experience</p>
                   </div>
                 </div>
-
-                {/* Small decorative element */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-100 rounded-2xl -z-10"></div>
               </div>
             </div>
 
             {/* Right - Content */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-teal-50 px-4 py-2 rounded-full mb-6">
-                <span className="w-2 h-2 bg-teal-500 rounded-full"></span>
-                <span className="text-teal-700 font-medium text-sm">About Us</span>
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-teal-600 px-4 py-2 rounded-full mb-6">
+                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                <span className="text-white font-medium text-sm">About Chinamayi</span>
               </div>
               
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Trusted Care for Your
-                <span className="text-teal-600"> Recovery Journey</span>
+                <span className="bg-gradient-to-r from-teal-600 to-green-600 bg-clip-text text-transparent"> Recovery Journey</span>
               </h2>
               
               <p className="text-gray-600 text-lg mb-10 leading-relaxed">
@@ -287,9 +298,9 @@ const HomePage = () => {
                 {features.map((feature, index) => (
                   <div 
                     key={index} 
-                    className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-gray-100 hover:border-teal-200 hover:shadow-md transition-all duration-300"
+                    className="flex items-start gap-4 p-5 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-teal-500"
                   >
-                    <div className="w-11 h-11 bg-teal-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-11 h-11 bg-gradient-to-br from-teal-100 to-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
                       <feature.icon className="w-5 h-5 text-teal-600" />
                     </div>
                     <div>
@@ -302,7 +313,7 @@ const HomePage = () => {
               
               <Link 
                 to="/about" 
-                className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-8 rounded-xl transition-colors"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold py-4 px-8 rounded-xl transition-all shadow-lg shadow-teal-500/30"
               >
                 Learn More About Us 
                 <ArrowRight size={18} />
@@ -313,16 +324,23 @@ const HomePage = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="py-24 bg-white relative">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-20 w-40 h-40 border-2 border-teal-500 rounded-full"></div>
+          <div className="absolute bottom-20 right-20 w-60 h-60 border-2 border-green-500 rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 border border-teal-300 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full mb-6">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              <span className="text-green-700 font-medium text-sm">Our Services</span>
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-500 px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+              <span className="text-white font-medium text-sm">Our Services</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What We Offer
+              What We <span className="bg-gradient-to-r from-teal-600 to-green-600 bg-clip-text text-transparent">Offer</span>
             </h2>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">
               Comprehensive physiotherapy solutions tailored to your recovery needs
@@ -330,32 +348,46 @@ const HomePage = () => {
           </div>
           
           {/* Services Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => {
               const IconComponent = serviceIcons[index % serviceIcons.length];
+              const gradients = [
+                'from-teal-500 to-teal-600',
+                'from-green-500 to-green-600',
+                'from-blue-500 to-blue-600',
+                'from-purple-500 to-purple-600',
+                'from-orange-500 to-orange-600',
+                'from-pink-500 to-pink-600'
+              ];
               return (
                 <div 
                   key={service.id} 
-                  className="group bg-white rounded-2xl p-7 border border-gray-100 hover:border-teal-200 hover:shadow-lg transition-all duration-300"
+                  className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:-translate-y-2 relative overflow-hidden"
                 >
-                  {/* Icon */}
-                  <div className="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-teal-500 transition-all duration-300">
-                    <IconComponent className="w-7 h-7 text-teal-600 group-hover:text-white transition-colors" />
-                  </div>
+                  {/* Hover Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[index % gradients.length]} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                   
                   {/* Content */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
-                  <p className="text-gray-500 mb-5 line-clamp-2 text-sm leading-relaxed">{service.description}</p>
-                  
-                  {/* Price & Duration */}
-                  <div className="flex items-center justify-between pt-5 border-t border-gray-100">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-gray-900">₹{service.price}</span>
-                      <span className="text-gray-400 text-sm">/ session</span>
+                  <div className="relative z-10">
+                    {/* Icon */}
+                    <div className={`w-16 h-16 bg-gradient-to-br ${gradients[index % gradients.length]} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:bg-white/20 transition-all duration-300`}>
+                      <IconComponent className="w-8 h-8 text-white" />
                     </div>
-                    <div className="flex items-center gap-1.5 text-gray-400 text-sm">
-                      <Clock size={14} />
-                      <span>{service.duration} mins</span>
+                    
+                    {/* Content */}
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-white transition-colors">{service.name}</h3>
+                    <p className="text-gray-500 mb-6 line-clamp-2 text-sm leading-relaxed group-hover:text-white/80 transition-colors">{service.description}</p>
+                    
+                    {/* Price & Duration */}
+                    <div className="flex items-center justify-between pt-5 border-t border-gray-100 group-hover:border-white/20 transition-colors">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl font-bold text-teal-600 group-hover:text-white transition-colors">₹{service.price}</span>
+                        <span className="text-gray-400 text-sm group-hover:text-white/70 transition-colors">/ session</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-gray-400 text-sm group-hover:text-white/70 transition-colors">
+                        <Clock size={14} />
+                        <span>{service.duration} mins</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -367,7 +399,7 @@ const HomePage = () => {
           <div className="text-center mt-14">
             <Link 
               to="/services" 
-              className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold py-4 px-8 rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white font-semibold py-4 px-10 rounded-xl transition-all shadow-lg shadow-teal-500/30"
             >
               View All Services <ArrowRight size={18} />
             </Link>
@@ -376,18 +408,28 @@ const HomePage = () => {
       </section>
 
       {/* Doctors Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-900/95 via-teal-800/90 to-green-900/95"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-teal-50 px-4 py-2 rounded-full mb-6">
-              <span className="w-2 h-2 bg-teal-500 rounded-full"></span>
-              <span className="text-teal-700 font-medium text-sm">Our Team</span>
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+              <span className="text-white font-medium text-sm">Our Team</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Meet Our Experts
             </h2>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+            <p className="text-teal-100 text-lg max-w-2xl mx-auto">
               Skilled professionals dedicated to your recovery journey
             </p>
           </div>
@@ -397,20 +439,20 @@ const HomePage = () => {
             {doctors.map((doctor, index) => (
               <div 
                 key={doctor.id} 
-                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-teal-200 hover:shadow-xl transition-all duration-300"
+                className="group bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2"
               >
                 {/* Image */}
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-64 overflow-hidden">
                   <img 
                     src={doctorImages[index % doctorImages.length]}
                     alt={doctor.full_name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-900/80 via-transparent to-transparent"></div>
                   
                   {/* Specialization Tag */}
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-block px-3 py-1 bg-white/95 backdrop-blur-sm rounded-full text-xs font-semibold text-teal-600">
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <span className="inline-block px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-teal-700">
                       {doctor.specialization}
                     </span>
                   </div>
@@ -418,14 +460,14 @@ const HomePage = () => {
                 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">{doctor.full_name}</h3>
-                  <p className="text-gray-500 text-sm mb-4 flex items-center gap-1.5">
-                    <Award size={14} className="text-teal-500" />
+                  <h3 className="text-lg font-bold text-white mb-1">{doctor.full_name}</h3>
+                  <p className="text-teal-200 text-sm mb-4 flex items-center gap-1.5">
+                    <Award size={14} className="text-yellow-400" />
                     {doctor.experience_years} years experience
                   </p>
                   <Link 
                     to={`/book/${doctor.id}`} 
-                    className="block w-full text-center bg-gray-900 hover:bg-teal-600 text-white font-medium py-3 rounded-xl transition-colors duration-300"
+                    className="block w-full text-center bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-400 hover:to-green-400 text-white font-medium py-3 rounded-xl transition-all duration-300"
                   >
                     Book Appointment
                   </Link>
@@ -437,7 +479,7 @@ const HomePage = () => {
           <div className="text-center mt-14">
             <Link 
               to="/doctors" 
-              className="inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700 group text-lg"
+              className="inline-flex items-center gap-2 text-white font-semibold hover:text-teal-200 group text-lg"
             >
               View All Doctors 
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -446,71 +488,125 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
+      {/* Testimonials Section with Carousel */}
+      <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-teal-50 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-teal-100 rounded-full opacity-50"></div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-green-100 rounded-full opacity-50"></div>
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-40"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-amber-50 px-4 py-2 rounded-full mb-6">
-              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-              <span className="text-amber-700 font-medium text-sm">Testimonials</span>
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+              <span className="text-white font-medium text-sm">Testimonials</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What Patients Say
+              What <span className="bg-gradient-to-r from-teal-600 to-green-600 bg-clip-text text-transparent">Patients Say</span>
             </h2>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">
               Real experiences from real patients who found relief with us
             </p>
           </div>
           
-          {/* Testimonials Grid */}
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial) => (
-              <div 
-                key={testimonial.id} 
-                className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-teal-200 hover:shadow-lg transition-all duration-300"
-              >
+          {/* Testimonial Carousel */}
+          {testimonials.length > 0 && (
+            <div className="max-w-4xl mx-auto relative">
+              {/* Main Testimonial Card */}
+              <div className="bg-white rounded-3xl p-10 md:p-14 shadow-2xl relative">
+                {/* Quote Icon */}
+                <div className="absolute -top-6 left-10">
+                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-green-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Quote className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                
                 {/* Stars */}
-                <div className="flex gap-1 mb-5">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+                <div className="flex gap-1 mb-8 justify-center">
+                  {[...Array(testimonials[currentTestimonial]?.rating || 5)].map((_, i) => (
+                    <Star key={i} className="w-6 h-6 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 
                 {/* Content */}
-                <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-                  "{testimonial.content}"
+                <p className="text-gray-700 text-xl md:text-2xl mb-10 leading-relaxed text-center italic">
+                  "{testimonials[currentTestimonial]?.content}"
                 </p>
                 
                 {/* Author */}
-                <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
-                  <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center text-white text-lg font-bold">
-                    {testimonial.patient_name.charAt(0)}
+                <div className="flex items-center justify-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-green-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                    {testimonials[currentTestimonial]?.patient_name?.charAt(0)}
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">{testimonial.patient_name}</p>
-                    <p className="text-gray-500 text-sm">Verified Patient</p>
+                  <div className="text-left">
+                    <p className="font-bold text-gray-900 text-lg">{testimonials[currentTestimonial]?.patient_name}</p>
+                    <p className="text-teal-600 text-sm font-medium">Verified Patient</p>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+              
+              {/* Navigation Arrows */}
+              <button 
+                onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-teal-50 transition-colors border border-gray-100"
+              >
+                <ChevronLeft className="w-6 h-6 text-gray-600" />
+              </button>
+              <button 
+                onClick={() => setCurrentTestimonial(prev => prev === testimonials.length - 1 ? 0 : prev + 1)}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-teal-50 transition-colors border border-gray-100"
+              >
+                <ChevronRight className="w-6 h-6 text-gray-600" />
+              </button>
+              
+              {/* Dots Indicator */}
+              <div className="flex justify-center gap-3 mt-8">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentTestimonial(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentTestimonial 
+                        ? 'bg-gradient-to-r from-teal-500 to-green-500 w-8' 
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gray-900">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-900/95 via-teal-800/90 to-green-900/95"></div>
+        </div>
+        
+        {/* Decorative Shapes */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Icon */}
-            <div className="w-16 h-16 bg-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-8">
-              <Calendar className="w-8 h-8 text-white" />
+            <div className="w-20 h-20 bg-gradient-to-br from-teal-400 to-green-400 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-teal-500/40">
+              <Calendar className="w-10 h-10 text-white" />
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to Start Your Recovery?
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Ready to Start Your <br/>
+              <span className="bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent">Recovery Journey?</span>
             </h2>
-            <p className="text-gray-400 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-teal-100 text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
               Book your appointment today and take the first step towards a pain-free, 
               active life. Our expert team is ready to help you achieve your health goals.
             </p>
@@ -518,13 +614,13 @@ const HomePage = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Link 
                 to="/book" 
-                className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-4 px-10 rounded-xl transition-colors text-lg"
+                className="bg-white text-teal-700 hover:bg-teal-50 font-bold py-5 px-12 rounded-xl transition-all text-lg shadow-2xl hover:shadow-white/20"
               >
                 Book Appointment Now
               </Link>
               <Link 
                 to="/contact" 
-                className="bg-white/10 hover:bg-white/20 text-white font-semibold py-4 px-10 rounded-xl transition-colors text-lg border border-white/20"
+                className="bg-white/10 hover:bg-white/20 text-white font-bold py-5 px-12 rounded-xl transition-all text-lg border-2 border-white/30 backdrop-blur-sm"
               >
                 Contact Us
               </Link>
@@ -534,34 +630,34 @@ const HomePage = () => {
       </section>
 
       {/* Contact Info Bar */}
-      <section className="py-8 bg-gray-50 border-t border-gray-100">
+      <section className="py-10 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-teal-50 rounded-full flex items-center justify-center">
-                <Phone className="w-5 h-5 text-teal-600" />
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="flex items-center gap-4 justify-center md:justify-start">
+              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Phone className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-gray-500 text-sm">Call Us</p>
-                <p className="text-lg font-semibold text-gray-900">+91 98765 43210</p>
+                <p className="text-gray-400 text-sm">Call Us</p>
+                <p className="text-xl font-semibold text-white">+91 98765 43210</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-green-600" />
+            <div className="flex items-center gap-4 justify-center">
+              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <MapPin className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-gray-500 text-sm">Visit Us</p>
-                <p className="text-lg font-semibold text-gray-900">Hyderabad, India</p>
+                <p className="text-gray-400 text-sm">Visit Us</p>
+                <p className="text-xl font-semibold text-white">Hyderabad, India</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center">
-                <Clock className="w-5 h-5 text-amber-600" />
+            <div className="flex items-center gap-4 justify-center md:justify-end">
+              <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <Clock className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-gray-500 text-sm">Working Hours</p>
-                <p className="text-lg font-semibold text-gray-900">Mon-Sat: 9AM - 8PM</p>
+                <p className="text-gray-400 text-sm">Working Hours</p>
+                <p className="text-xl font-semibold text-white">Mon-Sat: 9AM - 8PM</p>
               </div>
             </div>
           </div>
