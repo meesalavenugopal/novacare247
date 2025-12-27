@@ -54,8 +54,17 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-20 bg-primary-600">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 bg-primary-600 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1600&q=80"
+            alt="Contact Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-primary-900/60"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Get in Touch</span>
             <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">

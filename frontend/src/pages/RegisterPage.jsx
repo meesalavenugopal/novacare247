@@ -58,8 +58,17 @@ const RegisterPage = () => {
   if (success) {
     return (
       <div className="min-h-screen bg-white">
-        <section className="py-12 bg-primary-600">
-          <div className="container mx-auto px-4 text-center">
+        <section className="relative py-12 bg-primary-600 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <img 
+              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80"
+              alt="Success Background"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-primary-900/80"></div>
+          </div>
+          <div className="container mx-auto px-4 relative z-10 text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-white">Registration Complete</h1>
           </div>
         </section>
@@ -86,8 +95,17 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-12 bg-primary-600">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative py-12 bg-primary-600 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80"
+            alt="Register Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-primary-900/60"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10 text-center">
           <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Join Us</span>
           <h1 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-2">Create Account</h1>
           <p className="text-primary-100">Join us to book appointments easily</p>

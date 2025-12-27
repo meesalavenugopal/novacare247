@@ -38,8 +38,17 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-12 bg-primary-600">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative py-12 bg-primary-600 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80"
+            alt="Login Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-primary-900/60"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10 text-center">
           <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Account Access</span>
           <h1 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-2">Welcome Back</h1>
           <p className="text-primary-100">Sign in to your account</p>
