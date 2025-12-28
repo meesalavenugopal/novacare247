@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
 import HomePage from './pages/HomePage';
 import DoctorsPage from './pages/DoctorsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -19,6 +20,10 @@ import AdminServices from './pages/admin/AdminServices';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminInquiries from './pages/admin/AdminInquiries';
 
+import StoryLizzy from './pages/StoryLizzy';
+import StoryKelly from './pages/StoryKelly';
+import StoryAnitha from './pages/StoryAnitha';
+
 function App() {
   return (
     <AuthProvider>
@@ -35,6 +40,11 @@ function App() {
           <Route path="/register" element={<><Navbar /><RegisterPage /><Footer /></>} />
           <Route path="/check-booking" element={<><Navbar /><CheckBookingPage /><Footer /></>} />
           
+          {/* Patient Story Routes */}
+          <Route path="/story/lizzy" element={<><Navbar /><StoryLizzy /><Footer /></>} />
+          <Route path="/story/kelly" element={<><Navbar /><StoryKelly /><Footer /></>} />
+          <Route path="/story/anitha" element={<><Navbar /><StoryAnitha /><Footer /></>} />
+
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
