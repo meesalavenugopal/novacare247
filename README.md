@@ -1,6 +1,6 @@
-# Chinamayi Physiotherapy Clinics
+# Novacare 24/7 Physiotherapy
 
-A full-stack web application for Chinamayi Physiotherapy Clinics with React frontend and Python FastAPI backend.
+A full-stack web application for Novacare 24/7 Physiotherapy Clinics with React frontend and Python FastAPI backend.
 
 ## Features
 
@@ -99,11 +99,11 @@ The frontend will be available at `http://localhost:5173`
 ## Default Credentials
 
 ### Admin Account
-- Email: admin@chinamayi.com
+- Email: admin@novacare247.com
 - Password: admin123
 
 ### Doctor Account
-- Email: dr.priya@chinamayi.com
+- Email: dr.priya@novacare247.com
 - Password: doctor123
 
 ## Project Structure

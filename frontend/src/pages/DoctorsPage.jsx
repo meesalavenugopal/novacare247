@@ -1,36 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Star, Calendar, GraduationCap, Stethoscope, ArrowRight, MapPin, Navigation, Filter, X, ChevronDown, Building2, Video, Home, Building } from 'lucide-react';
-import { doctorsAPI } from '../services/api';
-
-// Indian states
-const indianStates = [
-  { id: 'all', name: 'All States' },
-  { id: 'telangana', name: 'Telangana' },
-  { id: 'andhra-pradesh', name: 'Andhra Pradesh' },
-  { id: 'karnataka', name: 'Karnataka' },
-  { id: 'tamil-nadu', name: 'Tamil Nadu' },
-  { id: 'maharashtra', name: 'Maharashtra' },
-  { id: 'kerala', name: 'Kerala' },
-  { id: 'delhi', name: 'Delhi' },
-  { id: 'gujarat', name: 'Gujarat' },
-  { id: 'rajasthan', name: 'Rajasthan' },
-  { id: 'west-bengal', name: 'West Bengal' },
-];
-
-// Clinic locations with coordinates (grouped by state)
-const clinicLocations = [
-  { id: 'all', name: 'All Locations', state: 'all' },
-  { id: 'kukatpally', name: 'Kukatpally', lat: 17.4947, lng: 78.3996, state: 'telangana' },
-  { id: 'gachibowli', name: 'Gachibowli', lat: 17.4401, lng: 78.3489, state: 'telangana' },
-  { id: 'madhapur', name: 'Madhapur', lat: 17.4486, lng: 78.3908, state: 'telangana' },
-  { id: 'secunderabad', name: 'Secunderabad', lat: 17.4399, lng: 78.4983, state: 'telangana' },
-  { id: 'jubileehills', name: 'Jubilee Hills', lat: 17.4325, lng: 78.4073, state: 'telangana' },
-  { id: 'vizag', name: 'Visakhapatnam', lat: 17.6868, lng: 83.2185, state: 'andhra-pradesh' },
-  { id: 'vijayawada', name: 'Vijayawada', lat: 16.5062, lng: 80.6480, state: 'andhra-pradesh' },
-  { id: 'bangalore', name: 'Bangalore', lat: 12.9716, lng: 77.5946, state: 'karnataka' },
-  { id: 'chennai', name: 'Chennai', lat: 13.0827, lng: 80.2707, state: 'tamil-nadu' },
-];
+import { doctorsAPI, branchesAPI } from '../services/api';
 
 // Specializations available
 const specializations = [
@@ -55,8 +26,12 @@ const consultationTypes = [
 const DoctorsPage = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [branches, setBranches] = useState([]);
   
   // Filter states
+  const [selectedCountry, setSelectedCountry] = useState('all');
   const [selectedState, setSelectedState] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [selectedSpecialty, setSelectedSpecialty] = useState('All Specialties');
@@ -69,16 +44,63 @@ const DoctorsPage = () => {
 
   // Get filtered locations based on selected state
   const filteredLocations = useMemo(() => {
-    if (selectedState === 'all') return clinicLocations;
+    if (selectedState === 'all') return [{ id: 'all', name: 'All Locations' }, ...branches];
     return [
-      { id: 'all', name: 'All Locations', state: 'all' },
-      ...clinicLocations.filter(loc => loc.state === selectedState)
+      { id: 'all', name: 'All Locations' },
+      ...branches.filter(branch => branch.state === selectedState)
     ];
-  }, [selectedState]);
+  }, [selectedState, branches]);
 
   useEffect(() => {
-    loadDoctors();
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    try {
+      const [doctorsRes, branchesRes, countriesRes] = await Promise.all([
+        doctorsAPI.getAll(),
+        branchesAPI.getAll(),
+        branchesAPI.getCountries(),
+      ]);
+      
+      setDoctors(doctorsRes.data);
+      setBranches(branchesRes.data.map(b => ({
+        id: b.id,
+        name: b.name,
+        city: b.city,
+        state: b.state,
+        country: b.country,
+        lat: parseFloat(b.latitude) || 0,
+        lng: parseFloat(b.longitude) || 0,
+      })));
+      
+      // Build countries list
+      setCountries([{ id: 'all', name: 'All Countries' }, ...countriesRes.data.map(c => ({ id: c, name: c }))]);
+      
+      // Build states list from branches
+      const uniqueStates = [...new Set(branchesRes.data.map(b => b.state))];
+      setStates([{ id: 'all', name: 'All States' }, ...uniqueStates.map(s => ({ id: s, name: s }))]);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Update states when country changes
+    const loadStates = async () => {
+      if (selectedCountry !== 'all') {
+        try {
+          const statesRes = await branchesAPI.getStates(selectedCountry);
+          setStates([{ id: 'all', name: 'All States' }, ...statesRes.data.map(s => ({ id: s, name: s }))]);
+        } catch (error) {
+          console.error('Error loading states:', error);
+        }
+      }
+    };
+    loadStates();
+  }, [selectedCountry]);
 
   // Reset location when state changes
   useEffect(() => {
@@ -362,7 +384,7 @@ const DoctorsPage = () => {
                     disabled={nearMeEnabled}
                     className={`w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-50 ${nearMeEnabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    {indianStates.map(state => (
+                    {states.map(state => (
                       <option key={state.id} value={state.id}>{state.name}</option>
                     ))}
                   </select>

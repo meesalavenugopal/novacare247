@@ -1,15 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, Stethoscope, Brain, Bone, Activity, Heart, Zap, Shield, Sparkles, Dumbbell, Hand, CheckCircle } from 'lucide-react';
-import { servicesAPI } from '../services/api';
+import { servicesAPI, siteStatsAPI } from '../services/api';
 
 const ServicesPage = () => {
   const [services, setServices] = useState([]);
+  const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadServices();
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    try {
+      const [servicesRes, statsRes] = await Promise.all([
+        servicesAPI.getAll(),
+        siteStatsAPI.getAll(),
+      ]);
+      setServices(servicesRes.data);
+      setStats(statsRes.data.slice(0, 3));
+    } catch (error) {
+      console.error('Error loading data:', error);
+      // Fallback stats
+      setStats([
+        { value: '1,900+', description: 'centers with a wide range of physical therapy services' },
+        { value: '39', description: 'states with our centers, serving a community near you' },
+        { value: '375+', description: 'partnerships with university, college and community organizations' },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadServices = async () => {
     try {
@@ -87,18 +109,12 @@ const ServicesPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
-            <div className="text-center">
-              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">1,900+</p>
-              <p className="text-gray-600">centers with a wide range of physical therapy services</p>
-            </div>
-            <div className="text-center md:border-x md:border-gray-200 md:px-8">
-              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">39</p>
-              <p className="text-gray-600">states with our centers, serving a community near you</p>
-            </div>
-            <div className="text-center">
-              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">375+</p>
-              <p className="text-gray-600">partnerships with university, college and community organizations</p>
-            </div>
+            {stats.map((stat, index) => (
+              <div key={index} className={`text-center ${index === 1 ? 'md:border-x md:border-gray-200 md:px-8' : ''}`}>
+                <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">{stat.value}</p>
+                <p className="text-gray-600">{stat.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

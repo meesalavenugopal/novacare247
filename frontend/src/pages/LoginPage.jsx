@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, LogIn, Users, Award } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { siteStatsAPI, siteSettingsAPI } from '../services/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -9,10 +10,37 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [stats, setStats] = useState([
+    { value: '10,000+', label: 'Happy Patients' },
+    { value: '15+', label: 'Years Experience' },
+  ]);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  const loadStats = async () => {
+    try {
+      const response = await siteStatsAPI.getAll();
+      // Get specific stats for login page (happy patients and years experience)
+      const allStats = response.data;
+      const happyPatients = allStats.find(s => s.label.toLowerCase().includes('patient'));
+      const experience = allStats.find(s => s.label.toLowerCase().includes('experience') || s.label.toLowerCase().includes('years'));
+      
+      if (happyPatients || experience) {
+        setStats([
+          { value: happyPatients?.value || '10,000+', label: happyPatients?.label || 'Happy Patients' },
+          { value: experience?.value || '15+', label: experience?.label || 'Years Experience' },
+        ]);
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,8 +97,8 @@ const LoginPage = () => {
                   <Users className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">10,000+</p>
-                  <p className="text-sm text-gray-500">Happy Patients</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats[0]?.value}</p>
+                  <p className="text-sm text-gray-500">{stats[0]?.label}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -78,8 +106,8 @@ const LoginPage = () => {
                   <Award className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">15+</p>
-                  <p className="text-sm text-gray-500">Years Experience</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats[1]?.value}</p>
+                  <p className="text-sm text-gray-500">{stats[1]?.label}</p>
                 </div>
               </div>
             </div>

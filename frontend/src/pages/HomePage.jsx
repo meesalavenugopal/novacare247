@@ -3,15 +3,23 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Phone, Calendar, Users, Award, Star, 
   CheckCircle, Activity, Heart, Zap, MapPin, Clock,
-  Stethoscope, Brain, Bone, Shield, ChevronLeft, ChevronRight, Quote
+  Stethoscope, Brain, Bone, Shield, ChevronLeft, ChevronRight, Quote,
+  Map, Building, UserCheck
 } from 'lucide-react';
-import { doctorsAPI, servicesAPI, testimonialsAPI } from '../services/api';
+import { doctorsAPI, servicesAPI, testimonialsAPI, siteStatsAPI, siteSettingsAPI } from '../services/api';
 
 const HomePage = () => {
   const [doctors, setDoctors] = useState([]);
   const [services, setServices] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [stats, setStats] = useState([]);
+  const [heroSettings, setHeroSettings] = useState({});
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  // Icon mapping for stats
+  const iconMap = {
+    MapPin, Map, Users, Award, Star, Building, UserCheck, Heart, Activity
+  };
 
   useEffect(() => {
     loadData();
@@ -19,25 +27,39 @@ const HomePage = () => {
 
   const loadData = async () => {
     try {
-      const [doctorsRes, servicesRes, testimonialsRes] = await Promise.all([
+      const [doctorsRes, servicesRes, testimonialsRes, statsRes, settingsRes] = await Promise.all([
         doctorsAPI.getAll(),
         servicesAPI.getAll(),
         testimonialsAPI.getAll(),
+        siteStatsAPI.getAll(),
+        siteSettingsAPI.getGrouped(),
       ]);
       setDoctors(doctorsRes.data.slice(0, 4));
       setServices(servicesRes.data.slice(0, 6));
       setTestimonials(testimonialsRes.data.slice(0, 3));
+      
+      // Map stats with icons
+      const statsData = statsRes.data.slice(0, 4).map(stat => ({
+        ...stat,
+        icon: iconMap[stat.icon] || MapPin
+      }));
+      setStats(statsData);
+      
+      // Set hero settings
+      if (settingsRes.data.hero) {
+        setHeroSettings(settingsRes.data.hero);
+      }
     } catch (error) {
       console.error('Error loading data:', error);
+      // Fallback stats if API fails
+      setStats([
+        { icon: MapPin, value: '1,900+', label: 'Rehabilitation Centers' },
+        { icon: Users, value: '39', label: 'States Nationwide' },
+        { icon: Award, value: '375+', label: 'University Partnerships' },
+        { icon: Star, value: '4.9', label: 'Patient Rating' },
+      ]);
     }
   };
-
-  const stats = [
-    { icon: MapPin, value: '1,900+', label: 'Rehabilitation Centers' },
-    { icon: Users, value: '39', label: 'States Nationwide' },
-    { icon: Award, value: '375+', label: 'University Partnerships' },
-    { icon: Star, value: '4.9', label: 'Patient Rating' },
-  ];
 
   const features = [
     { icon: Heart, title: 'Personalized Care', desc: 'Treatment plans tailored to your specific needs and goals' },

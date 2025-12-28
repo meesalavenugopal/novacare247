@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.routes import auth, doctors, bookings, services, testimonials, contact, admin
+from app.routes import site_settings, site_stats, branches, milestones
 from app.config import settings
 from app.seed import seed_database
 
@@ -10,7 +11,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description="API for Chinamayi Physiotherapy Clinics - Booking and Management System",
+    description="API for Novacare 24/7 Physiotherapy Clinics - Booking and Management System",
     version="1.0.0"
 )
 
@@ -31,11 +32,15 @@ app.include_router(services.router)
 app.include_router(testimonials.router)
 app.include_router(contact.router)
 app.include_router(admin.router)
+app.include_router(site_settings.router)
+app.include_router(site_stats.router)
+app.include_router(branches.router)
+app.include_router(milestones.router)
 
 @app.get("/")
 def root():
     return {
-        "message": "Welcome to Chinamayi Physiotherapy Clinics API",
+        "message": "Welcome to Novacare 24/7 Physiotherapy Clinics API",
         "docs": "/docs",
         "version": "1.0.0"
     }

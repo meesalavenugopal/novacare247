@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Phone, Eye, EyeOff, UserPlus, CheckCircle, Calendar, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { siteStatsAPI } from '../services/api';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -10,6 +11,10 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [stats, setStats] = useState([
+    { value: '10,000+', label: 'Happy Patients' },
+    { value: '15+', label: 'Years Experience' },
+  ]);
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -17,6 +22,28 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
   });
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  const loadStats = async () => {
+    try {
+      const response = await siteStatsAPI.getAll();
+      const allStats = response.data;
+      const happyPatients = allStats.find(s => s.label.toLowerCase().includes('patient'));
+      const experience = allStats.find(s => s.label.toLowerCase().includes('experience') || s.label.toLowerCase().includes('years'));
+      
+      if (happyPatients || experience) {
+        setStats([
+          { value: happyPatients?.value || '10,000+', label: happyPatients?.label || 'Happy Patients' },
+          { value: experience?.value || '15+', label: experience?.label || 'Years Experience' },
+        ]);
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

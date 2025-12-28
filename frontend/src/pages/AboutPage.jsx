@@ -1,45 +1,62 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Award, Users, Heart, Target, CheckCircle, Star, 
   Calendar, ArrowRight, Shield, MapPin,
   Sparkles, Building
 } from 'lucide-react';
+import { siteStatsAPI, milestonesAPI, doctorsAPI } from '../services/api';
 
 const AboutPage = () => {
+  const [stats, setStats] = useState([]);
+  const [milestones, setMilestones] = useState([]);
+  const [team, setTeam] = useState([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const [statsRes, milestonesRes, doctorsRes] = await Promise.all([
+        siteStatsAPI.getAll(),
+        milestonesAPI.getAll(),
+        doctorsAPI.getAll(),
+      ]);
+      
+      // Get first 3 stats for the stats section
+      setStats(statsRes.data.slice(0, 3));
+      setMilestones(milestonesRes.data);
+      
+      // Map doctors to team format
+      const teamData = doctorsRes.data.slice(0, 3).map(doc => ({
+        name: doc.full_name,
+        role: doc.specialization,
+        image: doc.profile_image || 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
+        desc: doc.bio || `Experienced ${doc.specialization} specialist with ${doc.experience_years} years of experience.`
+      }));
+      setTeam(teamData);
+    } catch (error) {
+      console.error('Error loading data:', error);
+      // Fallback data
+      setStats([
+        { value: '1,900+', description: 'centers with a wide range of physical therapy services' },
+        { value: '39', description: 'states with our centers, serving a community near you' },
+        { value: '375+', description: 'partnerships with university, college and community organizations' },
+      ]);
+      setMilestones([
+        { year: '2015', title: 'Foundation', description: 'Novacare Physiotherapy Clinics was established.' },
+        { year: '2020', title: 'Expansion', description: 'Opened multiple branches across the city.' },
+        { year: '2024', title: 'Today', description: 'Leading physiotherapy provider with expert doctors.' },
+      ]);
+    }
+  };
+
   const values = [
     { icon: Heart, title: 'Compassionate Care', desc: 'We treat every patient with empathy, understanding, and personalized attention.' },
     { icon: Target, title: 'Excellence', desc: 'We strive for the highest standards in physiotherapy treatments and outcomes.' },
     { icon: Shield, title: 'Integrity', desc: 'Honest, transparent care with evidence-based treatment approaches.' },
     { icon: Sparkles, title: 'Innovation', desc: 'Continuously adopting the latest techniques and technologies in physiotherapy.' },
-  ];
-
-  const milestones = [
-    { year: '2010', title: 'Foundation', desc: 'NovaCare 24/7 Physiotherapy Clinics was established with a vision to provide quality care.' },
-    { year: '2014', title: 'Expansion', desc: 'Opened second clinic and grew team to 10 physiotherapists.' },
-    { year: '2018', title: 'Recognition', desc: 'Awarded "Best Physiotherapy Clinic" in Hyderabad.' },
-    { year: '2022', title: 'Milestone', desc: 'Celebrated 10,000+ successful patient recoveries.' },
-    { year: '2025', title: 'Today', desc: 'Leading physiotherapy provider with 5 expert doctors and cutting-edge facilities.' },
-  ];
-
-  const team = [
-    { 
-      name: 'Dr. Priya Sharma', 
-      role: 'Founder & Chief Physiotherapist',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
-      desc: 'With 15+ years of experience, Dr. Priya founded NovaCare 24/7 with a mission to make quality physiotherapy accessible to all.'
-    },
-    { 
-      name: 'Dr. Rajesh Kumar', 
-      role: 'Sports Medicine Specialist',
-      image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face',
-      desc: 'Former sports team physiotherapist with expertise in athletic injuries and performance optimization.'
-    },
-    { 
-      name: 'Dr. Anitha Reddy', 
-      role: 'Neurological Rehabilitation',
-      image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face',
-      desc: 'Specialized in neurological conditions including stroke recovery and movement disorders.'
-    },
   ];
 
   return (
@@ -85,18 +102,12 @@ const AboutPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
-            <div className="text-center">
-              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">1,900+</p>
-              <p className="text-gray-600">centers with a wide range of physical therapy services</p>
-            </div>
-            <div className="text-center md:border-x md:border-gray-200 md:px-8">
-              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">39</p>
-              <p className="text-gray-600">states with our centers, serving a community near you</p>
-            </div>
-            <div className="text-center">
-              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">375+</p>
-              <p className="text-gray-600">partnerships with university, college and community organizations</p>
-            </div>
+            {stats.map((stat, index) => (
+              <div key={index} className={`text-center ${index === 1 ? 'md:border-x md:border-gray-200 md:px-8' : ''}`}>
+                <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">{stat.value}</p>
+                <p className="text-gray-600">{stat.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -209,7 +220,7 @@ const AboutPage = () => {
                 </div>
                 <div className="flex-1 bg-white border border-gray-200 p-5 hover:border-primary-300 transition-colors">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">{milestone.title}</h3>
-                  <p className="text-gray-600 text-sm">{milestone.desc}</p>
+                  <p className="text-gray-600 text-sm">{milestone.description}</p>
                 </div>
               </div>
             ))}

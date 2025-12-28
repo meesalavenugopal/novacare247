@@ -37,6 +37,7 @@ class Doctor(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
+    branch_id = Column(Integer, ForeignKey("branches.id"), nullable=True)  # Optional branch assignment
     specialization = Column(String(255), nullable=False)
     qualification = Column(String(500))
     experience_years = Column(Integer, default=0)
@@ -48,6 +49,7 @@ class Doctor(Base):
     
     # Relationships
     user = relationship("User", back_populates="doctor_profile")
+    branch = relationship("Branch", back_populates="doctors")
     slots = relationship("Slot", back_populates="doctor")
     bookings = relationship("Booking", back_populates="doctor")
 
@@ -123,4 +125,70 @@ class ContactInquiry(Base):
     subject = Column(String(255))
     message = Column(Text, nullable=False)
     is_read = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+# ============ SITE CONFIGURATION MODELS ============
+
+class SiteSetting(Base):
+    """Key-value store for site-wide settings like phone, email, address, etc."""
+    __tablename__ = "site_settings"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String(100), unique=True, nullable=False, index=True)
+    value = Column(Text, nullable=False)
+    category = Column(String(50), default="general")  # general, contact, social, hero, etc.
+    description = Column(String(255))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class SiteStat(Base):
+    """Statistics displayed on the website (1,900+ centers, 39 states, etc.)"""
+    __tablename__ = "site_stats"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(100), nullable=False)  # e.g., "Rehabilitation Centers"
+    value = Column(String(50), nullable=False)   # e.g., "1,900+"
+    description = Column(String(255))            # e.g., "centers with a wide range of services"
+    icon = Column(String(50))                    # e.g., "MapPin", "Users", "Award"
+    display_order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Branch(Base):
+    """Clinic branch locations with country support for international expansion"""
+    __tablename__ = "branches"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False)          # e.g., "Kukatpally Branch"
+    country = Column(String(100), nullable=False, default="India")
+    state = Column(String(100), nullable=False)         # e.g., "Telangana"
+    city = Column(String(100), nullable=False)          # e.g., "Hyderabad"
+    address = Column(Text)                              # Full address
+    pincode = Column(String(20))
+    phone = Column(String(20))
+    email = Column(String(255))
+    latitude = Column(String(50))                       # For map integration
+    longitude = Column(String(50))
+    business_hours = Column(String(255))                # e.g., "Mon-Sat: 9AM-8PM"
+    is_active = Column(Boolean, default=True)
+    is_headquarters = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    doctors = relationship("Doctor", back_populates="branch")
+
+
+class Milestone(Base):
+    """Company milestones/timeline for About page"""
+    __tablename__ = "milestones"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    year = Column(String(10), nullable=False)           # e.g., "2010"
+    title = Column(String(255), nullable=False)         # e.g., "Foundation"
+    description = Column(Text)                          # e.g., "NovaCare was established..."
+    display_order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)

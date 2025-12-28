@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Phone, Mail, MapPin, Clock, Send, CheckCircle, 
-  Facebook, Instagram, Twitter, Linkedin,
+  Facebook, Instagram, Twitter, Linkedin, Youtube,
   ArrowRight
 } from 'lucide-react';
-import { contactAPI } from '../services/api';
+import { contactAPI, siteSettingsAPI, branchesAPI } from '../services/api';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +16,68 @@ const ContactPage = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [contactInfo, setContactInfo] = useState([]);
+  const [socialLinks, setSocialLinks] = useState([]);
+  const [headquarters, setHeadquarters] = useState(null);
+
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const [settingsRes, hqRes] = await Promise.all([
+        siteSettingsAPI.getGrouped(),
+        branchesAPI.getHeadquarters().catch(() => null),
+      ]);
+      
+      const data = settingsRes.data;
+      
+      // Build contact info from settings
+      const contact = data.contact || {};
+      setContactInfo([
+        { icon: Phone, title: 'Phone', value: contact.phone || '+91 98765 43210', link: `tel:${(contact.phone || '+919876543210').replace(/\s/g, '')}` },
+        { icon: Mail, title: 'Email', value: contact.email || 'info@novacare247.com', link: `mailto:${contact.email || 'info@novacare247.com'}` },
+        { icon: MapPin, title: 'Address', value: contact.address || 'Hyderabad, Telangana', link: '#' },
+        { icon: Clock, title: 'Hours', value: contact.business_hours || 'Mon-Sat: 9AM - 8PM', link: '#' },
+      ]);
+      
+      // Build social links from settings
+      const social = data.social || {};
+      const socialIconMap = { facebook: Facebook, instagram: Instagram, twitter: Twitter, linkedin: Linkedin, youtube: Youtube };
+      const socialLinksData = [];
+      Object.entries(social).forEach(([key, value]) => {
+        if (value && socialIconMap[key]) {
+          socialLinksData.push({ icon: socialIconMap[key], link: value, label: key.charAt(0).toUpperCase() + key.slice(1) });
+        }
+      });
+      setSocialLinks(socialLinksData.length > 0 ? socialLinksData : [
+        { icon: Facebook, link: '#', label: 'Facebook' },
+        { icon: Instagram, link: '#', label: 'Instagram' },
+        { icon: Twitter, link: '#', label: 'Twitter' },
+        { icon: Linkedin, link: '#', label: 'LinkedIn' },
+      ]);
+      
+      if (hqRes?.data) {
+        setHeadquarters(hqRes.data);
+      }
+    } catch (error) {
+      console.error('Error loading settings:', error);
+      // Fallback data
+      setContactInfo([
+        { icon: Phone, title: 'Phone', value: '+91 98765 43210', link: 'tel:+919876543210' },
+        { icon: Mail, title: 'Email', value: 'info@novacare247.com', link: 'mailto:info@novacare247.com' },
+        { icon: MapPin, title: 'Address', value: 'Hyderabad, Telangana', link: '#' },
+        { icon: Clock, title: 'Hours', value: 'Mon-Sat: 9AM - 8PM', link: '#' },
+      ]);
+      setSocialLinks([
+        { icon: Facebook, link: '#', label: 'Facebook' },
+        { icon: Instagram, link: '#', label: 'Instagram' },
+        { icon: Twitter, link: '#', label: 'Twitter' },
+        { icon: Linkedin, link: '#', label: 'LinkedIn' },
+      ]);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,20 +98,6 @@ const ContactPage = () => {
       setSubmitting(false);
     }
   };
-
-  const contactInfo = [
-    { icon: Phone, title: 'Phone', value: '+91 98765 43210', link: 'tel:+919876543210' },
-    { icon: Mail, title: 'Email', value: 'info@novacare247.com', link: 'mailto:info@novacare247.com' },
-    { icon: MapPin, title: 'Address', value: 'Banjara Hills, Hyderabad', link: '#' },
-    { icon: Clock, title: 'Hours', value: 'Mon-Sat: 9AM - 8PM', link: '#' },
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, link: '#', label: 'Facebook' },
-    { icon: Instagram, link: '#', label: 'Instagram' },
-    { icon: Twitter, link: '#', label: 'Twitter' },
-    { icon: Linkedin, link: '#', label: 'LinkedIn' },
-  ];
 
   return (
     <div className="min-h-screen bg-white">

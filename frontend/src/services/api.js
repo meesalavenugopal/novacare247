@@ -92,4 +92,51 @@ export const adminAPI = {
   getUsers: (params) => api.get('/admin/users', { params }),
 };
 
+// Site Settings APIs
+export const siteSettingsAPI = {
+  getAll: (category) => api.get('/site-settings', { params: { category } }),
+  getByKey: (key) => api.get(`/site-settings/by-key/${key}`),
+  getByCategory: (category) => api.get(`/site-settings/category/${category}`),
+  getGrouped: () => api.get('/site-settings/grouped'),
+  create: (data) => api.post('/site-settings', data),
+  updateByKey: (key, data) => api.put(`/site-settings/by-key/${key}`, data),
+  deleteByKey: (key) => api.delete(`/site-settings/by-key/${key}`),
+  bulkUpsert: (settings) => api.post('/site-settings/bulk', settings),
+};
+
+// Site Stats APIs
+export const siteStatsAPI = {
+  getAll: () => api.get('/site-stats'),
+  getAllAdmin: () => api.get('/site-stats/all'),
+  getById: (id) => api.get(`/site-stats/${id}`),
+  create: (data) => api.post('/site-stats', data),
+  update: (id, data) => api.put(`/site-stats/${id}`, data),
+  delete: (id) => api.delete(`/site-stats/${id}`),
+};
+
+// Branches APIs
+export const branchesAPI = {
+  getAll: (params) => api.get('/branches', { params }),
+  getAllAdmin: () => api.get('/branches/all'),
+  getCountries: () => api.get('/branches/countries'),
+  getStates: (country) => api.get('/branches/states', { params: { country } }),
+  getCities: (country, state) => api.get('/branches/cities', { params: { country, state } }),
+  getWithCounts: () => api.get('/branches/with-counts'),
+  getHeadquarters: () => api.get('/branches/headquarters'),
+  getById: (id) => api.get(`/branches/${id}`),
+  create: (data) => api.post('/branches', data),
+  update: (id, data) => api.put(`/branches/${id}`, data),
+  delete: (id) => api.delete(`/branches/${id}`),
+};
+
+// Milestones APIs
+export const milestonesAPI = {
+  getAll: () => api.get('/milestones'),
+  getAllAdmin: () => api.get('/milestones/all'),
+  getById: (id) => api.get(`/milestones/${id}`),
+  create: (data) => api.post('/milestones', data),
+  update: (id, data) => api.put(`/milestones/${id}`, data),
+  delete: (id) => api.delete(`/milestones/${id}`),
+};
+
 export default api;

@@ -238,3 +238,128 @@ class DashboardStats(BaseModel):
     pending_bookings: int
     today_bookings: int
     total_services: int
+
+
+# ============ SITE CONFIGURATION SCHEMAS ============
+
+# SiteSetting Schemas
+class SiteSettingBase(BaseModel):
+    key: str
+    value: str
+    category: Optional[str] = "general"
+    description: Optional[str] = None
+
+class SiteSettingCreate(SiteSettingBase):
+    pass
+
+class SiteSettingResponse(SiteSettingBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class SiteSettingUpdate(BaseModel):
+    value: Optional[str] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+
+
+# SiteStat Schemas
+class SiteStatBase(BaseModel):
+    label: str
+    value: str
+    description: Optional[str] = None
+    icon: Optional[str] = None
+    display_order: Optional[int] = 0
+
+class SiteStatCreate(SiteStatBase):
+    pass
+
+class SiteStatResponse(SiteStatBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class SiteStatUpdate(BaseModel):
+    label: Optional[str] = None
+    value: Optional[str] = None
+    description: Optional[str] = None
+    icon: Optional[str] = None
+    display_order: Optional[int] = None
+    is_active: Optional[bool] = None
+
+
+# Branch Schemas (with country for international expansion)
+class BranchBase(BaseModel):
+    name: str
+    country: Optional[str] = "India"
+    state: str
+    city: str
+    address: Optional[str] = None
+    pincode: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
+    business_hours: Optional[str] = None
+    is_headquarters: Optional[bool] = False
+
+class BranchCreate(BranchBase):
+    pass
+
+class BranchResponse(BranchBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class BranchUpdate(BaseModel):
+    name: Optional[str] = None
+    country: Optional[str] = None
+    state: Optional[str] = None
+    city: Optional[str] = None
+    address: Optional[str] = None
+    pincode: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
+    business_hours: Optional[str] = None
+    is_active: Optional[bool] = None
+    is_headquarters: Optional[bool] = None
+
+class BranchWithDoctorCount(BranchResponse):
+    doctor_count: int
+
+
+# Milestone Schemas
+class MilestoneBase(BaseModel):
+    year: str
+    title: str
+    description: Optional[str] = None
+    display_order: Optional[int] = 0
+
+class MilestoneCreate(MilestoneBase):
+    pass
+
+class MilestoneResponse(MilestoneBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class MilestoneUpdate(BaseModel):
+    year: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    display_order: Optional[int] = None
+    is_active: Optional[bool] = None

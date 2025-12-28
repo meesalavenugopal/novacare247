@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Clock, Mail, ChevronRight, Calendar, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { siteSettingsAPI } from '../services/api';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [settings, setSettings] = useState({
+    phone: '+91 98765 43210',
+    email: 'info@novacare247.com',
+    business_hours: 'Mon - Sat: 9 AM - 8 PM'
+  });
   const location = useLocation();
   const { user, logout, isAdmin } = useAuth();
 
@@ -15,6 +21,25 @@ const Navbar = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await siteSettingsAPI.getGrouped();
+        const data = response.data;
+        if (data.contact) {
+          setSettings({
+            phone: data.contact.phone || '+91 98765 43210',
+            email: data.contact.email || 'info@novacare247.com',
+            business_hours: data.contact.business_hours || 'Mon - Sat: 9 AM - 8 PM'
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching site settings:', error);
+      }
+    };
+    fetchSettings();
   }, []);
 
   const navLinks = [
@@ -33,25 +58,25 @@ const Navbar = () => {
       <div className="bg-white border-b border-gray-100 py-2 hidden lg:block">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-6 text-sm">
-            <a href="tel:+919876543210" className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
+            <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
               <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
                 <Phone size={12} className="text-primary-600" />
               </div>
-              <span className="font-medium">+91 98765 43210</span>
+              <span className="font-medium">{settings.phone}</span>
             </a>
             <div className="w-px h-4 bg-gray-200"></div>
-            <a href="mailto:info@novacare247.com" className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
+            <a href={`mailto:${settings.email}`} className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
               <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
                 <Mail size={12} className="text-primary-600" />
               </div>
-              <span className="font-medium">info@novacare247.com</span>
+              <span className="font-medium">{settings.email}</span>
             </a>
             <div className="w-px h-4 bg-gray-200"></div>
             <div className="flex items-center gap-2 text-gray-600">
               <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
                 <Clock size={12} className="text-primary-600" />
               </div>
-              <span className="font-medium">Mon - Sat: 9 AM - 8 PM</span>
+              <span className="font-medium">{settings.business_hours}</span>
             </div>
           </div>
           <div className="flex items-center gap-4">

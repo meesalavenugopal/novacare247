@@ -108,7 +108,7 @@ const Footer = () => {
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm">
-            <p className="text-gray-500">&copy; 2025 Chinamayi Physiotherapy Clinics 24/7. All rights reserved.</p>
+            <p className="text-gray-500">&copy; 2025 Novacare 24/7 Physiotherapy Clinics. All rights reserved.</p>
             <div className="flex gap-6 mt-3 md:mt-0">
               <a href="#" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</a>
               <a href="#" className="text-gray-500 hover:text-primary-400 transition-colors">Terms of Service</a>
