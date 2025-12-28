@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, LogIn, Users, Award } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { siteStatsAPI, siteSettingsAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -64,29 +65,38 @@ const LoginPage = () => {
   };
 
   return (
-    <section className="relative min-h-[85vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
-      {/* Background Image - Right Side */}
-      <div className="absolute top-0 right-0 w-[45%] h-full hidden lg:block">
-        <img 
-          src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80"
-          alt="Physiotherapy"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
-      </div>
+    <>
+      <SEO 
+        title="Login | NovaCare Physiotherapy - Patient Portal"
+        description="Login to your NovaCare account to manage appointments, track recovery progress, and access personalized physiotherapy care."
+        keywords="login, patient portal, NovaCare login, physiotherapy account"
+        canonical="https://novacare247.com/login"
+        noindex={true}
+      />
+      
+      <section className="relative min-h-[85vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[45%] h-full hidden lg:block">
+          <img 
+            src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80"
+            alt="Physiotherapy"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+        </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="min-h-[85vh] flex items-center py-16">
-          {/* Left Content */}
-          <div className="hidden lg:block max-w-md">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5 leading-tight">
-              Welcome Back
-              <br />
-              <span className="text-primary-600">To NovaCare 24/7</span>
-            </h1>
-            
-            <p className="text-base text-gray-600 mb-8 leading-relaxed">
-              Sign in to your account to manage appointments, track your recovery progress, 
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="min-h-[85vh] flex items-center py-16">
+            {/* Left Content */}
+            <div className="hidden lg:block max-w-md">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5 leading-tight">
+                Welcome Back
+                <br />
+                <span className="text-primary-600">To NovaCare 24/7</span>
+              </h1>
+              
+              <p className="text-base text-gray-600 mb-8 leading-relaxed">
+                Sign in to your account to manage appointments, track your recovery progress, 
               and access your personalized health records with our expert physiotherapists.
             </p>
             
@@ -217,6 +227,7 @@ const LoginPage = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

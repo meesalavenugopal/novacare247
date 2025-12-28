@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Phone, Search, Calendar, Clock, User, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { bookingsAPI } from '../services/api';
 import { format } from 'date-fns';
+import SEO from '../components/SEO';
 
 const CheckBookingPage = () => {
   const [phone, setPhone] = useState('');
@@ -54,6 +55,14 @@ const CheckBookingPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Check Booking Status | Track Your Physiotherapy Appointment"
+        description="Check your physiotherapy appointment status at NovaCare. Enter your phone number to view booking details, appointment date, and doctor information."
+        keywords="check booking, track appointment, physiotherapy booking status, NovaCare appointment, booking confirmation"
+        canonical="https://novacare247.com/check-booking"
+        noindex={true}
+      />
+      
       {/* Hero Section - Matching HomePage Style */}
       <section className="relative min-h-[40vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}

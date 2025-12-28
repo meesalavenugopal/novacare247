@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="1100" cy="100" r="200" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="100" cy="530" r="150" fill="rgba(255,255,255,0.08)"/>
+  
+  <!-- Main card -->
+  <rect x="60" y="60" width="1080" height="510" rx="24" fill="url(#cardGrad)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+  
+  <!-- Logo/Brand Mark -->
+  <rect x="100" y="100" width="120" height="120" rx="24" fill="white"/>
+  <text x="160" y="185" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#0ea5e9" text-anchor="middle">N</text>
+  
+  <!-- Brand Name -->
+  <text x="250" y="160" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white">NovaCare</text>
+  <text x="250" y="200" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.9)">24/7 Physiotherapy Clinics</text>
+  
+  <!-- Main Headline -->
+  <text x="100" y="320" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="white">Expert Physiotherapy</text>
+  <text x="100" y="390" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="white">Across India</text>
+  
+  <!-- Stats -->
+  <text x="100" y="480" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.9)">500+ Cities</text>
+  <circle cx="270" cy="472" r="4" fill="rgba(255,255,255,0.5)"/>
+  <text x="290" y="480" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.9)">150+ Conditions</text>
+  <circle cx="530" cy="472" r="4" fill="rgba(255,255,255,0.5)"/>
+  <text x="550" y="480" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.9)">24/7 Service</text>
+  
+  <!-- CTA Badge -->
+  <rect x="100" y="520" width="260" height="50" rx="25" fill="white"/>
+  <text x="230" y="555" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0ea5e9" text-anchor="middle">Book Appointment</text>
+  
+  <!-- Website URL -->
+  <text x="1060" y="550" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.8)" text-anchor="end">novacare247.com</text>
+  
+  <!-- Decorative medical cross -->
+  <g transform="translate(950, 200)">
+    <rect x="40" y="0" width="40" height="120" rx="8" fill="rgba(255,255,255,0.2)"/>
+    <rect x="0" y="40" width="120" height="40" rx="8" fill="rgba(255,255,255,0.2)"/>
+  </g>
+</svg>

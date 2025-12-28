@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Award, Star, Calendar, GraduationCap, MapPin, Clock, Phone, Mail, ArrowLeft, Building2, Video, Home, Building, Quote, BadgeCheck } from 'lucide-react';
 import { doctorsAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 const DoctorProfilePage = () => {
   const { id } = useParams();
@@ -84,6 +85,13 @@ const DoctorProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO 
+        title={`${doctor.full_name} - ${doctor.specialization || 'Physiotherapist'}`}
+        description={`Book appointment with ${doctor.full_name}, expert ${doctor.specialization || 'physiotherapist'} at NovaCare. ${doctor.experience_years}+ years experience. ${doctor.qualification || ''}`}
+        keywords={`${doctor.full_name}, ${doctor.specialization}, physiotherapist, NovaCare doctor, book physio appointment`}
+        canonical={`https://novacare247.com/doctors/${id}`}
+        doctor={doctor}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-700 py-16">
         <div className="container mx-auto px-4">

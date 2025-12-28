@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight, Star, Award, GraduationCap } from 'lucide-react';
 import { doctorsAPI, bookingsAPI } from '../services/api';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
+import SEO from '../components/SEO';
 
 const doctorImages = [
   'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
@@ -212,6 +213,13 @@ const BookingPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Book Physiotherapy Appointment Online"
+        description="Book your physiotherapy appointment online at NovaCare. Easy scheduling with expert physiotherapists in Hyderabad, Vizag, Vijayawada. Same-day appointments available!"
+        keywords="book physiotherapy appointment, online physio booking, physiotherapist appointment, book physio near me, NovaCare booking, physio consultation booking"
+        canonical="https://novacare247.com/booking"
+        noindex={false}
+      />
       {/* Hero Section - Matching HomePage Style */}
       <section className="relative min-h-[40vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}

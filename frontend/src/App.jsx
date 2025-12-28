@@ -30,6 +30,7 @@ import AdminAITools from './pages/admin/AdminAITools';
 import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import ServiceProfilePage from './pages/ServiceProfilePage';
+import LocationPage from './pages/LocationPage';
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
           
           {/* Dynamic Patient Story Route */}
           <Route path="/stories/:id" element={<><Navbar /><StoryPage /><Footer /></>} />
+          
+          {/* Location-Based SEO Pages */}
+          <Route path="/physiotherapy/:location" element={<><Navbar /><LocationPage /><Footer /></>} />
+          <Route path="/:treatment/:location" element={<><Navbar /><LocationPage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>

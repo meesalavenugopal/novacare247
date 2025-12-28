@@ -7,6 +7,7 @@ import {
   Map, Building, UserCheck
 } from 'lucide-react';
 import { doctorsAPI, servicesAPI, testimonialsAPI, siteStatsAPI, siteSettingsAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 const HomePage = () => {
   const [doctors, setDoctors] = useState([]);
@@ -79,6 +80,42 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO 
+        title="Best Physiotherapy Clinic in Hyderabad, Vizag & India"
+        description="NovaCare - India's #1 24/7 Physiotherapy Clinic. Expert treatment for back pain, sports injuries, knee pain, neck pain. Clinics in Hyderabad, Vizag, Vijayawada, Bangalore. Book now!"
+        keywords="physiotherapy near me, physiotherapy clinic, physio near me, best physiotherapy in India, physiotherapy Hyderabad, physiotherapy Vizag, back pain treatment, sports injury treatment, NovaCare, novacare247, physiotherapist near me, knee pain physio, neck pain treatment, post surgery rehab, ortho physio"
+        canonical="https://novacare247.com/"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "MedicalOrganization",
+          "@id": "https://novacare247.com/#organization",
+          "name": "NovaCare Physiotherapy",
+          "alternateName": ["NovaCare 24/7", "NovaCare247", "Nova Care Physio"],
+          "url": "https://novacare247.com",
+          "logo": "https://novacare247.com/logo.png",
+          "description": "India's leading 24/7 physiotherapy clinic chain offering expert care for back pain, sports injuries, post-surgery rehabilitation, and more.",
+          "medicalSpecialty": ["Physiotherapy", "Physical Therapy", "Rehabilitation Medicine", "Sports Medicine"],
+          "areaServed": [
+            {"@type": "City", "name": "Hyderabad", "containedInPlace": {"@type": "State", "name": "Telangana"}},
+            {"@type": "City", "name": "Visakhapatnam", "containedInPlace": {"@type": "State", "name": "Andhra Pradesh"}},
+            {"@type": "City", "name": "Vijayawada", "containedInPlace": {"@type": "State", "name": "Andhra Pradesh"}},
+            {"@type": "City", "name": "Bangalore", "containedInPlace": {"@type": "State", "name": "Karnataka"}},
+            {"@type": "City", "name": "Chennai", "containedInPlace": {"@type": "State", "name": "Tamil Nadu"}}
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "2847",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "sameAs": [
+            "https://facebook.com/novacare247",
+            "https://instagram.com/novacare247",
+            "https://twitter.com/novacare247"
+          ]
+        }}
+      />
       {/* Hero Section - Clean Professional Design */}
       <section className="relative min-h-[85vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}

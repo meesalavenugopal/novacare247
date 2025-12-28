@@ -6,6 +6,7 @@ import {
   Sparkles, Building
 } from 'lucide-react';
 import { siteStatsAPI, milestonesAPI, doctorsAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 const AboutPage = () => {
   const [stats, setStats] = useState([]);
@@ -61,6 +62,12 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="About NovaCare - India's Trusted Physiotherapy Clinic"
+        description="NovaCare 24/7 Physiotherapy - 15+ years of excellence in physiotherapy care. Learn about our mission, expert team, and commitment to your health and recovery."
+        keywords="about NovaCare, physiotherapy clinic history, best physio clinic India, NovaCare story, trusted physiotherapy, physiotherapy experts, healthcare excellence"
+        canonical="https://novacare247.com/about"
+      />
       {/* Hero Section - Matching HomePage Style */}
       <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}

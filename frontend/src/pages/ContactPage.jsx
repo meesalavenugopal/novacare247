@@ -5,6 +5,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { contactAPI, siteSettingsAPI, branchesAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -101,6 +102,24 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Contact NovaCare - Book Physiotherapy Appointment"
+        description="Contact NovaCare 24/7 Physiotherapy. Book appointments, get directions to our clinics in Hyderabad, Vizag, Vijayawada. Call now for expert physio consultation!"
+        keywords="contact physiotherapy clinic, NovaCare contact, book physio appointment, physiotherapy near me contact, Hyderabad physio clinic address, Vizag physiotherapy contact"
+        canonical="https://novacare247.com/contact"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact NovaCare Physiotherapy",
+          "description": "Get in touch with NovaCare for physiotherapy appointments and inquiries",
+          "mainEntity": {
+            "@type": "MedicalOrganization",
+            "name": "NovaCare Physiotherapy",
+            "telephone": "+91-98765-43210",
+            "email": "info@novacare247.com"
+          }
+        }}
+      />
       {/* Hero Section - Matching HomePage Style */}
       <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}

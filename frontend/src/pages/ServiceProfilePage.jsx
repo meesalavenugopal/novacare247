@@ -20,6 +20,7 @@ import {
   Heart
 } from 'lucide-react';
 import { servicesAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 // Icon mapping for dynamic icon rendering
 const iconMap = {
@@ -93,6 +94,13 @@ const ServiceProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO 
+        title={`${service.name} - Physiotherapy Treatment`}
+        description={`${service.description} Expert ${service.name} treatment at NovaCare. Book appointment now in Hyderabad, Vizag.`}
+        keywords={`${service.name}, ${service.name} treatment, ${service.name} physiotherapy, physio for ${service.name}, NovaCare ${service.name}`}
+        canonical={`https://novacare247.com/services/${id}`}
+        service={service}
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-primary-600 to-primary-700 py-20">
         <div className="absolute inset-0 overflow-hidden">

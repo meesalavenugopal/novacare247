@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, Stethoscope, Brain, Bone, Activity, Heart, Zap, Shield, Sparkles, Dumbbell, Hand, CheckCircle } from 'lucide-react';
 import { servicesAPI, siteStatsAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 const ServicesPage = () => {
   const [services, setServices] = useState([]);
@@ -68,6 +69,29 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Physiotherapy Services - Back Pain, Sports Injury, Rehab"
+        description="NovaCare offers comprehensive physiotherapy services: orthopedic rehab, sports injury treatment, neurological physio, post-surgery recovery, chronic pain management. Book now in Hyderabad, Vizag!"
+        keywords="physiotherapy services, back pain treatment, sports injury physio, knee pain treatment, neck pain physiotherapy, post surgery rehab, orthopedic physiotherapy, neurological physio, shoulder pain, sciatica treatment, slip disc treatment, frozen shoulder"
+        canonical="https://novacare247.com/services"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "NovaCare Physiotherapy Services",
+          "description": "Complete range of physiotherapy and rehabilitation services",
+          "numberOfItems": services.length,
+          "itemListElement": services.slice(0, 10).map((service, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "MedicalTherapy",
+              "name": service.name,
+              "description": service.description,
+              "relevantSpecialty": {"@type": "MedicalSpecialty", "name": "Physiotherapy"}
+            }
+          }))
+        }}
+      />
       {/* Hero Section - Matching HomePage Style */}
       <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}

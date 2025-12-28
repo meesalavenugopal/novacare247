@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Star, Calendar, GraduationCap, Stethoscope, ArrowRight, MapPin, Navigation, Filter, X, ChevronDown, Building2, Video, Home, Building } from 'lucide-react';
 import { doctorsAPI, branchesAPI } from '../services/api';
+import SEO from '../components/SEO';
 
 // Currency symbols
 const currencySymbols = {
@@ -263,6 +264,29 @@ const DoctorsPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Best Physiotherapists in India - Book Appointment"
+        description="Meet NovaCare's expert physiotherapists. Specialists in orthopedic, sports, neurological & geriatric physiotherapy. Book appointment with top physio doctors in Hyderabad, Vizag, Bangalore."
+        keywords="best physiotherapist near me, physiotherapist Hyderabad, physio doctor, sports physiotherapist, orthopedic physio, neurological physiotherapist, physio appointment, top physiotherapist India, NovaCare doctors"
+        canonical="https://novacare247.com/doctors"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "NovaCare Physiotherapists",
+          "description": "Expert physiotherapists at NovaCare clinics across India",
+          "numberOfItems": doctors.length,
+          "itemListElement": doctors.slice(0, 10).map((doctor, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "Physician",
+              "name": doctor.full_name,
+              "medicalSpecialty": doctor.specialization || "Physiotherapy",
+              "worksFor": {"@type": "MedicalOrganization", "name": "NovaCare Physiotherapy"}
+            }
+          }))
+        }}
+      />
       {/* Hero Section - Matching HomePage Style */}
       <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}
