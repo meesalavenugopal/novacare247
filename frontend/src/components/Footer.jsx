@@ -26,7 +26,7 @@ const Footer = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-white font-bold text-lg">NovaCare</h3>
+                <h3 className="text-white font-bold text-lg tracking-tight">NovaCare</h3>
                 <p className="text-xs text-primary-400 flex items-center gap-1.5">
                   Physiotherapy Clinics
                   <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5">24/7</span>
