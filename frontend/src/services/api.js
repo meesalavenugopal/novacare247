@@ -183,6 +183,10 @@ export const aiAPI = {
   generateServiceContent: (data) => api.post('/ai/generate/service-content', data),
   generateDoctorContent: (data) => api.post('/ai/generate/doctor-content', data),
   generateInquiryReply: (data) => api.post('/ai/generate/inquiry-reply', data),
+  // Blog AI
+  generateBlogArticle: (data) => api.post('/ai/generate/blog-article', data),
+  generateBlogOutline: (data) => api.post('/ai/generate/blog-outline', data),
+  improveBlogContent: (data) => api.post('/ai/improve/blog-content', data),
 };
 
 // Blog APIs

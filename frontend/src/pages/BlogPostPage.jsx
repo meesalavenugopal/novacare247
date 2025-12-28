@@ -116,8 +116,24 @@ const BlogPostPage = () => {
     }
   };
 
-  // Convert markdown-like content to HTML-like JSX
+  // Check if content is HTML
+  const isHtmlContent = (content) => {
+    return /<[a-z][\s\S]*>/i.test(content);
+  };
+
+  // Convert markdown-like content to HTML-like JSX or render HTML directly
   const renderContent = (content) => {
+    // If content contains HTML tags, render as HTML
+    if (isHtmlContent(content)) {
+      return (
+        <div 
+          className="blog-content"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      );
+    }
+
+    // Otherwise, parse markdown-like content
     const lines = content.trim().split('\n');
     const elements = [];
     let currentList = [];

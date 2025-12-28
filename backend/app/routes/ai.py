@@ -50,6 +50,18 @@ class GenerateInquiryReplyRequest(BaseModel):
     inquiry_subject: str
     inquiry_message: str
 
+class GenerateBlogArticleRequest(BaseModel):
+    topic: str
+    keywords: Optional[str] = None
+    target_audience: Optional[str] = None
+
+class GenerateBlogOutlineRequest(BaseModel):
+    topic: str
+
+class ImproveBlogContentRequest(BaseModel):
+    content: str
+    improvement_type: Optional[str] = "general"  # seo, readability, engagement, general
+
 class GenerateContentResponse(BaseModel):
     content: Optional[Dict] = None
     success: bool
@@ -189,3 +201,58 @@ def generate_testimonial_response(
         return {"response": result, "success": True}
     else:
         return {"response": None, "success": False, "message": "Failed to generate response."}
+
+
+# ============ Blog AI Endpoints ============
+
+@router.post("/generate/blog-article")
+def generate_blog_article(
+    request: GenerateBlogArticleRequest,
+    admin: User = Depends(get_admin_user)
+):
+    """
+    Generate a complete blog article using AI (Admin only)
+    Returns: title, slug, excerpt, content (HTML), meta_description, category, tags
+    """
+    result = ai_service.generate_blog_article(
+        request.topic,
+        request.keywords,
+        request.target_audience
+    )
+    
+    if result:
+        return {"article": result, "success": True}
+    else:
+        return {"article": None, "success": False, "message": "Failed to generate article. Please try again."}
+
+
+@router.post("/generate/blog-outline")
+def generate_blog_outline(
+    request: GenerateBlogOutlineRequest,
+    admin: User = Depends(get_admin_user)
+):
+    """
+    Generate a blog article outline for review (Admin only)
+    """
+    result = ai_service.generate_blog_outline(request.topic)
+    
+    if result:
+        return {"outline": result, "success": True}
+    else:
+        return {"outline": None, "success": False, "message": "Failed to generate outline."}
+
+
+@router.post("/improve/blog-content")
+def improve_blog_content(
+    request: ImproveBlogContentRequest,
+    admin: User = Depends(get_admin_user)
+):
+    """
+    Improve existing blog content (Admin only)
+    """
+    result = ai_service.improve_blog_content(request.content, request.improvement_type)
+    
+    if result:
+        return {"improved_content": result, "success": True}
+    else:
+        return {"improved_content": None, "success": False, "message": "Failed to improve content."}

@@ -64,3 +64,52 @@ select {
   padding-right: 40px !important;
   cursor: pointer;
 }
+
+/* Blog content styling for HTML content */
+.blog-content {
+  @apply text-gray-700 leading-relaxed;
+}
+
+.blog-content h2 {
+  @apply text-2xl font-bold text-gray-900 mt-10 mb-4;
+}
+
+.blog-content h3 {
+  @apply text-xl font-semibold text-gray-900 mt-8 mb-3;
+}
+
+.blog-content h4 {
+  @apply text-lg font-semibold text-gray-800 mt-6 mb-2;
+}
+
+.blog-content p {
+  @apply text-gray-700 leading-relaxed mb-4;
+}
+
+.blog-content ul {
+  @apply list-disc list-inside space-y-2 mb-6 ml-4;
+}
+
+.blog-content ol {
+  @apply list-decimal list-inside space-y-2 mb-6 ml-4;
+}
+
+.blog-content li {
+  @apply text-gray-700;
+}
+
+.blog-content strong {
+  @apply font-semibold text-gray-900;
+}
+
+.blog-content em {
+  @apply italic;
+}
+
+.blog-content a {
+  @apply text-primary-600 hover:underline;
+}
+
+.blog-content blockquote {
+  @apply border-l-4 border-primary-500 pl-4 italic text-gray-600 my-6;
+}

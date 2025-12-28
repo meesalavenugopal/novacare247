@@ -241,3 +241,131 @@ Always be professional, empathetic, and helpful. For specific medical advice, re
     messages.append({"role": "user", "content": user_message})
     
     return generate_chat_response(messages, max_tokens=500, temperature=0.7)
+
+
+def generate_blog_article(topic: str, keywords: Optional[str] = None, target_audience: Optional[str] = None) -> Optional[Dict]:
+    """
+    Generate a complete blog article about physiotherapy topics
+    Returns: title, slug, excerpt, content (HTML), meta_description, category, tags, featured_image_alt
+    """
+    audience = target_audience or "general public seeking physiotherapy information"
+    kw = keywords or topic
+    
+    prompt = f"""You are a professional medical content writer for NovaCare 24/7 Physiotherapy Clinic blog.
+
+Write a comprehensive blog article about: {topic}
+
+Target Audience: {audience}
+Keywords to include naturally: {kw}
+
+Provide a JSON response with these fields:
+1. "title": SEO-optimized title (50-60 characters)
+2. "slug": URL-friendly slug (lowercase, hyphens)
+3. "excerpt": Compelling summary (150-160 characters)
+4. "content": Full article content in HTML format with:
+   - Introduction paragraph
+   - 4-5 main sections with h2 headings
+   - Bullet points where appropriate
+   - Practical tips or exercises
+   - Conclusion with call-to-action mentioning NovaCare
+   - Use <p>, <h2>, <ul>, <li>, <strong>, <em> tags
+   - Minimum 800 words
+5. "meta_description": SEO meta description (150-160 characters)
+6. "category": One of: "Pain Management", "Exercise & Rehabilitation", "Sports & Fitness", "Health Tips", "Treatment Guides", "Patient Stories"
+7. "tags": Array of 4-6 relevant tags
+8. "featured_image_alt": Alt text for featured image
+
+Make the content:
+- Evidence-based and accurate
+- Easy to read and engaging
+- SEO-optimized with natural keyword usage
+- Helpful and actionable
+- Professional but approachable tone
+
+Respond ONLY with valid JSON, no markdown code blocks."""
+
+    messages = [
+        {"role": "system", "content": "You are an expert medical content writer specializing in physiotherapy and rehabilitation. Write accurate, engaging, SEO-friendly content. Always respond with valid JSON only."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=4000, temperature=0.7)
+    if response:
+        try:
+            # Clean response if it has markdown code blocks
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError as e:
+            print(f"JSON decode error: {e}")
+            return None
+    return None
+
+
+def generate_blog_outline(topic: str) -> Optional[Dict]:
+    """
+    Generate a blog article outline for review before full generation
+    """
+    prompt = f"""You are a content strategist for a physiotherapy clinic blog.
+
+Create a detailed outline for a blog article about: {topic}
+
+Provide a JSON response with:
+1. "suggested_title": SEO-optimized title
+2. "target_audience": Who this article is for
+3. "main_keyword": Primary SEO keyword
+4. "secondary_keywords": Array of 3-4 related keywords
+5. "sections": Array of objects with "heading" and "key_points" (array of bullet points)
+6. "estimated_word_count": Number
+7. "suggested_category": Article category
+
+Respond ONLY with valid JSON."""
+
+    messages = [
+        {"role": "system", "content": "You are an expert content strategist. Respond with valid JSON only."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=1000, temperature=0.7)
+    if response:
+        try:
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
+def improve_blog_content(content: str, improvement_type: str = "general") -> Optional[str]:
+    """
+    Improve existing blog content
+    improvement_type: "seo", "readability", "engagement", "general"
+    """
+    improvements = {
+        "seo": "Optimize for search engines while keeping it natural",
+        "readability": "Make it easier to read with simpler sentences and better structure",
+        "engagement": "Make it more engaging with hooks, questions, and compelling CTAs",
+        "general": "Improve overall quality, clarity, and impact"
+    }
+    
+    prompt = f"""You are a professional content editor for a physiotherapy blog.
+
+Improve the following content. Focus on: {improvements.get(improvement_type, improvements["general"])}
+
+Original content:
+{content}
+
+Provide the improved content in HTML format. Keep the same structure but enhance the writing.
+Respond with the improved HTML content only, no explanations."""
+
+    messages = [
+        {"role": "system", "content": "You are an expert content editor. Provide only the improved content."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    return generate_chat_response(messages, max_tokens=4000, temperature=0.6)

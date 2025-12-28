@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
   Plus, Pencil, Trash2, Eye, EyeOff, Star, Search,
-  Loader2, X, Save, ChevronDown, Image as ImageIcon
+  Loader2, X, Save, ChevronDown, Image as ImageIcon, Sparkles, Wand2
 } from 'lucide-react';
-import { blogAPI } from '../../services/api';
+import { blogAPI, aiAPI } from '../../services/api';
 
 const categories = [
   { id: 'conditions', name: 'Conditions' },
@@ -22,6 +22,14 @@ const AdminBlog = () => {
   const [editingArticle, setEditingArticle] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+
+  // AI Generation states
+  const [showAIModal, setShowAIModal] = useState(false);
+  const [aiTopic, setAiTopic] = useState('');
+  const [aiKeywords, setAiKeywords] = useState('');
+  const [aiAudience, setAiAudience] = useState('');
+  const [aiGenerating, setAiGenerating] = useState(false);
+  const [aiError, setAiError] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -201,6 +209,84 @@ const AdminBlog = () => {
     }
   };
 
+  // AI Article Generation
+  const handleGenerateArticle = async () => {
+    if (!aiTopic.trim()) {
+      setAiError('Please enter a topic');
+      return;
+    }
+
+    setAiGenerating(true);
+    setAiError(null);
+
+    try {
+      const response = await aiAPI.generateBlogArticle({
+        topic: aiTopic,
+        keywords: aiKeywords || null,
+        target_audience: aiAudience || null
+      });
+
+      if (response.data.success && response.data.article) {
+        const article = response.data.article;
+        
+        // Populate form with AI-generated content
+        setFormData({
+          title: article.title || '',
+          slug: article.slug || generateSlug(article.title || aiTopic),
+          excerpt: article.excerpt || '',
+          content: article.content || '',
+          category: mapAICategory(article.category) || 'conditions',
+          author: 'NovaCare Team',
+          author_role: 'Medical Content Team',
+          read_time: estimateReadTime(article.content),
+          image: '',
+          tags: Array.isArray(article.tags) ? article.tags.join(', ') : '',
+          faqs: [{ question: '', answer: '' }],
+          is_featured: false,
+          is_published: false // Start as draft for review
+        });
+
+        // Close AI modal and open article modal
+        setShowAIModal(false);
+        setShowModal(true);
+        setEditingArticle(null);
+        
+        // Reset AI form
+        setAiTopic('');
+        setAiKeywords('');
+        setAiAudience('');
+      } else {
+        setAiError(response.data.message || 'Failed to generate article');
+      }
+    } catch (err) {
+      console.error('Error generating article:', err);
+      setAiError(err.response?.data?.detail || 'Failed to generate article. Please try again.');
+    } finally {
+      setAiGenerating(false);
+    }
+  };
+
+  // Map AI category to our categories
+  const mapAICategory = (aiCategory) => {
+    const categoryMap = {
+      'Pain Management': 'conditions',
+      'Exercise & Rehabilitation': 'exercises',
+      'Sports & Fitness': 'sports',
+      'Health Tips': 'lifestyle',
+      'Treatment Guides': 'recovery',
+      'Patient Stories': 'lifestyle'
+    };
+    return categoryMap[aiCategory] || 'conditions';
+  };
+
+  // Estimate read time based on content
+  const estimateReadTime = (content) => {
+    if (!content) return '5 min read';
+    const wordCount = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / 200);
+    return `${minutes} min read`;
+  };
+
   const filteredArticles = articles.filter(article =>
     article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     article.author.toLowerCase().includes(searchQuery.toLowerCase())
@@ -222,13 +308,22 @@ const AdminBlog = () => {
           <h1 className="text-2xl font-bold text-gray-900">Blog Articles</h1>
           <p className="text-gray-600">Manage your blog content</p>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          New Article
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowAIModal(true)}
+            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md"
+          >
+            <Sparkles className="w-5 h-5" />
+            AI Generate
+          </button>
+          <button
+            onClick={() => handleOpenModal()}
+            className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            New Article
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -583,6 +678,126 @@ const AdminBlog = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* AI Generation Modal */}
+      {showAIModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-lg shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">AI Article Generator</h2>
+                  <p className="text-sm text-gray-500">Generate blog content with AI</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setShowAIModal(false);
+                  setAiError(null);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              {aiError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {aiError}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Topic / Title *
+                </label>
+                <input
+                  type="text"
+                  value={aiTopic}
+                  onChange={(e) => setAiTopic(e.target.value)}
+                  placeholder="e.g., 10 Exercises for Lower Back Pain Relief"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Keywords (optional)
+                </label>
+                <input
+                  type="text"
+                  value={aiKeywords}
+                  onChange={(e) => setAiKeywords(e.target.value)}
+                  placeholder="e.g., back pain, stretching, physiotherapy, sciatica"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500 mt-1">Comma-separated keywords for SEO</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Target Audience (optional)
+                </label>
+                <input
+                  type="text"
+                  value={aiAudience}
+                  onChange={(e) => setAiAudience(e.target.value)}
+                  placeholder="e.g., office workers, athletes, seniors"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+
+              <div className="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Wand2 className="w-5 h-5 text-purple-600 mt-0.5" />
+                  <div className="text-sm text-purple-800">
+                    <p className="font-medium mb-1">AI will generate:</p>
+                    <ul className="text-purple-700 space-y-0.5">
+                      <li>• SEO-optimized title and meta description</li>
+                      <li>• Full article content with sections</li>
+                      <li>• Relevant tags and category</li>
+                      <li>• Excerpt for previews</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 p-6 border-t border-gray-100">
+              <button
+                onClick={() => {
+                  setShowAIModal(false);
+                  setAiError(null);
+                }}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleGenerateArticle}
+                disabled={aiGenerating || !aiTopic.trim()}
+                className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              >
+                {aiGenerating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    Generate Article
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
