@@ -30,7 +30,7 @@ def get_dashboard_stats(
         total_services=total_services
     )
 
-@router.get("/users")
+@router.get("/users/")
 def get_all_users(
     skip: int = 0,
     limit: int = 100,
@@ -42,5 +42,5 @@ def get_all_users(
     query = db.query(User)
     if role:
         query = query.filter(User.role == role)
-    users = query.offset(skip).limit(limit).all()
+    users = query.order_by(User.id).offset(skip).limit(limit).all()
     return users

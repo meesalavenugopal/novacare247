@@ -33,10 +33,10 @@ def get_inquiries(
     query = db.query(ContactInquiry)
     if unread_only:
         query = query.filter(ContactInquiry.is_read == False)
-    inquiries = query.order_by(ContactInquiry.created_at.desc()).offset(skip).limit(limit).all()
+    inquiries = query.order_by(ContactInquiry.created_at.desc(), ContactInquiry.id).offset(skip).limit(limit).all()
     return inquiries
 
-@router.put("/{inquiry_id}/read")
+@router.put("/{inquiry_id}/read/")
 def mark_as_read(
     inquiry_id: int,
     db: Session = Depends(get_db),
@@ -51,7 +51,7 @@ def mark_as_read(
     db.commit()
     return {"message": "Inquiry marked as read"}
 
-@router.delete("/{inquiry_id}")
+@router.delete("/{inquiry_id}/")
 def delete_inquiry(
     inquiry_id: int,
     db: Session = Depends(get_db),

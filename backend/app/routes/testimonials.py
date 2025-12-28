@@ -14,10 +14,10 @@ def get_testimonials(skip: int = 0, limit: int = 100, db: Session = Depends(get_
     """Get approved testimonials (public endpoint)"""
     testimonials = db.query(Testimonial).filter(
         Testimonial.is_approved == True
-    ).order_by(Testimonial.created_at.desc()).offset(skip).limit(limit).all()
+    ).order_by(Testimonial.created_at.desc(), Testimonial.id).offset(skip).limit(limit).all()
     return testimonials
 
-@router.get("/all", response_model=List[TestimonialResponse])
+@router.get("/all/", response_model=List[TestimonialResponse])
 def get_all_testimonials(
     skip: int = 0,
     limit: int = 100,
@@ -26,7 +26,7 @@ def get_all_testimonials(
 ):
     """Get all testimonials (admin only)"""
     testimonials = db.query(Testimonial).order_by(
-        Testimonial.created_at.desc()
+        Testimonial.created_at.desc(), Testimonial.id
     ).offset(skip).limit(limit).all()
     return testimonials
 
@@ -42,7 +42,7 @@ def create_testimonial(
     db.refresh(new_testimonial)
     return new_testimonial
 
-@router.put("/{testimonial_id}", response_model=TestimonialResponse)
+@router.put("/{testimonial_id}/", response_model=TestimonialResponse)
 def update_testimonial(
     testimonial_id: int,
     testimonial_data: TestimonialUpdate,
@@ -62,7 +62,7 @@ def update_testimonial(
     db.refresh(testimonial)
     return testimonial
 
-@router.delete("/{testimonial_id}")
+@router.delete("/{testimonial_id}/")
 def delete_testimonial(
     testimonial_id: int,
     db: Session = Depends(get_db),

@@ -19,7 +19,7 @@ def get_all_settings(
     query = db.query(SiteSetting)
     if category:
         query = query.filter(SiteSetting.category == category)
-    return query.all()
+    return query.order_by(SiteSetting.id).all()
 
 
 @router.get("/by-key/{key}/")

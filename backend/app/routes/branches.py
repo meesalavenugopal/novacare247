@@ -28,7 +28,7 @@ def get_branches(
     if city:
         query = query.filter(Branch.city == city)
     
-    return query.all()
+    return query.order_by(Branch.id).all()
 
 
 @router.get("/all/", response_model=List[BranchResponse])
@@ -37,7 +37,7 @@ def get_all_branches(
     admin: User = Depends(get_admin_user)
 ):
     """Get all branches including inactive (admin only)"""
-    return db.query(Branch).all()
+    return db.query(Branch).order_by(Branch.id).all()
 
 
 @router.get("/countries/")

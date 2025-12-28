@@ -126,10 +126,10 @@ def get_all_bookings(
     query = db.query(Booking)
     if status:
         query = query.filter(Booking.status == status)
-    bookings = query.order_by(Booking.booking_date.desc(), Booking.booking_time).offset(skip).limit(limit).all()
+    bookings = query.order_by(Booking.booking_date.desc(), Booking.booking_time, Booking.id).offset(skip).limit(limit).all()
     return bookings
 
-@router.get("/today", response_model=List[BookingResponse])
+@router.get("/today/", response_model=List[BookingResponse])
 def get_today_bookings(
     db: Session = Depends(get_db),
     user: User = Depends(get_doctor_user)
@@ -145,7 +145,7 @@ def get_today_bookings(
     bookings = query.order_by(Booking.booking_time).all()
     return bookings
 
-@router.get("/doctor/{doctor_id}", response_model=List[BookingResponse])
+@router.get("/doctor/{doctor_id}/", response_model=List[BookingResponse])
 def get_doctor_bookings(
     doctor_id: int,
     start_date: date = None,
@@ -164,7 +164,7 @@ def get_doctor_bookings(
     bookings = query.order_by(Booking.booking_date, Booking.booking_time).all()
     return bookings
 
-@router.get("/{booking_id}", response_model=BookingResponse)
+@router.get("/{booking_id}/", response_model=BookingResponse)
 def get_booking(
     booking_id: int,
     db: Session = Depends(get_db)
@@ -175,7 +175,7 @@ def get_booking(
         raise HTTPException(status_code=404, detail="Booking not found")
     return booking
 
-@router.put("/{booking_id}", response_model=BookingResponse)
+@router.put("/{booking_id}/", response_model=BookingResponse)
 def update_booking(
     booking_id: int,
     booking_data: BookingUpdate,
@@ -195,7 +195,7 @@ def update_booking(
     db.refresh(booking)
     return booking
 
-@router.delete("/{booking_id}")
+@router.delete("/{booking_id}/")
 def cancel_booking(
     booking_id: int,
     db: Session = Depends(get_db)
@@ -209,7 +209,7 @@ def cancel_booking(
     db.commit()
     return {"message": "Booking cancelled successfully"}
 
-@router.get("/check/{phone}")
+@router.get("/check/{phone}/")
 def check_booking_by_phone(
     phone: str,
     db: Session = Depends(get_db)

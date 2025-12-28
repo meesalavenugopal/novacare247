@@ -62,7 +62,7 @@ def build_service_public(service: Service) -> ServicePublic:
 @router.get("/", response_model=List[ServiceResponse])
 def get_services(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """Get all active services (public endpoint)"""
-    services = db.query(Service).filter(Service.is_active == True).offset(skip).limit(limit).all()
+    services = db.query(Service).filter(Service.is_active == True).order_by(Service.id).offset(skip).limit(limit).all()
     return services
 
 @router.get("/all/", response_model=List[ServiceResponse])
@@ -73,7 +73,7 @@ def get_all_services(
     admin: User = Depends(get_admin_user)
 ):
     """Get all services including inactive (admin only)"""
-    services = db.query(Service).offset(skip).limit(limit).all()
+    services = db.query(Service).order_by(Service.id).offset(skip).limit(limit).all()
     return services
 
 @router.get("/{service_id}/", response_model=ServicePublic)

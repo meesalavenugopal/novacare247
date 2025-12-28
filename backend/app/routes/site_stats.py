@@ -15,7 +15,7 @@ def get_stats(db: Session = Depends(get_db)):
     """Get all active site statistics (public endpoint)"""
     stats = db.query(SiteStat).filter(
         SiteStat.is_active == True
-    ).order_by(SiteStat.display_order).all()
+    ).order_by(SiteStat.display_order, SiteStat.id).all()
     return stats
 
 
@@ -25,7 +25,7 @@ def get_all_stats(
     admin: User = Depends(get_admin_user)
 ):
     """Get all stats including inactive (admin only)"""
-    stats = db.query(SiteStat).order_by(SiteStat.display_order).all()
+    stats = db.query(SiteStat).order_by(SiteStat.display_order, SiteStat.id).all()
     return stats
 
 

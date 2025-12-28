@@ -114,7 +114,7 @@ def get_all_doctors(
     admin: User = Depends(get_admin_user)
 ):
     """Get all doctors (admin only)"""
-    doctors = db.query(Doctor).offset(skip).limit(limit).all()
+    doctors = db.query(Doctor).order_by(Doctor.id).offset(skip).limit(limit).all()
     return doctors
 
 @router.get("/{doctor_id}/", response_model=DoctorPublic)

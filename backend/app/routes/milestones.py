@@ -15,7 +15,7 @@ def get_milestones(db: Session = Depends(get_db)):
     """Get all active milestones (public endpoint)"""
     milestones = db.query(Milestone).filter(
         Milestone.is_active == True
-    ).order_by(Milestone.display_order, Milestone.year).all()
+    ).order_by(Milestone.display_order, Milestone.year, Milestone.id).all()
     return milestones
 
 
@@ -25,7 +25,7 @@ def get_all_milestones(
     admin: User = Depends(get_admin_user)
 ):
     """Get all milestones including inactive (admin only)"""
-    milestones = db.query(Milestone).order_by(Milestone.display_order, Milestone.year).all()
+    milestones = db.query(Milestone).order_by(Milestone.display_order, Milestone.year, Milestone.id).all()
     return milestones
 
 
