@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, Calendar, Stethoscope, MessageSquare, 
-  Star, Menu, X, LogOut, ChevronDown, Home, MapPin, Settings, BarChart3, Flag, MessageCircle, Bot
+  Star, Menu, X, LogOut, Home, MapPin, Settings, BarChart3, Flag, MessageCircle, Bot,
+  ChevronRight, Activity
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -20,7 +21,7 @@ const AdminLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
@@ -37,7 +38,7 @@ const AdminLayout = () => {
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/admin/doctors', label: 'Doctors', icon: Stethoscope },
     { path: '/admin/bookings', label: 'Bookings', icon: Calendar },
-    { path: '/admin/services', label: 'Services', icon: Users },
+    { path: '/admin/services', label: 'Services', icon: Activity },
     { path: '/admin/testimonials', label: 'Testimonials', icon: Star },
     { path: '/admin/reviews', label: 'Reviews', icon: MessageCircle },
     { path: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
@@ -61,7 +62,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
@@ -71,69 +72,88 @@ const AdminLayout = () => {
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 z-50 h-full w-64 bg-gray-900 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between p-4 border-b border-gray-800">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">C</span>
+      <aside className={`fixed top-0 left-0 z-50 h-full w-72 bg-primary-900 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} shadow-xl`}>
+        {/* Logo Section */}
+        <div className="p-5 border-b border-primary-800">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-primary-500 rounded-lg flex items-center justify-center shadow-md">
+                <span className="text-white font-bold text-xl">N</span>
+              </div>
+              <div>
+                <h1 className="text-white font-bold text-lg">NovaCare 24/7</h1>
+                <p className="text-primary-300 text-xs">Admin Dashboard</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-white font-semibold text-sm">NovaCare 24/7</h1>
-              <p className="text-gray-400 text-xs">Admin Panel</p>
-            </div>
+            <button 
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden text-primary-300 hover:text-white transition-colors"
+            >
+              <X size={22} />
+            </button>
           </div>
-          <button 
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-gray-400 hover:text-white"
-          >
-            <X size={20} />
-          </button>
         </div>
 
-        <nav className="p-4 space-y-1">
-          {menuItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 transition-colors text-sm ${
-                isActive(item.path)
-                  ? 'bg-primary-600 text-white'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-              }`}
-            >
-              <item.icon size={18} />
-              {item.label}
-            </Link>
-          ))}
+        {/* Navigation */}
+        <nav className="p-3 space-y-0.5 h-[calc(100vh-180px)] overflow-y-auto">
+          {menuItems.map((item) => {
+            const active = isActive(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setSidebarOpen(false)}
+                className={`group flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  active
+                    ? 'bg-primary-500 text-white shadow-md'
+                    : 'text-primary-200 hover:bg-primary-800 hover:text-white'
+                }`}
+              >
+                <div className={`flex items-center justify-center w-7 h-7 rounded-md transition-colors ${
+                  active 
+                    ? 'bg-primary-400/30' 
+                    : 'bg-primary-800/50 group-hover:bg-primary-700/50'
+                }`}>
+                  <item.icon size={16} />
+                </div>
+                <span className="font-medium text-sm flex-1">{item.label}</span>
+                {active && <ChevronRight size={14} className="text-primary-200" />}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+        {/* Bottom Section */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-primary-800 bg-primary-900/80">
           <Link
             to="/"
-            className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white transition-colors mb-2 text-sm"
+            className="flex items-center gap-3 px-4 py-2.5 text-primary-200 hover:bg-primary-800 hover:text-white rounded-lg transition-colors mb-1"
           >
-            <Home size={18} />
-            Back to Website
+            <div className="w-8 h-8 bg-primary-800/50 rounded-md flex items-center justify-center">
+              <Home size={18} />
+            </div>
+            <span className="text-sm font-medium">Back to Website</span>
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white transition-colors w-full text-sm"
+            className="flex items-center gap-3 px-4 py-2.5 text-red-300 hover:bg-red-500/20 hover:text-red-200 rounded-lg transition-colors w-full"
           >
-            <LogOut size={18} />
-            Logout
+            <div className="w-8 h-8 bg-red-500/20 rounded-md flex items-center justify-center">
+              <LogOut size={18} />
+            </div>
+            <span className="text-sm font-medium">Logout</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <div className="lg:ml-64">
+      <div className="lg:ml-72">
         {/* Top Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-          <div className="flex items-center justify-between px-4 py-3">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+          <div className="flex items-center justify-between px-4 lg:px-6 py-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 text-gray-600 hover:bg-gray-100"
+              className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <Menu size={22} />
             </button>
@@ -142,10 +162,10 @@ const AdminLayout = () => {
 
             <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium text-gray-800">{user?.full_name}</p>
+                <p className="text-sm font-semibold text-gray-800">{user?.full_name}</p>
                 <p className="text-xs text-gray-500">{user?.email}</p>
               </div>
-              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center text-white font-semibold">
+              <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold shadow-md">
                 {user?.full_name?.charAt(0) || 'A'}
               </div>
             </div>
