@@ -21,6 +21,7 @@ import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminInquiries from './pages/admin/AdminInquiries';
 
 import StoryPage from './pages/StoryPage';
+import DoctorProfilePage from './pages/DoctorProfilePage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<><Navbar /><HomePage /><Footer /></>} />
           <Route path="/doctors" element={<><Navbar /><DoctorsPage /><Footer /></>} />
+          <Route path="/doctors/:id" element={<><Navbar /><DoctorProfilePage /><Footer /></>} />
           <Route path="/services" element={<><Navbar /><ServicesPage /><Footer /></>} />
           <Route path="/book/:doctorId?" element={<><Navbar /><BookingPage /><Footer /></>} />
           <Route path="/contact" element={<><Navbar /><ContactPage /><Footer /></>} />

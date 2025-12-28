@@ -2,16 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from app.database import get_db
-from app.models import Doctor, User, UserRole, Slot, DoctorConsultationFee
+from app.models import Doctor, User, UserRole, Slot, DoctorConsultationFee, DoctorReview
 from app.schemas import (
     DoctorResponse, DoctorCreate, DoctorUpdate, DoctorPublic,
     DoctorCreateWithUser, SlotResponse, SlotCreate, SlotUpdate,
-    BranchInfo, ConsultationFeeResponse, ConsultationFeeCreate
+    BranchInfo, ConsultationFeeResponse, ConsultationFeeCreate,
+    DoctorReviewResponse, DoctorReviewCreate
 )
 from app.auth import get_admin_user, get_password_hash
 
 router = APIRouter(prefix="/api/doctors", tags=["Doctors"])
 
+
+import json
 
 def build_doctor_public(doctor: Doctor, country: Optional[str] = None) -> DoctorPublic:
     """Helper to build DoctorPublic response with branch and fees"""
@@ -40,12 +43,22 @@ def build_doctor_public(doctor: Doctor, country: Optional[str] = None) -> Doctor
                 is_available=fee.is_available
             ))
     
+    # Parse expertise JSON to list
+    expertise_list = None
+    if doctor.expertise:
+        try:
+            expertise_list = json.loads(doctor.expertise)
+        except:
+            expertise_list = [doctor.expertise]  # Fallback if not valid JSON
+    
     return DoctorPublic(
         id=doctor.id,
         specialization=doctor.specialization,
         qualification=doctor.qualification,
         experience_years=doctor.experience_years,
         bio=doctor.bio,
+        story=doctor.story,
+        expertise=expertise_list,
         consultation_fee=doctor.consultation_fee,
         profile_image=doctor.profile_image,
         is_available=doctor.is_available,
@@ -356,3 +369,110 @@ def delete_doctor_fee(
     db.delete(fee)
     db.commit()
     return {"message": "Consultation fee deleted successfully"}
+
+
+# ============ DOCTOR REVIEWS ENDPOINTS ============
+
+@router.get("/{doctor_id}/reviews/", response_model=List[DoctorReviewResponse])
+def get_doctor_reviews(
+    doctor_id: int,
+    skip: int = 0,
+    limit: int = 20,
+    db: Session = Depends(get_db)
+):
+    """Get approved reviews for a specific doctor (public endpoint)"""
+    # Verify doctor exists
+    doctor = db.query(Doctor).filter(Doctor.id == doctor_id).first()
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    
+    reviews = db.query(DoctorReview).filter(
+        DoctorReview.doctor_id == doctor_id,
+        DoctorReview.is_approved == True
+    ).order_by(DoctorReview.created_at.desc()).offset(skip).limit(limit).all()
+    
+    return reviews
+
+
+@router.post("/{doctor_id}/reviews/", response_model=DoctorReviewResponse)
+def submit_doctor_review(
+    doctor_id: int,
+    review_data: DoctorReviewCreate,
+    db: Session = Depends(get_db)
+):
+    """Submit a review for a doctor (public endpoint, requires approval)"""
+    # Verify doctor exists
+    doctor = db.query(Doctor).filter(Doctor.id == doctor_id).first()
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    
+    new_review = DoctorReview(
+        doctor_id=doctor_id,
+        patient_name=review_data.patient_name,
+        patient_image=review_data.patient_image,
+        content=review_data.content,
+        rating=review_data.rating,
+        treatment_type=review_data.treatment_type,
+        is_approved=False,  # Requires admin approval
+        is_verified=False
+    )
+    db.add(new_review)
+    db.commit()
+    db.refresh(new_review)
+    return new_review
+
+
+@router.get("/reviews/all/", response_model=List[DoctorReviewResponse])
+def get_all_reviews(
+    skip: int = 0,
+    limit: int = 100,
+    doctor_id: Optional[int] = Query(None, description="Filter by doctor"),
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Get all reviews including unapproved (admin only)"""
+    query = db.query(DoctorReview)
+    if doctor_id:
+        query = query.filter(DoctorReview.doctor_id == doctor_id)
+    
+    reviews = query.order_by(DoctorReview.created_at.desc()).offset(skip).limit(limit).all()
+    return reviews
+
+
+@router.put("/reviews/{review_id}/", response_model=DoctorReviewResponse)
+def update_review(
+    review_id: int,
+    is_approved: Optional[bool] = None,
+    is_verified: Optional[bool] = None,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Approve/verify a review (admin only)"""
+    review = db.query(DoctorReview).filter(DoctorReview.id == review_id).first()
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    if is_approved is not None:
+        review.is_approved = is_approved
+    if is_verified is not None:
+        review.is_verified = is_verified
+    
+    db.commit()
+    db.refresh(review)
+    return review
+
+
+@router.delete("/reviews/{review_id}/")
+def delete_review(
+    review_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Delete a review (admin only)"""
+    review = db.query(DoctorReview).filter(DoctorReview.id == review_id).first()
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    db.delete(review)
+    db.commit()
+    return {"message": "Review deleted successfully"}

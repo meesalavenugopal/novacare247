@@ -44,6 +44,8 @@ class DoctorBase(BaseModel):
     qualification: Optional[str] = None
     experience_years: Optional[int] = 0
     bio: Optional[str] = None
+    story: Optional[str] = None  # Doctor's journey/story
+    expertise: Optional[str] = None  # JSON array of expertise areas
     consultation_fee: Optional[int] = 500
     profile_image: Optional[str] = None
     rating: Optional[int] = 45  # Rating out of 50
@@ -75,6 +77,8 @@ class DoctorUpdate(BaseModel):
     qualification: Optional[str] = None
     experience_years: Optional[int] = None
     bio: Optional[str] = None
+    story: Optional[str] = None
+    expertise: Optional[str] = None  # JSON string of expertise array
     consultation_fee: Optional[int] = None
     profile_image: Optional[str] = None
     is_available: Optional[bool] = None
@@ -101,6 +105,28 @@ class ConsultationFeeResponse(ConsultationFeeBase):
         from_attributes = True
 
 
+# Doctor Review Schemas
+class DoctorReviewBase(BaseModel):
+    patient_name: str
+    content: str
+    rating: int = 5
+    treatment_type: Optional[str] = None
+    patient_image: Optional[str] = None
+
+class DoctorReviewCreate(DoctorReviewBase):
+    doctor_id: int
+
+class DoctorReviewResponse(DoctorReviewBase):
+    id: int
+    doctor_id: int
+    is_verified: bool
+    is_approved: bool
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
 # Branch info for doctor response
 class BranchInfo(BaseModel):
     id: int
@@ -119,6 +145,8 @@ class DoctorPublic(BaseModel):
     qualification: Optional[str]
     experience_years: int
     bio: Optional[str]
+    story: Optional[str] = None  # Doctor's journey/story
+    expertise: Optional[List[str]] = None  # List of expertise areas
     consultation_fee: int  # Default/legacy fee
     profile_image: Optional[str]
     is_available: bool

@@ -44,6 +44,9 @@ export const doctorsAPI = {
   createSlot: (doctorId, data) => api.post(`/doctors/${doctorId}/slots/`, data),
   updateSlot: (slotId, data) => api.put(`/doctors/slots/${slotId}/`, data),
   deleteSlot: (slotId) => api.delete(`/doctors/slots/${slotId}/`),
+  // Doctor reviews
+  getReviews: (doctorId) => api.get(`/doctors/${doctorId}/reviews/`),
+  submitReview: (doctorId, data) => api.post(`/doctors/${doctorId}/reviews/`, data),
 };
 
 // Bookings APIs

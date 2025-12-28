@@ -47,6 +47,8 @@ class Doctor(Base):
     qualification = Column(String(500))
     experience_years = Column(Integer, default=0)
     bio = Column(Text)
+    story = Column(Text)  # Doctor's journey/story for profile page
+    expertise = Column(Text)  # JSON array of expertise areas e.g. '["Pain Management", "Manual Therapy"]'
     consultation_fee = Column(Integer, default=500)  # Legacy/default fee
     profile_image = Column(String(500))
     is_available = Column(Boolean, default=True)
@@ -59,6 +61,7 @@ class Doctor(Base):
     slots = relationship("Slot", back_populates="doctor")
     bookings = relationship("Booking", back_populates="doctor")
     consultation_fees = relationship("DoctorConsultationFee", back_populates="doctor", cascade="all, delete-orphan")
+    reviews = relationship("DoctorReview", back_populates="doctor", cascade="all, delete-orphan")
 
 
 class DoctorConsultationFee(Base):
@@ -76,6 +79,25 @@ class DoctorConsultationFee(Base):
     
     # Relationships
     doctor = relationship("Doctor", back_populates="consultation_fees")
+
+
+class DoctorReview(Base):
+    """Patient reviews for individual doctors"""
+    __tablename__ = "doctor_reviews"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=False)
+    patient_name = Column(String(255), nullable=False)
+    patient_image = Column(String(500))  # Optional patient photo URL
+    content = Column(Text, nullable=False)
+    rating = Column(Integer, default=5)  # 1-5 star rating
+    treatment_type = Column(String(100))  # e.g., "Knee Pain Treatment", "Post-Surgery Rehab"
+    is_verified = Column(Boolean, default=False)  # Verified patient
+    is_approved = Column(Boolean, default=False)  # Admin approved
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    doctor = relationship("Doctor", back_populates="reviews")
 
 
 class Slot(Base):
