@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models import User, Doctor, Service, Slot, UserRole, Testimonial, SiteSetting, SiteStat, Branch, Milestone
+from app.models import User, Doctor, Service, Slot, UserRole, Testimonial, SiteSetting, SiteStat, Branch, Milestone, DoctorConsultationFee
 from app.auth import get_password_hash
 from datetime import time
 
@@ -127,7 +127,16 @@ def seed_database(db: Session):
             "qualification": "BPT, MPT (Ortho), PhD",
             "experience_years": 12,
             "bio": "Dr. Priya Sharma is a renowned orthopedic physiotherapist with over 12 years of experience in treating musculoskeletal disorders, sports injuries, and post-operative rehabilitation.",
-            "consultation_fee": 800
+            "consultation_fee": 800,
+            "rating": 48,  # 4.8 out of 5
+            "branch_id": 1,  # Kukatpally
+            "fees": [
+                {"type": "clinic", "country": "India", "fee": 800, "currency": "INR"},
+                {"type": "home", "country": "India", "fee": 1200, "currency": "INR"},
+                {"type": "video", "country": "India", "fee": 500, "currency": "INR"},
+                {"type": "clinic", "country": "USA", "fee": 100, "currency": "USD"},
+                {"type": "video", "country": "USA", "fee": 75, "currency": "USD"},
+            ]
         },
         {
             "email": "dr.rajesh@novacare247.com",
@@ -137,7 +146,14 @@ def seed_database(db: Session):
             "qualification": "BPT, MPT (Neuro)",
             "experience_years": 8,
             "bio": "Dr. Rajesh Kumar specializes in neurological rehabilitation including stroke recovery, Parkinson's disease, and spinal cord injuries. His patient-centric approach has helped hundreds recover mobility.",
-            "consultation_fee": 700
+            "consultation_fee": 700,
+            "rating": 46,  # 4.6 out of 5
+            "branch_id": 2,  # Gachibowli
+            "fees": [
+                {"type": "clinic", "country": "India", "fee": 700, "currency": "INR"},
+                {"type": "home", "country": "India", "fee": 1100, "currency": "INR"},
+                {"type": "video", "country": "India", "fee": 450, "currency": "INR"},
+            ]
         },
         {
             "email": "dr.anitha@novacare247.com",
@@ -147,7 +163,17 @@ def seed_database(db: Session):
             "qualification": "BPT, MPT (Sports), CSCS",
             "experience_years": 10,
             "bio": "Dr. Anitha Reddy is a certified sports physiotherapist who has worked with professional athletes and sports teams. She specializes in injury prevention, rehabilitation, and performance enhancement.",
-            "consultation_fee": 900
+            "consultation_fee": 900,
+            "rating": 49,  # 4.9 out of 5
+            "branch_id": 4,  # Bangalore
+            "fees": [
+                {"type": "clinic", "country": "India", "fee": 900, "currency": "INR"},
+                {"type": "home", "country": "India", "fee": 1500, "currency": "INR"},
+                {"type": "video", "country": "India", "fee": 600, "currency": "INR"},
+                {"type": "clinic", "country": "USA", "fee": 120, "currency": "USD"},
+                {"type": "home", "country": "USA", "fee": 200, "currency": "USD"},
+                {"type": "video", "country": "USA", "fee": 80, "currency": "USD"},
+            ]
         },
         {
             "email": "dr.venkat@novacare247.com",
@@ -157,7 +183,14 @@ def seed_database(db: Session):
             "qualification": "BPT, MPT (Pediatrics)",
             "experience_years": 7,
             "bio": "Dr. Venkat Rao is passionate about helping children with developmental delays, cerebral palsy, and other pediatric conditions achieve their full potential through specialized therapy.",
-            "consultation_fee": 600
+            "consultation_fee": 600,
+            "rating": 47,  # 4.7 out of 5
+            "branch_id": 3,  # Secunderabad
+            "fees": [
+                {"type": "clinic", "country": "India", "fee": 600, "currency": "INR"},
+                {"type": "home", "country": "India", "fee": 1000, "currency": "INR"},
+                {"type": "video", "country": "India", "fee": 400, "currency": "INR"},
+            ]
         },
         {
             "email": "dr.lakshmi@novacare247.com",
@@ -167,7 +200,14 @@ def seed_database(db: Session):
             "qualification": "BPT, MPT (Women's Health)",
             "experience_years": 9,
             "bio": "Dr. Lakshmi Devi specializes in women's health issues including prenatal and postnatal care, pelvic floor dysfunction, and menopause-related conditions.",
-            "consultation_fee": 700
+            "consultation_fee": 700,
+            "rating": 48,  # 4.8 out of 5
+            "branch_id": 5,  # Mumbai
+            "fees": [
+                {"type": "clinic", "country": "India", "fee": 700, "currency": "INR"},
+                {"type": "home", "country": "India", "fee": 1200, "currency": "INR"},
+                {"type": "video", "country": "India", "fee": 450, "currency": "INR"},
+            ]
         }
     ]
     
@@ -187,15 +227,30 @@ def seed_database(db: Session):
         # Create doctor profile
         doctor = Doctor(
             user_id=user.id,
+            branch_id=doc_data.get("branch_id"),
             specialization=doc_data["specialization"],
             qualification=doc_data["qualification"],
             experience_years=doc_data["experience_years"],
             bio=doc_data["bio"],
-            consultation_fee=doc_data["consultation_fee"]
+            consultation_fee=doc_data["consultation_fee"],
+            rating=doc_data.get("rating", 45)
         )
         db.add(doctor)
         db.commit()
         db.refresh(doctor)
+        
+        # Create consultation fees for doctor
+        for fee_data in doc_data.get("fees", []):
+            fee = DoctorConsultationFee(
+                doctor_id=doctor.id,
+                consultation_type=fee_data["type"],
+                country=fee_data["country"],
+                fee=fee_data["fee"],
+                currency=fee_data["currency"],
+                is_available=True
+            )
+            db.add(fee)
+        db.commit()
         
         # Create slots for each doctor (Monday to Saturday)
         for day in range(6):  # 0=Monday to 5=Saturday

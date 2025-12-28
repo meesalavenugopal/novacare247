@@ -365,7 +365,10 @@ const HomePage = () => {
                     {doctor.specialization}
                   </span>
                   <h3 className="font-semibold text-gray-900 text-lg">{doctor.full_name}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{doctor.experience_years} years experience</p>
+                  <p className="text-gray-600 text-sm mb-2">{doctor.experience_years} years experience</p>
+                  {doctor.bio && (
+                    <p className="text-gray-500 text-xs mb-4 line-clamp-2">{doctor.bio}</p>
+                  )}
                   <Link 
                     to={`/book/${doctor.id}`} 
                     className="block w-full text-center bg-primary-600 text-white font-medium py-2.5 text-sm hover:bg-primary-700 transition-colors"

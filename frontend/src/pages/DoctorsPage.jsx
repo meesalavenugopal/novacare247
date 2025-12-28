@@ -1,7 +1,15 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Star, Calendar, GraduationCap, Stethoscope, ArrowRight, MapPin, Navigation, Filter, X, ChevronDown, Building2, Video, Home, Building } from 'lucide-react';
 import { doctorsAPI, branchesAPI } from '../services/api';
+
+// Currency symbols
+const currencySymbols = {
+  INR: '₹',
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+};
 
 // Specializations available
 const specializations = [
@@ -173,8 +181,41 @@ const DoctorsPage = () => {
       // In production, filter by doctor.location_id
     }
     
+    // Filter by consultation type
+    if (selectedConsultationType !== 'all') {
+      result = result.filter(doc => {
+        if (!doc.consultation_fees || doc.consultation_fees.length === 0) return true;
+        return doc.consultation_fees.some(
+          fee => fee.consultation_type === selectedConsultationType && fee.is_available
+        );
+      });
+    }
+    
     return result;
-  }, [doctors, selectedSpecialty, selectedLocation, nearMeEnabled]);
+  }, [doctors, selectedSpecialty, selectedLocation, selectedConsultationType, nearMeEnabled]);
+
+  // Helper to get fee based on consultation type and country
+  const getDoctorFee = useCallback((doctor, consultationType = 'clinic', country = 'India') => {
+    if (!doctor.consultation_fees || doctor.consultation_fees.length === 0) {
+      return { fee: doctor.consultation_fee || 500, currency: 'INR' };
+    }
+    
+    // Find matching fee
+    const type = consultationType === 'all' ? 'clinic' : consultationType;
+    const matchingFee = doctor.consultation_fees.find(
+      f => f.consultation_type === type && f.country === country && f.is_available
+    );
+    
+    if (matchingFee) {
+      return { fee: matchingFee.fee, currency: matchingFee.currency };
+    }
+    
+    // Fallback to first available fee or default
+    const fallbackFee = doctor.consultation_fees.find(f => f.is_available);
+    return fallbackFee 
+      ? { fee: fallbackFee.fee, currency: fallbackFee.currency }
+      : { fee: doctor.consultation_fee || 500, currency: 'INR' };
+  }, []);
 
   // Get unique specializations from doctors
   const availableSpecializations = useMemo(() => {
@@ -183,6 +224,7 @@ const DoctorsPage = () => {
   }, [doctors]);
 
   const clearFilters = () => {
+    setSelectedCountry('all');
     setSelectedState('all');
     setSelectedLocation('all');
     setSelectedSpecialty('All Specialties');
@@ -192,6 +234,7 @@ const DoctorsPage = () => {
   };
 
   const activeFiltersCount = [
+    selectedCountry !== 'all',
     selectedState !== 'all',
     selectedLocation !== 'all',
     selectedSpecialty !== 'All Specialties',
@@ -491,7 +534,11 @@ const DoctorsPage = () => {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredDoctors.map((doctor, index) => (
+              {filteredDoctors.map((doctor, index) => {
+                const feeInfo = getDoctorFee(doctor, selectedConsultationType, selectedCountry === 'all' ? 'India' : selectedCountry);
+                const currencySymbol = currencySymbols[feeInfo.currency] || feeInfo.currency;
+                
+                return (
                 <div 
                   key={doctor.id} 
                   className="bg-white border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-md transition-all group"
@@ -499,20 +546,27 @@ const DoctorsPage = () => {
                   {/* Doctor Image */}
                   <div className="relative h-48 overflow-hidden bg-gray-100 flex items-center justify-center">
                     <img 
-                      src={doctorImages[index % doctorImages.length]}
+                      src={doctor.profile_image || doctorImages[index % doctorImages.length]}
                       alt={doctor.full_name}
                       className="w-full h-full object-contain transition-transform duration-300"
                     />
                     {/* Rating Badge */}
                     <div className="absolute top-4 right-4 bg-white px-3 py-1 flex items-center gap-1">
                       <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <span className="font-semibold text-gray-900 text-sm">4.9</span>
+                      <span className="font-semibold text-gray-900 text-sm">{doctor.rating?.toFixed(1) || '4.5'}</span>
                     </div>
                   </div>
 
                   {/* Doctor Info */}
                   <div className="p-5">
-                    <span className="text-xs font-medium text-primary-600 bg-primary-50 px-3 py-1 inline-block mb-3">
+                    {/* Branch Badge */}
+                    {doctor.branch && (
+                      <span className="text-[10px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 inline-block mb-2">
+                        <MapPin size={10} className="inline mr-1" />
+                        {doctor.branch.city}
+                      </span>
+                    )}
+                    <span className="text-xs font-medium text-primary-600 bg-primary-50 px-3 py-1 inline-block mb-3 ml-1">
                       {doctor.specialization}
                     </span>
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">{doctor.full_name}</h3>
@@ -537,8 +591,13 @@ const DoctorsPage = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-xl text-primary-600">₹{doctor.consultation_fee}</p>
-                        <p className="text-xs text-gray-500">Per Session</p>
+                        <p className="font-bold text-xl text-primary-600">{currencySymbol}{feeInfo.fee}</p>
+                        <p className="text-xs text-gray-500">
+                          {selectedConsultationType !== 'all' 
+                            ? consultationTypes.find(t => t.id === selectedConsultationType)?.name || 'Per Session'
+                            : 'In-Clinic'
+                          }
+                        </p>
                       </div>
                     </div>
 
@@ -571,7 +630,8 @@ const DoctorsPage = () => {
                     </Link>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           )}
         </div>

@@ -46,19 +46,23 @@ class DoctorBase(BaseModel):
     bio: Optional[str] = None
     consultation_fee: Optional[int] = 500
     profile_image: Optional[str] = None
+    rating: Optional[int] = 45  # Rating out of 50
 
 class DoctorCreate(DoctorBase):
     user_id: int
+    branch_id: Optional[int] = None
 
 class DoctorCreateWithUser(DoctorBase):
     email: EmailStr
     full_name: str
     phone: Optional[str] = None
     password: str
+    branch_id: Optional[int] = None
 
 class DoctorResponse(DoctorBase):
     id: int
     user_id: int
+    branch_id: Optional[int]
     is_available: bool
     created_at: datetime
     user: UserResponse
@@ -74,6 +78,40 @@ class DoctorUpdate(BaseModel):
     consultation_fee: Optional[int] = None
     profile_image: Optional[str] = None
     is_available: Optional[bool] = None
+    branch_id: Optional[int] = None
+    rating: Optional[int] = None
+
+
+# Consultation Fee Schemas
+class ConsultationFeeBase(BaseModel):
+    consultation_type: str  # clinic, home, video
+    country: str = "India"
+    fee: int
+    currency: str = "INR"
+    is_available: bool = True
+
+class ConsultationFeeCreate(ConsultationFeeBase):
+    doctor_id: int
+
+class ConsultationFeeResponse(ConsultationFeeBase):
+    id: int
+    doctor_id: int
+    
+    class Config:
+        from_attributes = True
+
+
+# Branch info for doctor response
+class BranchInfo(BaseModel):
+    id: int
+    name: str
+    city: str
+    state: str
+    country: str
+    
+    class Config:
+        from_attributes = True
+
 
 class DoctorPublic(BaseModel):
     id: int
@@ -81,10 +119,13 @@ class DoctorPublic(BaseModel):
     qualification: Optional[str]
     experience_years: int
     bio: Optional[str]
-    consultation_fee: int
+    consultation_fee: int  # Default/legacy fee
     profile_image: Optional[str]
     is_available: bool
     full_name: str
+    rating: float  # Displayed as x.x out of 5.0
+    branch: Optional[BranchInfo] = None
+    consultation_fees: List[ConsultationFeeResponse] = []
     
     class Config:
         from_attributes = True

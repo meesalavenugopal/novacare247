@@ -32,6 +32,11 @@ class User(Base):
     doctor_profile = relationship("Doctor", back_populates="user", uselist=False)
     bookings = relationship("Booking", back_populates="patient", foreign_keys="Booking.patient_id")
 
+class ConsultationType(str, enum.Enum):
+    CLINIC = "clinic"
+    HOME = "home"
+    VIDEO = "video"
+
 class Doctor(Base):
     __tablename__ = "doctors"
     
@@ -42,9 +47,10 @@ class Doctor(Base):
     qualification = Column(String(500))
     experience_years = Column(Integer, default=0)
     bio = Column(Text)
-    consultation_fee = Column(Integer, default=500)
+    consultation_fee = Column(Integer, default=500)  # Legacy/default fee
     profile_image = Column(String(500))
     is_available = Column(Boolean, default=True)
+    rating = Column(Integer, default=45)  # Rating out of 50 (display as 4.5/5.0)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -52,6 +58,25 @@ class Doctor(Base):
     branch = relationship("Branch", back_populates="doctors")
     slots = relationship("Slot", back_populates="doctor")
     bookings = relationship("Booking", back_populates="doctor")
+    consultation_fees = relationship("DoctorConsultationFee", back_populates="doctor", cascade="all, delete-orphan")
+
+
+class DoctorConsultationFee(Base):
+    """Fee structure per doctor based on consultation type and country"""
+    __tablename__ = "doctor_consultation_fees"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=False)
+    consultation_type = Column(String(20), nullable=False)  # clinic, home, video
+    country = Column(String(100), nullable=False, default="India")
+    fee = Column(Integer, nullable=False)
+    currency = Column(String(10), default="INR")
+    is_available = Column(Boolean, default=True)  # Whether doctor offers this type
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    doctor = relationship("Doctor", back_populates="consultation_fees")
+
 
 class Slot(Base):
     __tablename__ = "slots"
