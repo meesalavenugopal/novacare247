@@ -479,7 +479,7 @@ const DoctorsPage = () => {
                   className="bg-white border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-md transition-all group"
                 >
                   {/* Doctor Image */}
-                  <div className="relative aspect-square overflow-hidden bg-gray-100 flex items-center justify-center">
+                  <div className="relative h-48 overflow-hidden bg-gray-100 flex items-center justify-center">
                     <img 
                       src={doctorImages[index % doctorImages.length]}
                       alt={doctor.full_name}
