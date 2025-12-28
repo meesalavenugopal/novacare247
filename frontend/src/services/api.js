@@ -187,6 +187,10 @@ export const aiAPI = {
   generateBlogArticle: (data) => api.post('/ai/generate/blog-article', data),
   generateBlogOutline: (data) => api.post('/ai/generate/blog-outline', data),
   improveBlogContent: (data) => api.post('/ai/improve/blog-content', data),
+  // Daily Article
+  getAvailableTopics: () => api.get('/ai/blog/available-topics'),
+  generateDailyArticle: () => api.post('/ai/generate/daily-article'),
+  generateAndPublishDaily: () => api.post('/ai/generate/daily-article-and-publish'),
 };
 
 // Blog APIs

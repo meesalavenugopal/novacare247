@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   Plus, Pencil, Trash2, Eye, EyeOff, Star, Search,
-  Loader2, X, Save, ChevronDown, Image as ImageIcon, Sparkles, Wand2
+  Loader2, X, Save, ChevronDown, Image as ImageIcon, Sparkles, Wand2, Zap, Calendar
 } from 'lucide-react';
 import { blogAPI, aiAPI } from '../../services/api';
 
@@ -31,6 +31,11 @@ const AdminBlog = () => {
   const [aiGenerating, setAiGenerating] = useState(false);
   const [aiError, setAiError] = useState(null);
 
+  // Daily article states
+  const [dailyPublishing, setDailyPublishing] = useState(false);
+  const [remainingTopics, setRemainingTopics] = useState(null);
+  const [dailySuccess, setDailySuccess] = useState(null);
+
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -49,6 +54,7 @@ const AdminBlog = () => {
 
   useEffect(() => {
     fetchArticles();
+    fetchAvailableTopics();
   }, []);
 
   const fetchArticles = async () => {
@@ -61,6 +67,48 @@ const AdminBlog = () => {
       setError('Failed to load articles');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAvailableTopics = async () => {
+    try {
+      const response = await aiAPI.getAvailableTopics();
+      setRemainingTopics(response.data.remaining_topics);
+    } catch (err) {
+      console.error('Error fetching available topics:', err);
+    }
+  };
+
+  // One-click daily article publish
+  const handlePublishDailyArticle = async () => {
+    if (dailyPublishing) return;
+    
+    setDailyPublishing(true);
+    setDailySuccess(null);
+    setAiError(null);
+
+    try {
+      const response = await aiAPI.generateAndPublishDaily();
+      
+      if (response.data.success) {
+        setDailySuccess({
+          title: response.data.article.title,
+          slug: response.data.article.slug
+        });
+        setRemainingTopics(response.data.remaining_topics);
+        // Refresh articles list
+        await fetchArticles();
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => setDailySuccess(null), 5000);
+      } else {
+        setAiError(response.data.message || 'Failed to generate article');
+      }
+    } catch (err) {
+      console.error('Error publishing daily article:', err);
+      setAiError(err.response?.data?.detail || 'Failed to publish article. Please try again.');
+    } finally {
+      setDailyPublishing(false);
     }
   };
 
@@ -309,6 +357,28 @@ const AdminBlog = () => {
           <p className="text-gray-600">Manage your blog content</p>
         </div>
         <div className="flex gap-3">
+          {/* One-Click Daily Article */}
+          <button
+            onClick={handlePublishDailyArticle}
+            disabled={dailyPublishing || remainingTopics === 0}
+            className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            title={remainingTopics !== null ? `${remainingTopics} topics remaining` : ''}
+          >
+            {dailyPublishing ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Publishing...
+              </>
+            ) : (
+              <>
+                <Zap className="w-5 h-5" />
+                Daily Article
+                {remainingTopics !== null && (
+                  <span className="bg-white/20 text-xs px-1.5 py-0.5 rounded-full">{remainingTopics}</span>
+                )}
+              </>
+            )}
+          </button>
           <button
             onClick={() => setShowAIModal(true)}
             className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md"
@@ -325,6 +395,30 @@ const AdminBlog = () => {
           </button>
         </div>
       </div>
+
+      {/* Success/Error Messages */}
+      {dailySuccess && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+            <Zap className="w-4 h-4 text-green-600" />
+          </div>
+          <div>
+            <p className="font-medium text-green-800">Article Published!</p>
+            <p className="text-sm text-green-600">
+              "{dailySuccess.title}" - <a href={`/blog/${dailySuccess.slug}`} target="_blank" className="underline">View Article</a>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {aiError && !showAIModal && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between">
+          <p className="text-red-600">{aiError}</p>
+          <button onClick={() => setAiError(null)} className="text-red-400 hover:text-red-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
 
       {/* Search */}
       <div className="mb-6">
