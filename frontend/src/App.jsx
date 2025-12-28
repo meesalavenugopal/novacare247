@@ -22,6 +22,7 @@ import AdminInquiries from './pages/admin/AdminInquiries';
 
 import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
+import ServiceProfilePage from './pages/ServiceProfilePage';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/doctors" element={<><Navbar /><DoctorsPage /><Footer /></>} />
           <Route path="/doctors/:id" element={<><Navbar /><DoctorProfilePage /><Footer /></>} />
           <Route path="/services" element={<><Navbar /><ServicesPage /><Footer /></>} />
+          <Route path="/services/:id" element={<><Navbar /><ServiceProfilePage /><Footer /></>} />
           <Route path="/book/:doctorId?" element={<><Navbar /><BookingPage /><Footer /></>} />
           <Route path="/contact" element={<><Navbar /><ContactPage /><Footer /></>} />
           <Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} />

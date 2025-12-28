@@ -229,9 +229,15 @@ class BookingWithDoctor(BookingResponse):
 class ServiceBase(BaseModel):
     name: str
     description: Optional[str] = None
+    detailed_description: Optional[str] = None
     duration: Optional[int] = 60
     price: Optional[int] = 500
     image: Optional[str] = None
+    icon: Optional[str] = None
+    benefits: Optional[str] = None  # JSON string
+    conditions_treated: Optional[str] = None  # JSON string
+    treatment_process: Optional[str] = None  # JSON string
+    faqs: Optional[str] = None  # JSON string
 
 class ServiceCreate(ServiceBase):
     pass
@@ -244,12 +250,39 @@ class ServiceResponse(ServiceBase):
     class Config:
         from_attributes = True
 
+
+class ServicePublic(BaseModel):
+    """Public service response with parsed JSON fields"""
+    id: int
+    name: str
+    description: Optional[str]
+    detailed_description: Optional[str]
+    duration: int
+    price: int
+    image: Optional[str]
+    icon: Optional[str]
+    benefits: Optional[List[str]] = None
+    conditions_treated: Optional[List[str]] = None
+    treatment_process: Optional[List[dict]] = None
+    faqs: Optional[List[dict]] = None
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
+
+
 class ServiceUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+    detailed_description: Optional[str] = None
     duration: Optional[int] = None
     price: Optional[int] = None
     image: Optional[str] = None
+    icon: Optional[str] = None
+    benefits: Optional[str] = None
+    conditions_treated: Optional[str] = None
+    treatment_process: Optional[str] = None
+    faqs: Optional[str] = None
     is_active: Optional[bool] = None
 
 # Testimonial Schemas

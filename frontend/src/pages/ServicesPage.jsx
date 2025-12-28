@@ -179,13 +179,21 @@ const ServicesPage = () => {
                     <div className="p-5 flex flex-col flex-grow">
                       <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">{service.description}</p>
                       
-                      <Link 
-                        to="/book"
-                        className="inline-flex items-center justify-center gap-2 w-full bg-primary-600 hover:bg-primary-700 text-white font-medium text-sm py-2.5 px-4 transition-colors mt-auto"
-                      >
-                        Book Now
-                        <ArrowRight size={16} />
-                      </Link>
+                      <div className="flex gap-2 mt-auto">
+                        <Link 
+                          to={`/services/${service.id}`}
+                          className="flex-1 inline-flex items-center justify-center gap-2 border border-primary-600 text-primary-600 hover:bg-primary-50 font-medium text-sm py-2.5 px-4 transition-colors"
+                        >
+                          Learn More
+                        </Link>
+                        <Link 
+                          to="/book"
+                          className="flex-1 inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium text-sm py-2.5 px-4 transition-colors"
+                        >
+                          Book Now
+                          <ArrowRight size={16} />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 );

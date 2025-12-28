@@ -1,13 +1,63 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+import json
 from app.database import get_db
 from app.models import Service
-from app.schemas import ServiceCreate, ServiceResponse, ServiceUpdate
+from app.schemas import ServiceCreate, ServiceResponse, ServiceUpdate, ServicePublic
 from app.auth import get_admin_user
 from app.models import User
 
 router = APIRouter(prefix="/api/services", tags=["Services"])
+
+
+def build_service_public(service: Service) -> ServicePublic:
+    """Helper to build ServicePublic response with parsed JSON fields"""
+    # Parse JSON fields
+    benefits = None
+    if service.benefits:
+        try:
+            benefits = json.loads(service.benefits)
+        except:
+            benefits = [service.benefits]
+    
+    conditions = None
+    if service.conditions_treated:
+        try:
+            conditions = json.loads(service.conditions_treated)
+        except:
+            conditions = [service.conditions_treated]
+    
+    process = None
+    if service.treatment_process:
+        try:
+            process = json.loads(service.treatment_process)
+        except:
+            process = None
+    
+    faqs = None
+    if service.faqs:
+        try:
+            faqs = json.loads(service.faqs)
+        except:
+            faqs = None
+    
+    return ServicePublic(
+        id=service.id,
+        name=service.name,
+        description=service.description,
+        detailed_description=service.detailed_description,
+        duration=service.duration,
+        price=service.price,
+        image=service.image,
+        icon=service.icon,
+        benefits=benefits,
+        conditions_treated=conditions,
+        treatment_process=process,
+        faqs=faqs,
+        is_active=service.is_active
+    )
+
 
 @router.get("/", response_model=List[ServiceResponse])
 def get_services(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -26,13 +76,13 @@ def get_all_services(
     services = db.query(Service).offset(skip).limit(limit).all()
     return services
 
-@router.get("/{service_id}", response_model=ServiceResponse)
+@router.get("/{service_id}/", response_model=ServicePublic)
 def get_service(service_id: int, db: Session = Depends(get_db)):
-    """Get service by ID"""
+    """Get service by ID with full details"""
     service = db.query(Service).filter(Service.id == service_id).first()
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
-    return service
+    return build_service_public(service)
 
 @router.post("/", response_model=ServiceResponse)
 def create_service(

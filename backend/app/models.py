@@ -141,9 +141,15 @@ class Service(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
     description = Column(Text)
+    detailed_description = Column(Text)  # Full detailed description for profile page
     duration = Column(Integer, default=60)  # Duration in minutes
     price = Column(Integer, default=500)
     image = Column(String(500))
+    icon = Column(String(50))  # Icon name for display
+    benefits = Column(Text)  # JSON array of benefits
+    conditions_treated = Column(Text)  # JSON array of conditions
+    treatment_process = Column(Text)  # JSON array of treatment steps
+    faqs = Column(Text)  # JSON array of FAQs
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
