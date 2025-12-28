@@ -245,3 +245,36 @@ class Milestone(Base):
     display_order = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class BlogCategory(str, enum.Enum):
+    CONDITIONS = "conditions"
+    EXERCISES = "exercises"
+    RECOVERY = "recovery"
+    PREVENTION = "prevention"
+    LIFESTYLE = "lifestyle"
+    SPORTS = "sports"
+
+
+class BlogArticle(Base):
+    """Blog articles for content marketing and SEO"""
+    __tablename__ = "blog_articles"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(500), nullable=False)
+    slug = Column(String(500), unique=True, nullable=False, index=True)
+    excerpt = Column(Text)                              # Short description for listings
+    content = Column(Text, nullable=False)              # Full article content (markdown)
+    category = Column(String(50), default="conditions")
+    author = Column(String(255))
+    author_role = Column(String(255))
+    read_time = Column(String(50))                      # e.g., "8 min read"
+    image = Column(String(500))                         # Featured image URL
+    tags = Column(Text)                                 # JSON array of tags
+    faqs = Column(Text)                                 # JSON array of FAQs [{question, answer}]
+    is_featured = Column(Boolean, default=False)
+    is_published = Column(Boolean, default=True)
+    published_at = Column(DateTime, default=datetime.utcnow)
+    display_order = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

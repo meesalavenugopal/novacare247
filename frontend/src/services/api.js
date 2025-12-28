@@ -183,4 +183,17 @@ export const aiAPI = {
   generateInquiryReply: (data) => api.post('/ai/generate/inquiry-reply', data),
 };
 
+// Blog APIs
+export const blogAPI = {
+  getAll: (params) => api.get('/blog/', { params }),
+  getCategories: () => api.get('/blog/categories/'),
+  getBySlug: (slug) => api.get(`/blog/slug/${slug}/`),
+  getById: (id) => api.get(`/blog/${id}/`),
+  getRelated: (slug, limit = 3) => api.get(`/blog/slug/${slug}/related/`, { params: { limit } }),
+  getAllAdmin: () => api.get('/blog/admin/all/'),
+  create: (data) => api.post('/blog/', data),
+  update: (id, data) => api.put(`/blog/${id}/`, data),
+  delete: (id) => api.delete(`/blog/${id}/`),
+};
+
 export default api;

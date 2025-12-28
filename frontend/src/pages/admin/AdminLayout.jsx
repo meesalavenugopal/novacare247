@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, Calendar, Stethoscope, MessageSquare, 
   Star, Menu, X, LogOut, Home, MapPin, Settings, BarChart3, Flag, MessageCircle, Bot,
-  ChevronRight, Activity
+  ChevronRight, Activity, FileText
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -39,6 +39,7 @@ const AdminLayout = () => {
     { path: '/admin/doctors', label: 'Doctors', icon: Stethoscope },
     { path: '/admin/bookings', label: 'Bookings', icon: Calendar },
     { path: '/admin/services', label: 'Services', icon: Activity },
+    { path: '/admin/blog', label: 'Blog', icon: FileText },
     { path: '/admin/testimonials', label: 'Testimonials', icon: Star },
     { path: '/admin/reviews', label: 'Reviews', icon: MessageCircle },
     { path: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },

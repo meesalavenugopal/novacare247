@@ -26,6 +26,7 @@ import AdminMilestones from './pages/admin/AdminMilestones';
 import AdminStats from './pages/admin/AdminStats';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminAITools from './pages/admin/AdminAITools';
+import AdminBlog from './pages/admin/AdminBlog';
 
 import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
@@ -33,6 +34,8 @@ import ServiceProfilePage from './pages/ServiceProfilePage';
 import LocationPage from './pages/LocationPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
 
 function App() {
   return (
@@ -63,6 +66,10 @@ function App() {
           {/* Legal Pages */}
           <Route path="/privacy-policy" element={<><Navbar /><PrivacyPolicyPage /><Footer /></>} />
           <Route path="/terms-of-service" element={<><Navbar /><TermsOfServicePage /><Footer /></>} />
+          
+          {/* Blog Pages */}
+          <Route path="/blog" element={<><Navbar /><BlogPage /><Footer /></>} />
+          <Route path="/blog/:slug" element={<><Navbar /><BlogPostPage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -70,6 +77,7 @@ function App() {
             <Route path="doctors" element={<AdminDoctors />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="services" element={<AdminServices />} />
+            <Route path="blog" element={<AdminBlog />} />
             <Route path="testimonials" element={<AdminTestimonials />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="reviews" element={<AdminReviews />} />
