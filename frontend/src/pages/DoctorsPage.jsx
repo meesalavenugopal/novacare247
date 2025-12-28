@@ -229,37 +229,27 @@ const DoctorsPage = () => {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-16 bg-white border-b border-gray-200">
+      {/* Stats Section */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-gray-50 border border-gray-200 p-6 text-center">
-              <div className="w-12 h-12 bg-primary-50 border border-primary-100 mx-auto mb-4 flex items-center justify-center">
-                <Stethoscope className="w-6 h-6 text-primary-600" />
-              </div>
-              <p className="text-3xl font-bold text-gray-900">{doctors.length}</p>
-              <p className="text-gray-600 text-sm">Expert Doctors</p>
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
+              We're a network of outpatient physical rehabilitation experts
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+            <div className="text-center">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">1,900+</p>
+              <p className="text-gray-600">centers with a wide range of physical therapy services</p>
             </div>
-            <div className="bg-gray-50 border border-gray-200 p-6 text-center">
-              <div className="w-12 h-12 bg-primary-50 border border-primary-100 mx-auto mb-4 flex items-center justify-center">
-                <Award className="w-6 h-6 text-primary-600" />
-              </div>
-              <p className="text-3xl font-bold text-gray-900">50+</p>
-              <p className="text-gray-600 text-sm">Years Combined Exp</p>
+            <div className="text-center md:border-x md:border-gray-200 md:px-8">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">39</p>
+              <p className="text-gray-600">states with our centers, serving a community near you</p>
             </div>
-            <div className="bg-gray-50 border border-gray-200 p-6 text-center">
-              <div className="w-12 h-12 bg-primary-50 border border-primary-100 mx-auto mb-4 flex items-center justify-center">
-                <Star className="w-6 h-6 text-primary-600" />
-              </div>
-              <p className="text-3xl font-bold text-gray-900">4.9</p>
-              <p className="text-gray-600 text-sm">Average Rating</p>
-            </div>
-            <div className="bg-gray-50 border border-gray-200 p-6 text-center">
-              <div className="w-12 h-12 bg-primary-50 border border-primary-100 mx-auto mb-4 flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-primary-600" />
-              </div>
-              <p className="text-3xl font-bold text-gray-900">10+</p>
-              <p className="text-gray-600 text-sm">Specializations</p>
+            <div className="text-center">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">375+</p>
+              <p className="text-gray-600">partnerships with university, college and community organizations</p>
             </div>
           </div>
         </div>

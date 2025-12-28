@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { 
   Award, Users, Heart, Target, CheckCircle, Star, 
-  Calendar, ArrowRight, Shield,
+  Calendar, ArrowRight, Shield, MapPin,
   Sparkles, Building
 } from 'lucide-react';
 
@@ -75,24 +75,28 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-16 bg-white border-b border-gray-200">
+      {/* Stats Section */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { icon: Users, value: '10,000+', label: 'Patients Treated' },
-              { icon: Award, value: '15+', label: 'Years Experience' },
-              { icon: Star, value: '4.9', label: 'Average Rating' },
-              { icon: Building, value: '3', label: 'Clinic Locations' },
-            ].map((stat, index) => (
-              <div key={index} className="bg-gray-50 border border-gray-200 p-6 text-center">
-                <div className="w-12 h-12 bg-primary-50 border border-primary-100 mx-auto mb-4 flex items-center justify-center">
-                  <stat.icon className="w-6 h-6 text-primary-600" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-gray-600 text-sm">{stat.label}</p>
-              </div>
-            ))}
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
+              We're a network of outpatient physical rehabilitation experts
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+            <div className="text-center">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">1,900+</p>
+              <p className="text-gray-600">centers with a wide range of physical therapy services</p>
+            </div>
+            <div className="text-center md:border-x md:border-gray-200 md:px-8">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">39</p>
+              <p className="text-gray-600">states with our centers, serving a community near you</p>
+            </div>
+            <div className="text-center">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">375+</p>
+              <p className="text-gray-600">partnerships with university, college and community organizations</p>
+            </div>
           </div>
         </div>
       </section>

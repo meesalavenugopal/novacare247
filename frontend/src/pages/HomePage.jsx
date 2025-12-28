@@ -33,10 +33,10 @@ const HomePage = () => {
   };
 
   const stats = [
-    { icon: Users, value: '10,000+', label: 'Happy Patients' },
-    { icon: Award, value: '15+', label: 'Years Experience' },
-    { icon: Activity, value: '5', label: 'Expert Doctors' },
-    { icon: Star, value: '4.9', label: 'Average Rating' },
+    { icon: MapPin, value: '1,900+', label: 'Rehabilitation Centers' },
+    { icon: Users, value: '39', label: 'States Nationwide' },
+    { icon: Award, value: '375+', label: 'University Partnerships' },
+    { icon: Star, value: '4.9', label: 'Patient Rating' },
   ];
 
   const features = [
@@ -142,6 +142,32 @@ const HomePage = () => {
               <Link to="/book" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 Make An Appointment
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
+              We're a network of outpatient physical rehabilitation experts
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+            <div className="text-center">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">1,900+</p>
+              <p className="text-gray-600">centers with a wide range of physical therapy services</p>
+            </div>
+            <div className="text-center md:border-x md:border-gray-200 md:px-8">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">39</p>
+              <p className="text-gray-600">states with our centers, serving a community near you</p>
+            </div>
+            <div className="text-center">
+              <p className="text-5xl md:text-6xl font-light text-primary-600 mb-2">375+</p>
+              <p className="text-gray-600">partnerships with university, college and community organizations</p>
             </div>
           </div>
         </div>
