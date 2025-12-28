@@ -119,4 +119,90 @@ All SEO implementation is complete. The following files are ready:
 
 ---
 
+## SEO Ranking Strategy
+
+### Understanding What Drives Rankings
+
+| Factor | Impact | Current Status |
+|--------|--------|----------------|
+| **Backlinks** (other sites linking to you) | 🔴 Very High | ❌ Need to build |
+| **Content quality** (unique, helpful) | 🔴 Very High | ❌ Need real content |
+| **Google Business Profile** | 🔴 Very High | ❌ Need to create |
+| **Reviews** (Google, Practo, etc.) | 🔴 Very High | ❌ Need real reviews |
+| **Domain age & authority** | 🟡 Medium | ⏳ Takes time |
+| **Page speed** | 🟢 Low-Medium | ✅ Vite is fast |
+| **Technical SEO** | 🟢 Low-Medium | ✅ Complete |
+
+> **Important:** Technical SEO (what we built) = ~20% of ranking. Content + Backlinks + Reviews = ~80% of ranking.
+
+---
+
+## Off-Page SEO Tasks (Critical for Ranking)
+
+### 1. Google Business Profile (HIGH PRIORITY)
+- [ ] Create Google Business Profile for each clinic location
+- [ ] Add consistent NAP (Name, Address, Phone) across all listings
+- [ ] Upload high-quality photos of clinic, staff, equipment
+- [ ] Add all services offered
+- [ ] Set accurate business hours
+- [ ] Enable messaging and booking
+
+### 2. Healthcare Directory Listings
+- [ ] **Practo** - Create clinic and doctor profiles
+- [ ] **Lybrate** - List all doctors and services
+- [ ] **Justdial** - Claim/create business listing
+- [ ] **Sulekha** - Add to healthcare category
+- [ ] **Credihealth** - Create provider profile
+- [ ] **Clinicspots** - List physiotherapy clinic
+
+### 3. Local Directory Listings
+- [ ] **IndiaMART** - Add business listing
+- [ ] **TradeIndia** - Create company profile
+- [ ] **Yellow Pages India** - Submit business
+- [ ] **Hotfrog** - Add business listing
+- [ ] **Yelp India** - Claim business
+
+### 4. Review Generation Strategy
+- [ ] Ask satisfied patients to leave Google reviews
+- [ ] Request reviews on Practo after appointments
+- [ ] Create QR codes at clinic linking to review page
+- [ ] Respond to all reviews (positive and negative)
+- [ ] Aim for 50+ Google reviews per location
+
+### 5. Backlink Building
+- [ ] Guest post on health/wellness blogs
+- [ ] Get listed in local business associations
+- [ ] Partner with gyms, sports clubs for referrals
+- [ ] Sponsor local sports events (get backlinks)
+- [ ] Create shareable infographics about physiotherapy
+
+### 6. Content Marketing
+- [ ] Start a blog section on the website
+- [ ] Write articles about common conditions (back pain, sports injuries)
+- [ ] Create exercise/stretching guides with images
+- [ ] Publish patient success stories (with consent)
+- [ ] Add FAQ pages for each condition/service
+
+### 7. Social Media Presence
+- [ ] Create Instagram account with tips and exercises
+- [ ] Facebook page with patient education content
+- [ ] YouTube channel with exercise demonstrations
+- [ ] LinkedIn for professional networking
+
+---
+
+## Timeline for SEO Results
+
+| Milestone | Expected Timeline |
+|-----------|-------------------|
+| Google indexes sitemap | 1-2 weeks |
+| Pages appear in search | 2-4 weeks |
+| Initial rankings (page 2-5) | 1-3 months |
+| Competitive rankings (page 1) | 3-6 months |
+| Top 3 rankings | 6-12 months |
+
+> **Note:** Rankings depend heavily on competition, backlinks, and content quality. Consistent effort is required.
+
+---
+
 *Generated: 28 December 2025*
