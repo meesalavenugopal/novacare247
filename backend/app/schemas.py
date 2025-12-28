@@ -188,6 +188,10 @@ class TestimonialBase(BaseModel):
     patient_name: str
     content: str
     rating: Optional[int] = 5
+    subtitle: Optional[str] = None
+    image_url: Optional[str] = None
+    story_type: Optional[str] = None
+    tips: Optional[str] = None  # Comma-separated or JSON string
 
 class TestimonialCreate(TestimonialBase):
     pass
@@ -202,6 +206,10 @@ class TestimonialResponse(TestimonialBase):
 
 class TestimonialUpdate(BaseModel):
     is_approved: Optional[bool] = None
+    subtitle: Optional[str] = None
+    image_url: Optional[str] = None
+    story_type: Optional[str] = None
+    tips: Optional[str] = None
 
 # Contact Inquiry Schemas
 class ContactInquiryBase(BaseModel):

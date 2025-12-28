@@ -107,6 +107,11 @@ class Testimonial(Base):
     rating = Column(Integer, default=5)
     is_approved = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    # New fields for richer story content
+    subtitle = Column(String(255))
+    image_url = Column(String(500))
+    story_type = Column(String(50))  # e.g., 'video', 'article'
+    tips = Column(Text)  # JSON string or comma-separated tips
 
 class ContactInquiry(Base):
     __tablename__ = "contact_inquiries"

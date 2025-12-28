@@ -20,9 +20,7 @@ import AdminServices from './pages/admin/AdminServices';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminInquiries from './pages/admin/AdminInquiries';
 
-import StoryLizzy from './pages/StoryLizzy';
-import StoryKelly from './pages/StoryKelly';
-import StoryAnitha from './pages/StoryAnitha';
+import StoryPage from './pages/StoryPage';
 
 function App() {
   return (
@@ -40,10 +38,8 @@ function App() {
           <Route path="/register" element={<><Navbar /><RegisterPage /><Footer /></>} />
           <Route path="/check-booking" element={<><Navbar /><CheckBookingPage /><Footer /></>} />
           
-          {/* Patient Story Routes */}
-          <Route path="/story/lizzy" element={<><Navbar /><StoryLizzy /><Footer /></>} />
-          <Route path="/story/kelly" element={<><Navbar /><StoryKelly /><Footer /></>} />
-          <Route path="/story/anitha" element={<><Navbar /><StoryAnitha /><Footer /></>} />
+          {/* Dynamic Patient Story Route */}
+          <Route path="/stories/:id" element={<><Navbar /><StoryPage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>

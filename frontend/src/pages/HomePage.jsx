@@ -348,39 +348,18 @@ const HomePage = () => {
             <p className="text-gray-600 mt-2 max-w-2xl mx-auto">Real stories from our patients who have regained their mobility, confidence, and quality of life with NovaCare 24/7.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Story 1 */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col items-center text-center shadow-sm">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Patient Lizzy" className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-primary-100" />
-              <h4 className="font-semibold text-gray-900 mb-1">Lizzy Thomas</h4>
-              <p className="text-primary-600 text-xs mb-2">Recovered from Knee Injury</p>
-              <p className="text-gray-600 text-sm mb-3">“After my accident, I never thought I’d walk pain-free again. Thanks to NovaCare’s expert team, I’m back on my feet and even jogging!”</p>
-              <Link to="/story/lizzy" className="text-primary-600 font-medium text-sm hover:underline flex items-center gap-1 mt-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.868v4.264a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" /></svg>
-                Watch Lizzy's Story
-              </Link>
-            </div>
-            {/* Story 2 */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col items-center text-center shadow-sm">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Patient Kelly" className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-primary-100" />
-              <h4 className="font-semibold text-gray-900 mb-1">Kelly Raj</h4>
-              <p className="text-primary-600 text-xs mb-2">Sports Injury Recovery</p>
-              <p className="text-gray-600 text-sm mb-3">“The personalized care and encouragement I received made all the difference. I’m back to playing cricket with my friends!”</p>
-              <Link to="/story/kelly" className="text-primary-600 font-medium text-sm hover:underline flex items-center gap-1 mt-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>
-                Read Kelly's Story
-              </Link>
-            </div>
-            {/* Story 3 */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col items-center text-center shadow-sm">
-              <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Patient Anitha" className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-primary-100" />
-              <h4 className="font-semibold text-gray-900 mb-1">Anitha Reddy</h4>
-              <p className="text-primary-600 text-xs mb-2">Chronic Back Pain Relief</p>
-              <p className="text-gray-600 text-sm mb-3">“Years of back pain are finally gone. The NovaCare team truly cares and gave me my life back!”</p>
-              <Link to="/story/anitha" className="text-primary-600 font-medium text-sm hover:underline flex items-center gap-1 mt-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>
-                Read Anitha's Story
-              </Link>
-            </div>
+            {testimonials.map((t, idx) => (
+              <div key={t.id} className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col items-center text-center shadow-sm">
+                <img src={`https://randomuser.me/api/portraits/${idx % 2 === 0 ? 'women' : 'men'}/${44 + idx * 21}.jpg`} alt={`Patient ${t.patient_name}`} className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-primary-100" />
+                <h4 className="font-semibold text-gray-900 mb-1">{t.patient_name}</h4>
+                <p className="text-primary-600 text-xs mb-2">{t.rating >= 4 ? 'Success Story' : 'Patient'}</p>
+                <p className="text-gray-600 text-sm mb-3">“{t.content.length > 90 ? t.content.slice(0, 87) + '…' : t.content}”</p>
+                <Link to={`/stories/${t.id}`} className="text-primary-600 font-medium text-sm hover:underline flex items-center gap-1 mt-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>
+                  Read {t.patient_name}'s Story
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
