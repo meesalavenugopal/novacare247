@@ -169,7 +169,7 @@ const RegisterPage = () => {
       </div>
 
       {/* Form Container - Right Side */}
-      <div className="absolute top-0 right-0 w-full lg:w-[45%] h-full flex items-center justify-center p-8 lg:p-12 overflow-y-auto z-20">
+      <div className="absolute top-0 right-0 w-full lg:w-[45%] h-full flex items-center justify-center p-8 lg:p-12 z-20">
         <div className="w-full max-w-md py-8">
           <div className="bg-white border border-gray-200 p-8 shadow-lg rounded-lg">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Create Your Account</h2>
