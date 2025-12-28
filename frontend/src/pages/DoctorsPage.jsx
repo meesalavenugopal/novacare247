@@ -606,6 +606,15 @@ const DoctorsPage = () => {
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2">{doctor.bio}</p>
                     )}
 
+                    {/* View Profile Link */}
+                    <Link 
+                      to={`/doctors/${doctor.id}`}
+                      className="text-primary-600 font-medium text-sm hover:underline flex items-center gap-1.5 mb-4"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                      View Profile & Reviews
+                    </Link>
+
                     {/* Availability */}
                     <div className="flex items-center gap-2 mb-4">
                       <span className={`w-2 h-2 ${doctor.is_available ? 'bg-green-500' : 'bg-red-500'}`}></span>
