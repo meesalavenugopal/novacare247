@@ -91,7 +91,10 @@ const Navbar = () => {
                 <h1 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
                   Chinamayi
                 </h1>
-                <p className="text-[11px] font-medium text-primary-500 tracking-wide uppercase">Physiotherapy Clinics</p>
+                <p className="text-[11px] font-medium text-primary-500 tracking-wide uppercase flex items-center gap-1.5">
+                  Physiotherapy Clinics
+                  <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5 animate-pulse">24/7</span>
+                </p>
               </div>
             </Link>
 

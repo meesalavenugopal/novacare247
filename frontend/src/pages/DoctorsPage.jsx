@@ -1,15 +1,181 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Star, Calendar, GraduationCap, Stethoscope, ArrowRight } from 'lucide-react';
+import { Award, Star, Calendar, GraduationCap, Stethoscope, ArrowRight, MapPin, Navigation, Filter, X, ChevronDown, Building2, Video, Home, Building } from 'lucide-react';
 import { doctorsAPI } from '../services/api';
+
+// Indian states
+const indianStates = [
+  { id: 'all', name: 'All States' },
+  { id: 'telangana', name: 'Telangana' },
+  { id: 'andhra-pradesh', name: 'Andhra Pradesh' },
+  { id: 'karnataka', name: 'Karnataka' },
+  { id: 'tamil-nadu', name: 'Tamil Nadu' },
+  { id: 'maharashtra', name: 'Maharashtra' },
+  { id: 'kerala', name: 'Kerala' },
+  { id: 'delhi', name: 'Delhi' },
+  { id: 'gujarat', name: 'Gujarat' },
+  { id: 'rajasthan', name: 'Rajasthan' },
+  { id: 'west-bengal', name: 'West Bengal' },
+];
+
+// Clinic locations with coordinates (grouped by state)
+const clinicLocations = [
+  { id: 'all', name: 'All Locations', state: 'all' },
+  { id: 'kukatpally', name: 'Kukatpally', lat: 17.4947, lng: 78.3996, state: 'telangana' },
+  { id: 'gachibowli', name: 'Gachibowli', lat: 17.4401, lng: 78.3489, state: 'telangana' },
+  { id: 'madhapur', name: 'Madhapur', lat: 17.4486, lng: 78.3908, state: 'telangana' },
+  { id: 'secunderabad', name: 'Secunderabad', lat: 17.4399, lng: 78.4983, state: 'telangana' },
+  { id: 'jubileehills', name: 'Jubilee Hills', lat: 17.4325, lng: 78.4073, state: 'telangana' },
+  { id: 'vizag', name: 'Visakhapatnam', lat: 17.6868, lng: 83.2185, state: 'andhra-pradesh' },
+  { id: 'vijayawada', name: 'Vijayawada', lat: 16.5062, lng: 80.6480, state: 'andhra-pradesh' },
+  { id: 'bangalore', name: 'Bangalore', lat: 12.9716, lng: 77.5946, state: 'karnataka' },
+  { id: 'chennai', name: 'Chennai', lat: 13.0827, lng: 80.2707, state: 'tamil-nadu' },
+];
+
+// Specializations available
+const specializations = [
+  'All Specialties',
+  'Orthopedic Physiotherapy',
+  'Neurological Physiotherapy',
+  'Sports Physiotherapy',
+  'Pediatric Physiotherapy',
+  "Women's Health Physiotherapy",
+  'Geriatric Physiotherapy',
+  'Cardiopulmonary Physiotherapy',
+];
+
+// Consultation types
+const consultationTypes = [
+  { id: 'all', name: 'All Consultation Types', icon: 'all' },
+  { id: 'clinic', name: 'In-Clinic Visit', icon: 'clinic' },
+  { id: 'home', name: 'Home Visit', icon: 'home' },
+  { id: 'video', name: 'Video Consultation', icon: 'video' },
+];
 
 const DoctorsPage = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Filter states
+  const [selectedState, setSelectedState] = useState('all');
+  const [selectedLocation, setSelectedLocation] = useState('all');
+  const [selectedSpecialty, setSelectedSpecialty] = useState('All Specialties');
+  const [selectedConsultationType, setSelectedConsultationType] = useState('all');
+  const [nearMeEnabled, setNearMeEnabled] = useState(false);
+  const [nearMeDistance, setNearMeDistance] = useState(5); // km
+  const [userLocation, setUserLocation] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Get filtered locations based on selected state
+  const filteredLocations = useMemo(() => {
+    if (selectedState === 'all') return clinicLocations;
+    return [
+      { id: 'all', name: 'All Locations', state: 'all' },
+      ...clinicLocations.filter(loc => loc.state === selectedState)
+    ];
+  }, [selectedState]);
 
   useEffect(() => {
     loadDoctors();
   }, []);
+
+  // Reset location when state changes
+  useEffect(() => {
+    setSelectedLocation('all');
+  }, [selectedState]);
+
+  // Get user's location when "Near Me" is enabled
+  const handleNearMeToggle = () => {
+    if (!nearMeEnabled) {
+      setLocationLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          setNearMeEnabled(true);
+          setSelectedLocation('all'); // Reset location filter
+          setLocationLoading(false);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Unable to get your location. Please enable location services.');
+          setLocationLoading(false);
+        }
+      );
+    } else {
+      setNearMeEnabled(false);
+      setUserLocation(null);
+    }
+  };
+
+  // Calculate distance between two points (Haversine formula)
+  const calculateDistance = (lat1, lng1, lat2, lng2) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  };
+
+  // Get nearby clinics based on user location
+  const getNearbyClinics = useMemo(() => {
+    if (!userLocation) return [];
+    return clinicLocations
+      .filter(loc => loc.id !== 'all')
+      .map(loc => ({
+        ...loc,
+        distance: calculateDistance(userLocation.lat, userLocation.lng, loc.lat, loc.lng)
+      }))
+      .filter(loc => loc.distance <= nearMeDistance)
+      .sort((a, b) => a.distance - b.distance);
+  }, [userLocation, nearMeDistance]);
+
+  // Filter doctors based on selected filters
+  const filteredDoctors = useMemo(() => {
+    let result = [...doctors];
+    
+    // Filter by specialty
+    if (selectedSpecialty !== 'All Specialties') {
+      result = result.filter(doc => doc.specialization === selectedSpecialty);
+    }
+    
+    // Filter by location (simulated - in real app, doctors would have location data)
+    if (selectedLocation !== 'all' && !nearMeEnabled) {
+      // For demo, show all doctors when specific location selected
+      // In production, filter by doctor.location_id
+    }
+    
+    return result;
+  }, [doctors, selectedSpecialty, selectedLocation, nearMeEnabled]);
+
+  // Get unique specializations from doctors
+  const availableSpecializations = useMemo(() => {
+    const specs = new Set(doctors.map(d => d.specialization));
+    return ['All Specialties', ...Array.from(specs)];
+  }, [doctors]);
+
+  const clearFilters = () => {
+    setSelectedState('all');
+    setSelectedLocation('all');
+    setSelectedSpecialty('All Specialties');
+    setSelectedConsultationType('all');
+    setNearMeEnabled(false);
+    setUserLocation(null);
+  };
+
+  const activeFiltersCount = [
+    selectedState !== 'all',
+    selectedLocation !== 'all',
+    selectedSpecialty !== 'All Specialties',
+    selectedConsultationType !== 'all',
+    nearMeEnabled
+  ].filter(Boolean).length;
 
   const loadDoctors = async () => {
     try {
@@ -96,20 +262,218 @@ const DoctorsPage = () => {
       {/* Doctors Grid */}
       <section className="py-20 bg-gray-50 border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Doctors</span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">
               Choose Your Specialist
             </h2>
           </div>
 
+          {/* Filters Section */}
+          <div className="mb-10">
+            {/* Mobile Filter Toggle */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="lg:hidden w-full flex items-center justify-between bg-white border border-gray-200 px-4 py-3 mb-4"
+            >
+              <span className="flex items-center gap-2 font-medium text-gray-700">
+                <Filter size={18} />
+                Filters
+                {activeFiltersCount > 0 && (
+                  <span className="bg-primary-500 text-white text-xs font-bold px-2 py-0.5">{activeFiltersCount}</span>
+                )}
+              </span>
+              <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Filter Bar */}
+            <div className={`${showFilters ? 'block' : 'hidden'} lg:block bg-white border border-gray-200 p-5`}>
+              {/* Row 1: Near Me + Results */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-5 border-b border-gray-100">
+                <div className="flex items-center gap-4">
+                  {/* Near Me Button */}
+                  <button
+                    onClick={handleNearMeToggle}
+                    disabled={locationLoading}
+                    className={`flex items-center gap-2 px-5 py-2.5 font-medium transition-colors ${
+                      nearMeEnabled 
+                        ? 'bg-primary-600 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    } ${locationLoading ? 'opacity-50 cursor-wait' : ''}`}
+                  >
+                    <Navigation size={18} className={locationLoading ? 'animate-pulse' : ''} />
+                    {locationLoading ? 'Getting Location...' : nearMeEnabled ? 'Near Me ✓' : 'Near Me'}
+                  </button>
+
+                  {/* Distance Selector (visible when Near Me is enabled) */}
+                  {nearMeEnabled && (
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-gray-600">Within:</span>
+                      <select
+                        value={nearMeDistance}
+                        onChange={(e) => setNearMeDistance(Number(e.target.value))}
+                        className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      >
+                        <option value={2}>2 km</option>
+                        <option value={5}>5 km</option>
+                        <option value={10}>10 km</option>
+                        <option value={20}>20 km</option>
+                        <option value={50}>50 km</option>
+                      </select>
+                      {getNearbyClinics.length > 0 && (
+                        <span className="text-xs text-green-600 bg-green-50 px-2 py-1">
+                          {getNearbyClinics.length} clinic{getNearbyClinics.length > 1 ? 's' : ''} nearby
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Results Count + Clear */}
+                <div className="flex items-center gap-4">
+                  {activeFiltersCount > 0 && (
+                    <button
+                      onClick={clearFilters}
+                      className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 font-medium"
+                    >
+                      <X size={16} />
+                      Clear All
+                    </button>
+                  )}
+                  <div className="text-sm text-gray-600 bg-gray-50 px-4 py-2">
+                    Showing <span className="font-bold text-primary-600">{filteredDoctors.length}</span> doctor{filteredDoctors.length !== 1 ? 's' : ''}
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: Filter Dropdowns */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* State Dropdown */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
+                    <Building2 size={14} />
+                    State
+                  </label>
+                  <select
+                    value={selectedState}
+                    onChange={(e) => {
+                      setSelectedState(e.target.value);
+                      if (e.target.value !== 'all') {
+                        setNearMeEnabled(false);
+                        setUserLocation(null);
+                      }
+                    }}
+                    disabled={nearMeEnabled}
+                    className={`w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-50 ${nearMeEnabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {indianStates.map(state => (
+                      <option key={state.id} value={state.id}>{state.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Location Dropdown */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
+                    <MapPin size={14} />
+                    Location
+                  </label>
+                  <select
+                    value={selectedLocation}
+                    onChange={(e) => {
+                      setSelectedLocation(e.target.value);
+                      if (e.target.value !== 'all') {
+                        setNearMeEnabled(false);
+                        setUserLocation(null);
+                      }
+                    }}
+                    disabled={nearMeEnabled}
+                    className={`w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-50 ${nearMeEnabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {filteredLocations.map(loc => (
+                      <option key={loc.id} value={loc.id}>{loc.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Specialty Dropdown */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
+                    <Stethoscope size={14} />
+                    Specialty
+                  </label>
+                  <select
+                    value={selectedSpecialty}
+                    onChange={(e) => setSelectedSpecialty(e.target.value)}
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-50"
+                  >
+                    {availableSpecializations.map(spec => (
+                      <option key={spec} value={spec}>{spec}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Consultation Type Dropdown */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
+                    {selectedConsultationType === 'home' ? (
+                      <Home size={14} />
+                    ) : selectedConsultationType === 'video' ? (
+                      <Video size={14} />
+                    ) : (
+                      <Building size={14} />
+                    )}
+                    Consultation Type
+                  </label>
+                  <select
+                    value={selectedConsultationType}
+                    onChange={(e) => setSelectedConsultationType(e.target.value)}
+                    className="w-full border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-50"
+                  >
+                    {consultationTypes.map(type => (
+                      <option key={type.id} value={type.id}>{type.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Near Me - Nearby Clinics List */}
+              {nearMeEnabled && getNearbyClinics.length > 0 && (
+                <div className="mt-5 pt-5 border-t border-gray-100">
+                  <p className="text-sm text-gray-600 mb-2">Clinics near you:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {getNearbyClinics.map(clinic => (
+                      <span key={clinic.id} className="inline-flex items-center gap-1 bg-primary-50 border border-primary-100 text-primary-700 text-sm px-3 py-1.5">
+                        <MapPin size={14} />
+                        {clinic.name}
+                        <span className="text-primary-500">({clinic.distance.toFixed(1)} km)</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
           {loading ? (
             <div className="flex items-center justify-center h-64">
               <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent"></div>
             </div>
+          ) : filteredDoctors.length === 0 ? (
+            <div className="text-center py-16 bg-white border border-gray-200">
+              <Stethoscope className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No doctors found</h3>
+              <p className="text-gray-600 mb-4">Try adjusting your filters to find available doctors.</p>
+              <button
+                onClick={clearFilters}
+                className="bg-primary-600 text-white px-6 py-2 font-medium hover:bg-primary-700 transition-colors"
+              >
+                Clear All Filters
+              </button>
+            </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {doctors.map((doctor, index) => (
+              {filteredDoctors.map((doctor, index) => (
                 <div 
                   key={doctor.id} 
                   className="bg-white border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-md transition-all group"
