@@ -97,7 +97,7 @@ def create_service(
     db.refresh(new_service)
     return new_service
 
-@router.put("/{service_id}", response_model=ServiceResponse)
+@router.put("/{service_id}/", response_model=ServiceResponse)
 def update_service(
     service_id: int,
     service_data: ServiceUpdate,
@@ -117,7 +117,7 @@ def update_service(
     db.refresh(service)
     return service
 
-@router.delete("/{service_id}")
+@router.delete("/{service_id}/")
 def delete_service(
     service_id: int,
     db: Session = Depends(get_db),
