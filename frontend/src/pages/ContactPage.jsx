@@ -39,7 +39,7 @@ const ContactPage = () => {
 
   const contactInfo = [
     { icon: Phone, title: 'Phone', value: '+91 98765 43210', link: 'tel:+919876543210' },
-    { icon: Mail, title: 'Email', value: 'info@chinamayi.com', link: 'mailto:info@chinamayi.com' },
+    { icon: Mail, title: 'Email', value: 'info@novacare247.com', link: 'mailto:info@novacare247.com' },
     { icon: MapPin, title: 'Address', value: 'Banjara Hills, Hyderabad', link: '#' },
     { icon: Clock, title: 'Hours', value: 'Mon-Sat: 9AM - 8PM', link: '#' },
   ];
@@ -234,13 +234,13 @@ const ContactPage = () => {
                       <p className="font-bold">+91 98765 43210</p>
                     </div>
                   </a>
-                  <a href="mailto:info@chinamayi.com" className="flex items-center gap-4 bg-white/10 p-4 hover:bg-white/20 transition-colors">
+                  <a href="mailto:info@novacare247.com" className="flex items-center gap-4 bg-white/10 p-4 hover:bg-white/20 transition-colors">
                     <div className="w-10 h-10 bg-white/20 flex items-center justify-center">
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
                       <p className="text-sm text-primary-200">Email Us</p>
-                      <p className="font-bold">info@chinamayi.com</p>
+                      <p className="font-bold">info@novacare247.com</p>
                     </div>
                   </a>
                 </div>

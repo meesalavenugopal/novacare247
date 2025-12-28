@@ -40,11 +40,11 @@ const Navbar = () => {
               <span className="font-medium">+91 98765 43210</span>
             </a>
             <div className="w-px h-4 bg-gray-200"></div>
-            <a href="mailto:info@chinamayi.com" className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
+            <a href="mailto:info@novacare247.com" className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors">
               <div className="w-7 h-7 rounded-full bg-primary-50 flex items-center justify-center">
                 <Mail size={12} className="text-primary-600" />
               </div>
-              <span className="font-medium">info@chinamayi.com</span>
+              <span className="font-medium">info@novacare247.com</span>
             </a>
             <div className="w-px h-4 bg-gray-200"></div>
             <div className="flex items-center gap-2 text-gray-600">
@@ -77,10 +77,19 @@ const Navbar = () => {
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 group-hover:shadow-primary-500/40 transition-shadow">
-                  <svg className="w-7 h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
-                    <circle cx="50" cy="30" r="12" />
-                    <path d="M30 55 Q50 80 70 55" strokeWidth="8" stroke="currentColor" fill="none" strokeLinecap="round" />
-                    <path d="M40 70 L50 90 L60 70" strokeWidth="6" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg className="w-8 h-8 text-white" viewBox="0 0 100 100" fill="currentColor">
+                    {/* Lotus with Caduceus - Medical Symbol */}
+                    {/* Lotus petals */}
+                    <path d="M50 8 C50 8 38 22 38 32 C38 40 43 44 50 44 C57 44 62 40 62 32 C62 22 50 8 50 8" opacity="0.95" />
+                    <path d="M50 15 C50 15 30 28 25 38 C22 44 28 48 36 45 C42 42 50 35 50 35" opacity="0.8" />
+                    <path d="M50 15 C50 15 70 28 75 38 C78 44 72 48 64 45 C58 42 50 35 50 35" opacity="0.8" />
+                    <path d="M50 22 C50 22 22 32 15 42 C12 48 20 52 30 48 C38 45 50 38 50 38" opacity="0.65" />
+                    <path d="M50 22 C50 22 78 32 85 42 C88 48 80 52 70 48 C62 45 50 38 50 38" opacity="0.65" />
+                    {/* Caduceus staff */}
+                    <rect x="48" y="42" width="4" height="50" rx="1" />
+                    {/* Snake wrapping around staff */}
+                    <path d="M50 50 C58 52 56 58 50 60 C44 62 42 68 50 70 C58 72 56 78 50 80 C44 82 44 88 50 90" 
+                          fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                   </svg>
                 </div>
                 <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-secondary-400 rounded-full border-2 border-white flex items-center justify-center">
@@ -89,7 +98,7 @@ const Navbar = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                  Chinamayi
+                  NovaCare
                 </h1>
                 <p className="text-[11px] font-medium text-primary-500 tracking-wide uppercase flex items-center gap-1.5">
                   Physiotherapy Clinics

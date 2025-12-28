@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Chinamayi Physiotherapy Clinics"
+    APP_NAME: str = "NovaCare 24/7 Physiotherapy Clinics"
     DATABASE_URL: str = "postgresql://venugopalmeesala@localhost:5432/chinamayi"
     SECRET_KEY: str = "your-super-secret-key-change-in-production"
     ALGORITHM: str = "HS256"

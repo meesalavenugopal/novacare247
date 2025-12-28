@@ -81,7 +81,7 @@ const HomePage = () => {
               </h1>
               
               <p className="text-base text-gray-600 mb-8 leading-relaxed">
-                At Chinamayi Physiotherapy Clinics, we provide personalized treatment 
+                At NovaCare 24/7 Physiotherapy Clinics, we provide personalized treatment 
                 plans to help you recover faster and live pain-free. Our experienced 
                 specialists are dedicated to your well-being.
               </p>
@@ -155,10 +155,10 @@ const HomePage = () => {
             <div className="flex flex-col justify-center">
               <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">About Us</span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
-                Why Choose <span className="text-primary-600">Chinamayi?</span>
+                Why Choose <span className="text-primary-600">NovaCare 24/7?</span>
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
-                At Chinamayi Physiotherapy Clinics, we combine decades of expertise with 
+                At NovaCare 24/7 Physiotherapy Clinics, we combine decades of expertise with 
                 compassionate care to deliver exceptional outcomes. Our holistic approach 
                 ensures every treatment is personalized to your unique needs.
               </p>

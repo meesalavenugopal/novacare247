@@ -14,7 +14,7 @@ const AboutPage = () => {
   ];
 
   const milestones = [
-    { year: '2010', title: 'Foundation', desc: 'Chinamayi Physiotherapy Clinics was established with a vision to provide quality care.' },
+    { year: '2010', title: 'Foundation', desc: 'NovaCare 24/7 Physiotherapy Clinics was established with a vision to provide quality care.' },
     { year: '2014', title: 'Expansion', desc: 'Opened second clinic and grew team to 10 physiotherapists.' },
     { year: '2018', title: 'Recognition', desc: 'Awarded "Best Physiotherapy Clinic" in Hyderabad.' },
     { year: '2022', title: 'Milestone', desc: 'Celebrated 10,000+ successful patient recoveries.' },
@@ -26,7 +26,7 @@ const AboutPage = () => {
       name: 'Dr. Priya Sharma', 
       role: 'Founder & Chief Physiotherapist',
       image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
-      desc: 'With 15+ years of experience, Dr. Priya founded Chinamayi with a mission to make quality physiotherapy accessible to all.'
+      desc: 'With 15+ years of experience, Dr. Priya founded NovaCare 24/7 with a mission to make quality physiotherapy accessible to all.'
     },
     { 
       name: 'Dr. Rajesh Kumar', 
@@ -62,7 +62,7 @@ const AboutPage = () => {
               Dedicated to Your Health & Recovery
             </h1>
             <p className="text-xl text-primary-100 leading-relaxed">
-              For over 15 years, Chinamayi Physiotherapy Clinics has been the trusted 
+              For over 15 years, NovaCare 24/7 Physiotherapy Clinics has been the trusted 
               partner in health for thousands of patients across Hyderabad.
             </p>
           </div>
@@ -122,7 +122,7 @@ const AboutPage = () => {
                 A Legacy of Healing and Hope
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Founded in 2010 by Dr. Priya Sharma, Chinamayi Physiotherapy Clinics 
+                Founded in 2010 by Dr. Priya Sharma, NovaCare 24/7 Physiotherapy Clinics 
                 began with a simple mission: to provide world-class physiotherapy care 
                 that's accessible, personalized, and effective.
               </p>
@@ -155,7 +155,7 @@ const AboutPage = () => {
               What Drives Us
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our core values guide everything we do at Chinamayi
+              Our core values guide everything we do at NovaCare 24/7
             </p>
           </div>
 
@@ -250,7 +250,7 @@ const AboutPage = () => {
               Ready to Experience Our Care?
             </h2>
             <p className="text-primary-100 mb-8">
-              Join thousands of patients who have found relief and recovery at Chinamayi.
+              Join thousands of patients who have found relief and recovery at NovaCare 24/7.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link 

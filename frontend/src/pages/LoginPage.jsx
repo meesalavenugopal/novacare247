@@ -141,12 +141,12 @@ const LoginPage = () => {
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div className="bg-gray-50 border border-gray-100 p-3">
                     <p className="font-medium text-gray-700">Admin</p>
-                    <p className="text-gray-500">admin@chinamayi.com</p>
+                    <p className="text-gray-500">admin@novacare247.com</p>
                     <p className="text-gray-500">admin123</p>
                   </div>
                   <div className="bg-gray-50 border border-gray-100 p-3">
                     <p className="font-medium text-gray-700">Doctor</p>
-                    <p className="text-gray-500">dr.priya@chinamayi.com</p>
+                    <p className="text-gray-500">dr.priya@novacare247.com</p>
                     <p className="text-gray-500">doctor123</p>
                   </div>
                 </div>

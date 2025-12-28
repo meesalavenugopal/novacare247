@@ -10,13 +10,23 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" viewBox="0 0 100 100" fill="currentColor">
-                  <circle cx="50" cy="35" r="10" />
-                  <path d="M35 50 Q50 70 65 50 Q50 90 35 50" />
+                <svg className="w-7 h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
+                  {/* Lotus with Caduceus - Medical Symbol */}
+                  {/* Lotus petals */}
+                  <path d="M50 8 C50 8 38 22 38 32 C38 40 43 44 50 44 C57 44 62 40 62 32 C62 22 50 8 50 8" opacity="0.95" />
+                  <path d="M50 15 C50 15 30 28 25 38 C22 44 28 48 36 45 C42 42 50 35 50 35" opacity="0.8" />
+                  <path d="M50 15 C50 15 70 28 75 38 C78 44 72 48 64 45 C58 42 50 35 50 35" opacity="0.8" />
+                  <path d="M50 22 C50 22 22 32 15 42 C12 48 20 52 30 48 C38 45 50 38 50 38" opacity="0.65" />
+                  <path d="M50 22 C50 22 78 32 85 42 C88 48 80 52 70 48 C62 45 50 38 50 38" opacity="0.65" />
+                  {/* Caduceus staff */}
+                  <rect x="48" y="42" width="4" height="50" rx="1" />
+                  {/* Snake wrapping around staff */}
+                  <path d="M50 50 C58 52 56 58 50 60 C44 62 42 68 50 70 C58 72 56 78 50 80 C44 82 44 88 50 90" 
+                        fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-white font-bold text-lg">Chinamayi</h3>
+                <h3 className="text-white font-bold text-lg">NovaCare</h3>
                 <p className="text-xs text-primary-400 flex items-center gap-1.5">
                   Physiotherapy Clinics
                   <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5">24/7</span>
@@ -81,7 +91,7 @@ const Footer = () => {
                 <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0">
                   <Mail size={16} className="text-primary-400" />
                 </div>
-                <span>info@chinamayi.com</span>
+                <span>info@novacare247.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5">

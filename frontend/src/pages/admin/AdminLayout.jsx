@@ -72,7 +72,7 @@ const AdminLayout = () => {
               <span className="text-white font-bold text-lg">C</span>
             </div>
             <div>
-              <h1 className="text-white font-semibold text-sm">Chinamayi</h1>
+              <h1 className="text-white font-semibold text-sm">NovaCare 24/7</h1>
               <p className="text-gray-400 text-xs">Admin Panel</p>
             </div>
           </div>
