@@ -209,7 +209,7 @@ const ServicesPage = () => {
                       
                       <div className="flex gap-2 mt-auto">
                         <Link 
-                          to={`/services/${service.id}`}
+                          to={`/services/${service.slug}`}
                           className="flex-1 inline-flex items-center justify-center gap-2 border border-primary-600 text-primary-600 hover:bg-primary-50 font-medium text-sm py-2.5 px-4 transition-colors"
                         >
                           Learn More

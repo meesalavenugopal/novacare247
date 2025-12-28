@@ -65,6 +65,7 @@ class DoctorResponse(DoctorBase):
     id: int
     user_id: int
     branch_id: Optional[int]
+    slug: Optional[str]
     is_available: bool
     created_at: datetime
     user: UserResponse
@@ -141,6 +142,7 @@ class BranchInfo(BaseModel):
 
 class DoctorPublic(BaseModel):
     id: int
+    slug: Optional[str] = None
     specialization: str
     qualification: Optional[str]
     experience_years: int
@@ -244,6 +246,7 @@ class ServiceCreate(ServiceBase):
 
 class ServiceResponse(ServiceBase):
     id: int
+    slug: Optional[str] = None
     is_active: bool
     created_at: datetime
     
@@ -254,6 +257,7 @@ class ServiceResponse(ServiceBase):
 class ServicePublic(BaseModel):
     """Public service response with parsed JSON fields"""
     id: int
+    slug: Optional[str] = None
     name: str
     description: Optional[str]
     detailed_description: Optional[str]

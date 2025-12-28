@@ -43,6 +43,7 @@ class Doctor(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     branch_id = Column(Integer, ForeignKey("branches.id"), nullable=True)  # Optional branch assignment
+    slug = Column(String(255), unique=True, index=True)  # URL-friendly unique identifier
     specialization = Column(String(255), nullable=False)
     qualification = Column(String(500))
     experience_years = Column(Integer, default=0)
@@ -140,6 +141,7 @@ class Service(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
+    slug = Column(String(255), unique=True, index=True)  # URL-friendly unique identifier
     description = Column(Text)
     detailed_description = Column(Text)  # Full detailed description for profile page
     duration = Column(Integer, default=60)  # Duration in minutes

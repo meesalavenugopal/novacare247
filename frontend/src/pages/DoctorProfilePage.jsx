@@ -5,7 +5,7 @@ import { doctorsAPI } from '../services/api';
 import SEO from '../components/SEO';
 
 const DoctorProfilePage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [doctor, setDoctor] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,13 +16,14 @@ const DoctorProfilePage = () => {
 
   useEffect(() => {
     loadDoctor();
-    loadReviews();
-  }, [id]);
+  }, [slug]);
 
   const loadDoctor = async () => {
     try {
-      const response = await doctorsAPI.getById(id);
+      const response = await doctorsAPI.getBySlug(slug);
       setDoctor(response.data);
+      // Load reviews after getting doctor data
+      loadReviews(response.data.id);
     } catch (error) {
       console.error('Error loading doctor:', error);
     } finally {
@@ -30,9 +31,9 @@ const DoctorProfilePage = () => {
     }
   };
 
-  const loadReviews = async () => {
+  const loadReviews = async (doctorId) => {
     try {
-      const response = await doctorsAPI.getReviews(id);
+      const response = await doctorsAPI.getReviews(doctorId);
       setReviews(response.data);
     } catch (error) {
       console.error('Error loading reviews:', error);
@@ -89,7 +90,7 @@ const DoctorProfilePage = () => {
         title={`${doctor.full_name} - ${doctor.specialization || 'Physiotherapist'}`}
         description={`Book appointment with ${doctor.full_name}, expert ${doctor.specialization || 'physiotherapist'} at NovaCare. ${doctor.experience_years}+ years experience. ${doctor.qualification || ''}`}
         keywords={`${doctor.full_name}, ${doctor.specialization}, physiotherapist, NovaCare doctor, book physio appointment`}
-        canonical={`https://novacare247.com/doctors/${id}`}
+        canonical={`https://novacare247.com/doctors/${slug}`}
         doctor={doctor}
       />
       {/* Hero Section */}

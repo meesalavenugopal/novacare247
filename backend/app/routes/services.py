@@ -7,6 +7,7 @@ from app.models import Service
 from app.schemas import ServiceCreate, ServiceResponse, ServiceUpdate, ServicePublic
 from app.auth import get_admin_user
 from app.models import User
+from app.utils.slugs import generate_service_slug
 
 router = APIRouter(prefix="/api/services", tags=["Services"])
 
@@ -44,6 +45,7 @@ def build_service_public(service: Service) -> ServicePublic:
     
     return ServicePublic(
         id=service.id,
+        slug=service.slug,
         name=service.name,
         description=service.description,
         detailed_description=service.detailed_description,
@@ -76,6 +78,16 @@ def get_all_services(
     services = db.query(Service).order_by(Service.id).offset(skip).limit(limit).all()
     return services
 
+
+@router.get("/slug/{slug}/", response_model=ServicePublic)
+def get_service_by_slug(slug: str, db: Session = Depends(get_db)):
+    """Get service by slug (SEO-friendly URL)"""
+    service = db.query(Service).filter(Service.slug == slug).first()
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return build_service_public(service)
+
+
 @router.get("/{service_id}/", response_model=ServicePublic)
 def get_service(service_id: int, db: Session = Depends(get_db)):
     """Get service by ID with full details"""
@@ -91,7 +103,11 @@ def create_service(
     admin: User = Depends(get_admin_user)
 ):
     """Create a new service (admin only)"""
-    new_service = Service(**service_data.model_dump())
+    # Generate unique slug from service name
+    slug = generate_service_slug(db, service_data.name)
+    service_dict = service_data.model_dump()
+    service_dict['slug'] = slug
+    new_service = Service(**service_dict)
     db.add(new_service)
     db.commit()
     db.refresh(new_service)

@@ -36,7 +36,7 @@ const iconMap = {
 };
 
 const ServiceProfilePage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState(null);
@@ -46,11 +46,11 @@ const ServiceProfilePage = () => {
 
   useEffect(() => {
     loadService();
-  }, [id]);
+  }, [slug]);
 
   const loadService = async () => {
     try {
-      const response = await servicesAPI.getById(id);
+      const response = await servicesAPI.getBySlug(slug);
       setService(response.data);
     } catch (error) {
       console.error('Error loading service:', error);
@@ -98,7 +98,7 @@ const ServiceProfilePage = () => {
         title={`${service.name} - Physiotherapy Treatment`}
         description={`${service.description} Expert ${service.name} treatment at NovaCare. Book appointment now in Hyderabad, Vizag.`}
         keywords={`${service.name}, ${service.name} treatment, ${service.name} physiotherapy, physio for ${service.name}, NovaCare ${service.name}`}
-        canonical={`https://novacare247.com/services/${id}`}
+        canonical={`https://novacare247.com/services/${slug}`}
         service={service}
       />
       {/* Hero Section */}

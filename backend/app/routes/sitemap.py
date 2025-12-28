@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from datetime import datetime
+import re
 
 from app.database import get_db
 from app.models import BlogArticle, Doctor, Service
@@ -18,11 +19,29 @@ def format_date(dt: datetime) -> str:
     return datetime.now().strftime("%Y-%m-%d")
 
 
+def generate_slug(name: str) -> str:
+    """Generate URL-friendly slug from name"""
+    slug = name.lower()
+    slug = re.sub(r'[^a-z0-9\s-]', '', slug)
+    slug = re.sub(r'[\s_]+', '-', slug)
+    slug = re.sub(r'-+', '-', slug)
+    return slug.strip('-')
+
+
 @router.get("/sitemap.xml")
 def generate_sitemap(db: Session = Depends(get_db)):
     """Generate dynamic XML sitemap"""
     
     today = datetime.now().strftime("%Y-%m-%d")
+    
+    # Get latest update dates for dynamic pages
+    latest_service = db.query(Service).filter(Service.is_active == True).order_by(Service.created_at.desc()).first()
+    latest_doctor = db.query(Doctor).filter(Doctor.is_available == True).order_by(Doctor.created_at.desc()).first()
+    latest_blog = db.query(BlogArticle).filter(BlogArticle.is_published == True).order_by(BlogArticle.updated_at.desc()).first()
+    
+    services_lastmod = format_date(latest_service.created_at) if latest_service else today
+    doctors_lastmod = format_date(latest_doctor.created_at) if latest_doctor else today
+    blog_lastmod = format_date(latest_blog.updated_at or latest_blog.published_at) if latest_blog else today
     
     # Start XML
     xml_content = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -31,26 +50,26 @@ def generate_sitemap(db: Session = Depends(get_db)):
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 '''
     
-    # Static pages
+    # Static pages with dynamic lastmod where applicable
     static_pages = [
-        {"loc": "/", "changefreq": "daily", "priority": "1.0"},
-        {"loc": "/services", "changefreq": "weekly", "priority": "0.9"},
-        {"loc": "/doctors", "changefreq": "weekly", "priority": "0.9"},
-        {"loc": "/booking", "changefreq": "weekly", "priority": "0.9"},
-        {"loc": "/about", "changefreq": "monthly", "priority": "0.8"},
-        {"loc": "/contact", "changefreq": "monthly", "priority": "0.8"},
-        {"loc": "/story", "changefreq": "monthly", "priority": "0.7"},
-        {"loc": "/check-booking", "changefreq": "monthly", "priority": "0.6"},
-        {"loc": "/blog", "changefreq": "daily", "priority": "0.9"},
-        {"loc": "/privacy-policy", "changefreq": "yearly", "priority": "0.3"},
-        {"loc": "/terms-of-service", "changefreq": "yearly", "priority": "0.3"},
+        {"loc": "/", "changefreq": "daily", "priority": "1.0", "lastmod": today},
+        {"loc": "/services", "changefreq": "weekly", "priority": "0.9", "lastmod": services_lastmod},
+        {"loc": "/doctors", "changefreq": "weekly", "priority": "0.9", "lastmod": doctors_lastmod},
+        {"loc": "/booking", "changefreq": "weekly", "priority": "0.9", "lastmod": today},
+        {"loc": "/about", "changefreq": "monthly", "priority": "0.8", "lastmod": today},
+        {"loc": "/contact", "changefreq": "monthly", "priority": "0.8", "lastmod": today},
+        {"loc": "/story", "changefreq": "monthly", "priority": "0.7", "lastmod": today},
+        {"loc": "/check-booking", "changefreq": "monthly", "priority": "0.6", "lastmod": today},
+        {"loc": "/blog", "changefreq": "daily", "priority": "0.9", "lastmod": blog_lastmod},
+        {"loc": "/privacy-policy", "changefreq": "yearly", "priority": "0.3", "lastmod": today},
+        {"loc": "/terms-of-service", "changefreq": "yearly", "priority": "0.3", "lastmod": today},
     ]
     
     xml_content += "\n  <!-- Main Pages -->\n"
     for page in static_pages:
         xml_content += f'''  <url>
     <loc>{BASE_URL}{page["loc"]}</loc>
-    <lastmod>{today}</lastmod>
+    <lastmod>{page["lastmod"]}</lastmod>
     <changefreq>{page["changefreq"]}</changefreq>
     <priority>{page["priority"]}</priority>
   </url>
@@ -79,9 +98,11 @@ def generate_sitemap(db: Session = Depends(get_db)):
     if services:
         xml_content += "\n  <!-- Services -->\n"
         for service in services:
-            lastmod = format_date(service.updated_at if hasattr(service, 'updated_at') else None)
+            lastmod = format_date(service.created_at)
+            # Use slug if available, fallback to id
+            service_url = service.slug if service.slug else str(service.id)
             xml_content += f'''  <url>
-    <loc>{BASE_URL}/services/{service.slug}</loc>
+    <loc>{BASE_URL}/services/{service_url}</loc>
     <lastmod>{lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -89,14 +110,16 @@ def generate_sitemap(db: Session = Depends(get_db)):
 '''
     
     # Dynamic Doctors
-    doctors = db.query(Doctor).filter(Doctor.is_active == True).all()
+    doctors = db.query(Doctor).filter(Doctor.is_available == True).all()
     
     if doctors:
         xml_content += "\n  <!-- Doctors -->\n"
         for doctor in doctors:
-            lastmod = format_date(doctor.updated_at if hasattr(doctor, 'updated_at') else None)
+            lastmod = format_date(doctor.created_at)
+            # Use slug if available, fallback to id
+            doctor_url = doctor.slug if doctor.slug else str(doctor.id)
             xml_content += f'''  <url>
-    <loc>{BASE_URL}/doctors/{doctor.slug}</loc>
+    <loc>{BASE_URL}/doctors/{doctor_url}</loc>
     <lastmod>{lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

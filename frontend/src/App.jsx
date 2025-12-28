@@ -46,9 +46,9 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<><Navbar /><HomePage /><Footer /></>} />
           <Route path="/doctors" element={<><Navbar /><DoctorsPage /><Footer /></>} />
-          <Route path="/doctors/:id" element={<><Navbar /><DoctorProfilePage /><Footer /></>} />
+          <Route path="/doctors/:slug" element={<><Navbar /><DoctorProfilePage /><Footer /></>} />
           <Route path="/services" element={<><Navbar /><ServicesPage /><Footer /></>} />
-          <Route path="/services/:id" element={<><Navbar /><ServiceProfilePage /><Footer /></>} />
+          <Route path="/services/:slug" element={<><Navbar /><ServiceProfilePage /><Footer /></>} />
           <Route path="/book/:doctorId?" element={<><Navbar /><BookingPage /><Footer /></>} />
           <Route path="/contact" element={<><Navbar /><ContactPage /><Footer /></>} />
           <Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} />

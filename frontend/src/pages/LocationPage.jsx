@@ -399,7 +399,7 @@ const LocationPage = () => {
             {services.map((service, index) => (
               <Link 
                 key={service.id}
-                to={`/services/${service.id}`}
+                to={`/services/${service.slug}`}
                 className="bg-white border border-gray-200 p-6 hover:border-primary-300 transition-colors group"
               >
                 <h3 className="font-bold text-gray-800 mb-2 group-hover:text-primary-600 transition-colors">
@@ -454,7 +454,7 @@ const LocationPage = () => {
             {doctors.map((doctor) => (
               <Link 
                 key={doctor.id}
-                to={`/doctors/${doctor.id}`}
+                to={`/doctors/${doctor.slug}`}
                 className="bg-white border border-gray-200 overflow-hidden hover:border-primary-300 transition-colors group"
               >
                 <div className="h-48 bg-gray-100">

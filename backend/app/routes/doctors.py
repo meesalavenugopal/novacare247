@@ -10,6 +10,7 @@ from app.schemas import (
     DoctorReviewResponse, DoctorReviewCreate
 )
 from app.auth import get_admin_user, get_password_hash
+from app.utils.slugs import generate_doctor_slug
 
 router = APIRouter(prefix="/api/doctors", tags=["Doctors"])
 
@@ -53,6 +54,7 @@ def build_doctor_public(doctor: Doctor, country: Optional[str] = None) -> Doctor
     
     return DoctorPublic(
         id=doctor.id,
+        slug=doctor.slug,
         specialization=doctor.specialization,
         qualification=doctor.qualification,
         experience_years=doctor.experience_years,
@@ -117,6 +119,25 @@ def get_all_doctors(
     doctors = db.query(Doctor).order_by(Doctor.id).offset(skip).limit(limit).all()
     return doctors
 
+
+@router.get("/slug/{slug}/", response_model=DoctorPublic)
+def get_doctor_by_slug(
+    slug: str,
+    country: Optional[str] = Query(None, description="Filter fees by country"),
+    db: Session = Depends(get_db)
+):
+    """Get doctor by slug (SEO-friendly URL)"""
+    doctor = db.query(Doctor).options(
+        joinedload(Doctor.user),
+        joinedload(Doctor.branch),
+        joinedload(Doctor.consultation_fees)
+    ).filter(Doctor.slug == slug).first()
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    
+    return build_doctor_public(doctor, country)
+
+
 @router.get("/{doctor_id}/", response_model=DoctorPublic)
 def get_doctor(
     doctor_id: int, 
@@ -159,10 +180,12 @@ def create_doctor(
     db.commit()
     db.refresh(new_user)
     
-    # Create doctor profile
+    # Create doctor profile with auto-generated slug
+    slug = generate_doctor_slug(db, doctor_data.full_name)
     new_doctor = Doctor(
         user_id=new_user.id,
         branch_id=doctor_data.branch_id,
+        slug=slug,
         specialization=doctor_data.specialization,
         qualification=doctor_data.qualification,
         experience_years=doctor_data.experience_years,
