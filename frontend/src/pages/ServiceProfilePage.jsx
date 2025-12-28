@@ -173,12 +173,12 @@ const ServiceProfilePage = () => {
               {service.benefits.map((benefit, index) => (
                 <div 
                   key={index}
-                  className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4"
+                  className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4"
                 >
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="text-green-600" size={20} />
                   </div>
-                  <span className="text-gray-800 font-medium">{benefit}</span>
+                  <span className="text-gray-800 font-medium leading-tight">{benefit}</span>
                 </div>
               ))}
             </div>
