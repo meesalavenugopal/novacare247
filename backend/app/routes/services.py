@@ -65,7 +65,7 @@ def get_services(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     services = db.query(Service).filter(Service.is_active == True).offset(skip).limit(limit).all()
     return services
 
-@router.get("/all", response_model=List[ServiceResponse])
+@router.get("/all/", response_model=List[ServiceResponse])
 def get_all_services(
     skip: int = 0, 
     limit: int = 100, 

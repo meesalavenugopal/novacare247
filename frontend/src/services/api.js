@@ -49,6 +49,13 @@ export const doctorsAPI = {
   submitReview: (doctorId, data) => api.post(`/doctors/${doctorId}/reviews/`, data),
 };
 
+// Doctor Reviews Admin APIs
+export const reviewsAPI = {
+  getAll: (params) => api.get('/doctors/reviews/all/', { params }),
+  update: (reviewId, data) => api.put(`/doctors/reviews/${reviewId}/`, null, { params: data }),
+  delete: (reviewId) => api.delete(`/doctors/reviews/${reviewId}/`),
+};
+
 // Bookings APIs
 export const bookingsAPI = {
   getAvailableSlots: (doctorId, date) => api.get(`/bookings/available-slots/${doctorId}/${date}/`),
@@ -140,6 +147,35 @@ export const milestonesAPI = {
   create: (data) => api.post('/milestones/', data),
   update: (id, data) => api.put(`/milestones/${id}/`, data),
   delete: (id) => api.delete(`/milestones/${id}/`),
+};
+
+// Stats APIs (alias for siteStatsAPI for admin pages)
+export const statsAPI = {
+  getAll: () => api.get('/site-stats/'),
+  getAllAdmin: () => api.get('/site-stats/all/'),
+  getById: (id) => api.get(`/site-stats/${id}/`),
+  create: (data) => api.post('/site-stats/', data),
+  update: (id, data) => api.put(`/site-stats/${id}/`, data),
+  delete: (id) => api.delete(`/site-stats/${id}/`),
+};
+
+// Settings APIs (for admin settings page)
+export const settingsAPI = {
+  getAll: () => api.get('/site-settings/'),
+  getByKey: (key) => api.get(`/site-settings/by-key/${key}/`),
+  getByCategory: (category) => api.get(`/site-settings/category/${category}/`),
+  create: (data) => api.post('/site-settings/', data),
+  update: (id, data) => api.put(`/site-settings/${id}/`, data),
+  delete: (id) => api.delete(`/site-settings/${id}/`),
+};
+
+// AI APIs
+export const aiAPI = {
+  chat: (message, context) => api.post('/ai/chat', { message, context }),
+  analyzeSymptoms: (data) => api.post('/ai/analyze-symptoms', data),
+  generateServiceContent: (data) => api.post('/ai/generate/service-content', data),
+  generateDoctorContent: (data) => api.post('/ai/generate/doctor-content', data),
+  generateInquiryReply: (data) => api.post('/ai/generate/inquiry-reply', data),
 };
 
 export default api;

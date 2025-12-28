@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock } from 'lucide-react';
-import { doctorsAPI } from '../../services/api';
+import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2 } from 'lucide-react';
+import { doctorsAPI, aiAPI } from '../../services/api';
 
 const AdminDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingDoctor, setEditingDoctor] = useState(null);
+  const [generatingBio, setGeneratingBio] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -113,6 +114,35 @@ const AdminDoctors = () => {
     setShowModal(true);
   };
 
+  const handleGenerateBio = async () => {
+    if (!formData.full_name || !formData.specialization) {
+      alert('Please enter name and specialization first');
+      return;
+    }
+    setGeneratingBio(true);
+    try {
+      const response = await aiAPI.generateDoctorContent({
+        name: formData.full_name,
+        specialization: formData.specialization,
+        experience_years: formData.experience_years || 5,
+        qualification: formData.qualification || formData.specialization
+      });
+      if (response.data.success && response.data.content) {
+        setFormData(prev => ({
+          ...prev,
+          bio: response.data.content.bio || prev.bio
+        }));
+      } else {
+        alert('Failed to generate bio. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error generating bio:', error);
+      alert('Failed to generate bio');
+    } finally {
+      setGeneratingBio(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -129,7 +159,7 @@ const AdminDoctors = () => {
       <div className="bg-white border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -327,7 +357,21 @@ const AdminDoctors = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-medium text-gray-700">Bio</label>
+                  <button
+                    type="button"
+                    onClick={handleGenerateBio}
+                    disabled={generatingBio}
+                    className="flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700 disabled:opacity-50"
+                  >
+                    {generatingBio ? (
+                      <><Loader2 size={14} className="animate-spin" /> Generating...</>
+                    ) : (
+                      <><Sparkles size={14} /> Generate with AI</>
+                    )}
+                  </button>
+                </div>
                 <textarea
                   name="bio"
                   value={formData.bio}

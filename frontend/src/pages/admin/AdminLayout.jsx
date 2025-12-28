@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, Calendar, Stethoscope, MessageSquare, 
-  Star, Menu, X, LogOut, ChevronDown, Home
+  Star, Menu, X, LogOut, ChevronDown, Home, MapPin, Settings, BarChart3, Flag, MessageCircle, Bot
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -22,7 +22,7 @@ const AdminLayout = () => {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent mx-auto"></div>
+          <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -39,7 +39,13 @@ const AdminLayout = () => {
     { path: '/admin/bookings', label: 'Bookings', icon: Calendar },
     { path: '/admin/services', label: 'Services', icon: Users },
     { path: '/admin/testimonials', label: 'Testimonials', icon: Star },
+    { path: '/admin/reviews', label: 'Reviews', icon: MessageCircle },
     { path: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
+    { path: '/admin/branches', label: 'Branches', icon: MapPin },
+    { path: '/admin/milestones', label: 'Milestones', icon: Flag },
+    { path: '/admin/stats', label: 'Site Stats', icon: BarChart3 },
+    { path: '/admin/settings', label: 'Settings', icon: Settings },
+    { path: '/admin/ai-tools', label: 'AI Tools', icon: Bot },
   ];
 
   const isActive = (path) => {

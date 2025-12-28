@@ -89,7 +89,7 @@ const AdminBookings = () => {
       <div className="bg-white border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
           </div>
         ) : bookings.length > 0 ? (
           <div className="overflow-x-auto">

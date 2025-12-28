@@ -255,7 +255,7 @@ const ContactPage = () => {
                     >
                       {submitting ? (
                         <>
-                          <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent"></div>
+                          <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
                           Sending...
                         </>
                       ) : (

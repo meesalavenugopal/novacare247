@@ -129,3 +129,40 @@ def upsert_settings_bulk(
     
     db.commit()
     return {"message": "Bulk operation completed", "results": results}
+
+
+@router.put("/{setting_id}/", response_model=SiteSettingResponse)
+def update_setting_by_id(
+    setting_id: int,
+    setting_data: SiteSettingUpdate,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Update setting by ID (admin only)"""
+    setting = db.query(SiteSetting).filter(SiteSetting.id == setting_id).first()
+    if not setting:
+        raise HTTPException(status_code=404, detail="Setting not found")
+    
+    update_data = setting_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(setting, field, value)
+    
+    db.commit()
+    db.refresh(setting)
+    return setting
+
+
+@router.delete("/{setting_id}/")
+def delete_setting_by_id(
+    setting_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Delete setting by ID (admin only)"""
+    setting = db.query(SiteSetting).filter(SiteSetting.id == setting_id).first()
+    if not setting:
+        raise HTTPException(status_code=404, detail="Setting not found")
+    
+    db.delete(setting)
+    db.commit()
+    return {"message": "Setting deleted successfully"}

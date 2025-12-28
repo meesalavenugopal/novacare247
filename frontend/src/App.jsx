@@ -20,6 +20,12 @@ import AdminBookings from './pages/admin/AdminBookings';
 import AdminServices from './pages/admin/AdminServices';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminInquiries from './pages/admin/AdminInquiries';
+import AdminBranches from './pages/admin/AdminBranches';
+import AdminReviews from './pages/admin/AdminReviews';
+import AdminMilestones from './pages/admin/AdminMilestones';
+import AdminStats from './pages/admin/AdminStats';
+import AdminSettings from './pages/admin/AdminSettings';
+import AdminAITools from './pages/admin/AdminAITools';
 
 import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
@@ -55,6 +61,12 @@ function App() {
             <Route path="services" element={<AdminServices />} />
             <Route path="testimonials" element={<AdminTestimonials />} />
             <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="reviews" element={<AdminReviews />} />
+            <Route path="branches" element={<AdminBranches />} />
+            <Route path="milestones" element={<AdminMilestones />} />
+            <Route path="stats" element={<AdminStats />} />
+            <Route path="settings" element={<AdminSettings />} />
+            <Route path="ai-tools" element={<AdminAITools />} />
           </Route>
         </Routes>
       </Router>

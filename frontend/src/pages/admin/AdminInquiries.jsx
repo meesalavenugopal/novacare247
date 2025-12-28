@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { MessageSquare, Mail, Phone, Check, Trash2, Eye, X } from 'lucide-react';
-import { contactAPI } from '../../services/api';
+import { MessageSquare, Mail, Phone, Check, Trash2, Eye, X, Sparkles, Loader2, Copy } from 'lucide-react';
+import { contactAPI, aiAPI } from '../../services/api';
 import { format } from 'date-fns';
 
 const AdminInquiries = () => {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [generatingReply, setGeneratingReply] = useState(false);
+  const [aiReply, setAiReply] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     loadInquiries();
@@ -46,9 +49,39 @@ const AdminInquiries = () => {
 
   const openInquiry = async (inquiry) => {
     setSelectedInquiry(inquiry);
+    setAiReply('');
+    setCopied(false);
     if (!inquiry.is_read) {
       await handleMarkAsRead(inquiry.id);
     }
+  };
+
+  const handleGenerateReply = async () => {
+    if (!selectedInquiry) return;
+    setGeneratingReply(true);
+    try {
+      const response = await aiAPI.generateInquiryReply({
+        inquiry_name: selectedInquiry.name,
+        inquiry_subject: selectedInquiry.subject || 'General Inquiry',
+        inquiry_message: selectedInquiry.message
+      });
+      if (response.data.success) {
+        setAiReply(response.data.reply);
+      } else {
+        alert('Failed to generate reply. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error generating reply:', error);
+      alert('Failed to generate reply');
+    } finally {
+      setGeneratingReply(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(aiReply);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -60,7 +93,7 @@ const AdminInquiries = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
         </div>
       ) : inquiries.length > 0 ? (
         <div className="bg-white border border-gray-200 overflow-hidden">
@@ -164,6 +197,39 @@ const AdminInquiries = () => {
               <div>
                 <p className="text-sm text-gray-500">Message</p>
                 <p className="text-gray-700 whitespace-pre-wrap">{selectedInquiry.message}</p>
+              </div>
+
+              {/* AI Reply Section */}
+              <div className="border-t pt-4">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-medium text-gray-700">AI-Generated Reply</p>
+                  <button
+                    onClick={handleGenerateReply}
+                    disabled={generatingReply}
+                    className="flex items-center gap-1 text-xs bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50"
+                  >
+                    {generatingReply ? (
+                      <><Loader2 size={14} className="animate-spin" /> Generating...</>
+                    ) : (
+                      <><Sparkles size={14} /> Generate Reply</>
+                    )}
+                  </button>
+                </div>
+                {aiReply && (
+                  <div className="bg-purple-50 border border-purple-100 rounded-lg p-3 mt-2">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-xs text-purple-600 font-medium">AI Suggestion</span>
+                      <button
+                        onClick={copyToClipboard}
+                        className="flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700"
+                      >
+                        <Copy size={12} />
+                        {copied ? 'Copied!' : 'Copy'}
+                      </button>
+                    </div>
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap">{aiReply}</p>
+                  </div>
+                )}
               </div>
 
               <div className="flex gap-4 pt-4">

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, Clock, IndianRupee } from 'lucide-react';
-import { servicesAPI } from '../../services/api';
+import { Plus, Edit, Trash2, X, Clock, IndianRupee, Sparkles, Loader2 } from 'lucide-react';
+import { servicesAPI, aiAPI } from '../../services/api';
 
 const AdminServices = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingService, setEditingService] = useState(null);
+  const [generatingDesc, setGeneratingDesc] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -92,6 +93,33 @@ const AdminServices = () => {
     setShowModal(true);
   };
 
+  const handleGenerateDescription = async () => {
+    if (!formData.name) {
+      alert('Please enter service name first');
+      return;
+    }
+    setGeneratingDesc(true);
+    try {
+      const response = await aiAPI.generateServiceContent({
+        service_name: formData.name,
+        short_description: formData.description || formData.name
+      });
+      if (response.data.success && response.data.content) {
+        setFormData(prev => ({
+          ...prev,
+          description: response.data.content.detailed_description || prev.description
+        }));
+      } else {
+        alert('Failed to generate description. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error generating description:', error);
+      alert('Failed to generate description');
+    } finally {
+      setGeneratingDesc(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -108,7 +136,7 @@ const AdminServices = () => {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           <div className="col-span-full flex items-center justify-center h-64">
-            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
           </div>
         ) : (
           services.map((service) => (
@@ -179,7 +207,21 @@ const AdminServices = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <button
+                    type="button"
+                    onClick={handleGenerateDescription}
+                    disabled={generatingDesc}
+                    className="flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700 disabled:opacity-50"
+                  >
+                    {generatingDesc ? (
+                      <><Loader2 size={14} className="animate-spin" /> Generating...</>
+                    ) : (
+                      <><Sparkles size={14} /> Generate with AI</>
+                    )}
+                  </button>
+                </div>
                 <textarea
                   name="description"
                   value={formData.description}

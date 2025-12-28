@@ -133,8 +133,12 @@ const ServicesPage = () => {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="animate-spin w-12 h-12 border-4 border-primary-500 border-t-transparent"></div>
+            <div className="flex flex-col items-center justify-center h-64 gap-4">
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-primary-100 rounded-full"></div>
+                <div className="absolute top-0 left-0 w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+              <p className="text-gray-500 text-sm">Loading services...</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

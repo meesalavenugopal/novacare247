@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Star, Check, X, Trash2 } from 'lucide-react';
-import { testimonialsAPI } from '../../services/api';
+import { Star, Check, X, Trash2, Sparkles, Loader2 } from 'lucide-react';
+import { testimonialsAPI, aiAPI } from '../../services/api';
 import { format } from 'date-fns';
 
 const AdminTestimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null); // testimonial being edited
+  const [generatingContent, setGeneratingContent] = useState(null); // ID of testimonial generating content for
   const [form, setForm] = useState({
     patient_name: '',
     content: '',
@@ -16,6 +17,25 @@ const AdminTestimonials = () => {
     story_type: '',
     tips: '',
   });
+
+  const handleGenerateContent = async (testimonial) => {
+    setGeneratingContent(testimonial.id);
+    try {
+      const response = await aiAPI.chat(
+        `Generate a professional thank you response for this patient testimonial. Patient: ${testimonial.patient_name}, Rating: ${testimonial.rating}/5, Their testimonial: "${testimonial.content}". Write a brief, warm thank you response (2-3 sentences).`,
+        null
+      );
+      if (response.data.success) {
+        alert(`Suggested Response:\n\n${response.data.response}`);
+      }
+    } catch (error) {
+      console.error('Error generating response:', error);
+      alert('Failed to generate response');
+    } finally {
+      setGeneratingContent(null);
+    }
+  };
+
   const handleEdit = (testimonial) => {
     setEditing(testimonial.id);
     setForm({
@@ -93,7 +113,7 @@ const AdminTestimonials = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"></div>
         </div>
       ) : testimonials.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-6">
@@ -171,6 +191,18 @@ const AdminTestimonials = () => {
                       {format(new Date(testimonial.created_at), 'MMM d, yyyy')}
                     </p>
                     <div className="flex gap-2">
+                      <button
+                        onClick={() => handleGenerateContent(testimonial)}
+                        disabled={generatingContent === testimonial.id}
+                        className="p-2 text-purple-600 hover:bg-purple-50 disabled:opacity-50"
+                        title="Generate AI Response"
+                      >
+                        {generatingContent === testimonial.id ? (
+                          <Loader2 size={18} className="animate-spin" />
+                        ) : (
+                          <Sparkles size={18} />
+                        )}
+                      </button>
                       <button onClick={() => handleEdit(testimonial)} className="p-2 text-blue-600 hover:bg-blue-50" title="Edit">
                         Edit
                       </button>

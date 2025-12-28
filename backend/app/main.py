@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.routes import auth, doctors, bookings, services, testimonials, contact, admin
-from app.routes import site_settings, site_stats, branches, milestones
+from app.routes import site_settings, site_stats, branches, milestones, ai
 from app.config import settings
 from app.seed import seed_database
 
@@ -36,6 +36,7 @@ app.include_router(site_settings.router)
 app.include_router(site_stats.router)
 app.include_router(branches.router)
 app.include_router(milestones.router)
+app.include_router(ai.router)
 
 @app.get("/")
 def root():

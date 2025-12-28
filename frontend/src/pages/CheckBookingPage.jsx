@@ -107,7 +107,7 @@ const CheckBookingPage = () => {
                   className="bg-primary-600 hover:bg-primary-700 text-white font-medium px-6 py-3 transition-colors flex items-center gap-2"
                 >
                   {loading ? (
-                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent"></div>
+                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
                   ) : (
                     <Search size={18} />
                   )}

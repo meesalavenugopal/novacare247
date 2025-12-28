@@ -439,7 +439,7 @@ const BookingPage = () => {
 
                   {loading ? (
                     <div className="text-center py-8">
-                      <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent mx-auto"></div>
+                      <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full mx-auto"></div>
                       <p className="mt-2 text-gray-500 text-sm">Loading slots...</p>
                     </div>
                   ) : availableSlots.length > 0 ? (
@@ -581,7 +581,7 @@ const BookingPage = () => {
                 >
                   {submitting ? (
                     <>
-                      <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent"></div>
+                      <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
                       Booking...
                     </>
                   ) : (
