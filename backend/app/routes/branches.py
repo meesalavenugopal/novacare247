@@ -31,7 +31,7 @@ def get_branches(
     return query.all()
 
 
-@router.get("/all", response_model=List[BranchResponse])
+@router.get("/all/", response_model=List[BranchResponse])
 def get_all_branches(
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user)
@@ -40,7 +40,7 @@ def get_all_branches(
     return db.query(Branch).all()
 
 
-@router.get("/countries")
+@router.get("/countries/")
 def get_countries(db: Session = Depends(get_db)):
     """Get list of unique countries with branches"""
     countries = db.query(Branch.country).filter(
@@ -49,7 +49,7 @@ def get_countries(db: Session = Depends(get_db)):
     return [c[0] for c in countries]
 
 
-@router.get("/states")
+@router.get("/states/")
 def get_states(country: Optional[str] = None, db: Session = Depends(get_db)):
     """Get list of unique states, optionally filtered by country"""
     query = db.query(Branch.state).filter(Branch.is_active == True)
@@ -59,7 +59,7 @@ def get_states(country: Optional[str] = None, db: Session = Depends(get_db)):
     return [s[0] for s in states]
 
 
-@router.get("/cities")
+@router.get("/cities/")
 def get_cities(
     country: Optional[str] = None,
     state: Optional[str] = None,
@@ -75,7 +75,7 @@ def get_cities(
     return [c[0] for c in cities]
 
 
-@router.get("/with-counts")
+@router.get("/with-counts/")
 def get_branches_with_doctor_counts(db: Session = Depends(get_db)):
     """Get branches with doctor counts"""
     branches = db.query(Branch).filter(Branch.is_active == True).all()
@@ -105,7 +105,7 @@ def get_branches_with_doctor_counts(db: Session = Depends(get_db)):
     return result
 
 
-@router.get("/headquarters", response_model=BranchResponse)
+@router.get("/headquarters/", response_model=BranchResponse)
 def get_headquarters(db: Session = Depends(get_db)):
     """Get the headquarters branch"""
     hq = db.query(Branch).filter(
@@ -117,7 +117,7 @@ def get_headquarters(db: Session = Depends(get_db)):
     return hq
 
 
-@router.get("/{branch_id}", response_model=BranchResponse)
+@router.get("/{branch_id}/", response_model=BranchResponse)
 def get_branch(branch_id: int, db: Session = Depends(get_db)):
     """Get branch by ID"""
     branch = db.query(Branch).filter(Branch.id == branch_id).first()
@@ -140,7 +140,7 @@ def create_branch(
     return new_branch
 
 
-@router.put("/{branch_id}", response_model=BranchResponse)
+@router.put("/{branch_id}/", response_model=BranchResponse)
 def update_branch(
     branch_id: int,
     branch_data: BranchUpdate,
@@ -161,7 +161,7 @@ def update_branch(
     return branch
 
 
-@router.delete("/{branch_id}")
+@router.delete("/{branch_id}/")
 def delete_branch(
     branch_id: int,
     db: Session = Depends(get_db),

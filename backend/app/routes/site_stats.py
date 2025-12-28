@@ -19,7 +19,7 @@ def get_stats(db: Session = Depends(get_db)):
     return stats
 
 
-@router.get("/all", response_model=List[SiteStatResponse])
+@router.get("/all/", response_model=List[SiteStatResponse])
 def get_all_stats(
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user)
@@ -29,7 +29,7 @@ def get_all_stats(
     return stats
 
 
-@router.get("/{stat_id}", response_model=SiteStatResponse)
+@router.get("/{stat_id}/", response_model=SiteStatResponse)
 def get_stat(stat_id: int, db: Session = Depends(get_db)):
     """Get stat by ID"""
     stat = db.query(SiteStat).filter(SiteStat.id == stat_id).first()
@@ -52,7 +52,7 @@ def create_stat(
     return new_stat
 
 
-@router.put("/{stat_id}", response_model=SiteStatResponse)
+@router.put("/{stat_id}/", response_model=SiteStatResponse)
 def update_stat(
     stat_id: int,
     stat_data: SiteStatUpdate,
@@ -73,7 +73,7 @@ def update_stat(
     return stat
 
 
-@router.delete("/{stat_id}")
+@router.delete("/{stat_id}/")
 def delete_stat(
     stat_id: int,
     db: Session = Depends(get_db),

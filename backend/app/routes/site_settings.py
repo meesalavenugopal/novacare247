@@ -22,7 +22,7 @@ def get_all_settings(
     return query.all()
 
 
-@router.get("/by-key/{key}")
+@router.get("/by-key/{key}/")
 def get_setting_by_key(key: str, db: Session = Depends(get_db)):
     """Get a specific setting by key"""
     setting = db.query(SiteSetting).filter(SiteSetting.key == key).first()
@@ -31,14 +31,14 @@ def get_setting_by_key(key: str, db: Session = Depends(get_db)):
     return {"key": setting.key, "value": setting.value}
 
 
-@router.get("/category/{category}", response_model=List[SiteSettingResponse])
+@router.get("/category/{category}/", response_model=List[SiteSettingResponse])
 def get_settings_by_category(category: str, db: Session = Depends(get_db)):
     """Get settings by category"""
     settings = db.query(SiteSetting).filter(SiteSetting.category == category).all()
     return settings
 
 
-@router.get("/grouped")
+@router.get("/grouped/")
 def get_settings_grouped(db: Session = Depends(get_db)):
     """Get all settings grouped by category"""
     settings = db.query(SiteSetting).all()
@@ -69,7 +69,7 @@ def create_setting(
     return new_setting
 
 
-@router.put("/by-key/{key}", response_model=SiteSettingResponse)
+@router.put("/by-key/{key}/", response_model=SiteSettingResponse)
 def update_setting_by_key(
     key: str,
     setting_data: SiteSettingUpdate,
@@ -90,7 +90,7 @@ def update_setting_by_key(
     return setting
 
 
-@router.delete("/by-key/{key}")
+@router.delete("/by-key/{key}/")
 def delete_setting_by_key(
     key: str,
     db: Session = Depends(get_db),
@@ -106,7 +106,7 @@ def delete_setting_by_key(
     return {"message": f"Setting '{key}' deleted successfully"}
 
 
-@router.post("/bulk")
+@router.post("/bulk/")
 def upsert_settings_bulk(
     settings: List[SiteSettingCreate],
     db: Session = Depends(get_db),

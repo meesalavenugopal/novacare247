@@ -19,7 +19,7 @@ def get_milestones(db: Session = Depends(get_db)):
     return milestones
 
 
-@router.get("/all", response_model=List[MilestoneResponse])
+@router.get("/all/", response_model=List[MilestoneResponse])
 def get_all_milestones(
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user)
@@ -29,7 +29,7 @@ def get_all_milestones(
     return milestones
 
 
-@router.get("/{milestone_id}", response_model=MilestoneResponse)
+@router.get("/{milestone_id}/", response_model=MilestoneResponse)
 def get_milestone(milestone_id: int, db: Session = Depends(get_db)):
     """Get milestone by ID"""
     milestone = db.query(Milestone).filter(Milestone.id == milestone_id).first()
@@ -52,7 +52,7 @@ def create_milestone(
     return new_milestone
 
 
-@router.put("/{milestone_id}", response_model=MilestoneResponse)
+@router.put("/{milestone_id}/", response_model=MilestoneResponse)
 def update_milestone(
     milestone_id: int,
     milestone_data: MilestoneUpdate,
@@ -73,7 +73,7 @@ def update_milestone(
     return milestone
 
 
-@router.delete("/{milestone_id}")
+@router.delete("/{milestone_id}/")
 def delete_milestone(
     milestone_id: int,
     db: Session = Depends(get_db),
