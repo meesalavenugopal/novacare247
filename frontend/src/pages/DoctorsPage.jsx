@@ -479,13 +479,12 @@ const DoctorsPage = () => {
                   className="bg-white border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-md transition-all group"
                 >
                   {/* Doctor Image */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative aspect-square overflow-hidden bg-gray-100 flex items-center justify-center">
                     <img 
                       src={doctorImages[index % doctorImages.length]}
                       alt={doctor.full_name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain transition-transform duration-300"
                     />
-                    
                     {/* Rating Badge */}
                     <div className="absolute top-4 right-4 bg-white px-3 py-1 flex items-center gap-1">
                       <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
