@@ -62,8 +62,8 @@ const HomePage = () => {
         {/* Background Image - Right Side */}
         <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
-            src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1200&q=80"
-            alt="Physiotherapy Professional"
+            src="https://images.unsplash.com/photo-1609220136736-443140cffec6?w=1200&q=80"
+            alt="Physiotherapy Treatment"
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
