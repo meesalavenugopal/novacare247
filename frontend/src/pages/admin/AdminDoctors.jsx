@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building } from 'lucide-react';
+import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee } from 'lucide-react';
 import { doctorsAPI, aiAPI } from '../../services/api';
 
 const CONSULTATION_TYPES = ['clinic', 'home', 'video'];
@@ -329,9 +329,9 @@ const AdminDoctors = () => {
                         <button
                           onClick={() => handleManageFees(doctor)}
                           className="p-2 text-green-600 hover:bg-green-50"
-                          title="Manage Fees"
+                          title="Manage Consultation Fees"
                         >
-                          <DollarSign size={18} />
+                          <IndianRupee size={18} />
                         </button>
                         <button
                           onClick={() => handleEdit(doctor)}
