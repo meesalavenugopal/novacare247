@@ -24,6 +24,19 @@ const ServicesPage = () => {
 
   const serviceIcons = [Stethoscope, Brain, Bone, Activity, Heart, Zap, Shield, Sparkles, Dumbbell, Hand];
 
+  const serviceImages = [
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&h=400&fit=crop',
+  ];
+
   const benefits = [
     { icon: Shield, title: 'Evidence-Based', desc: 'All treatments backed by clinical research' },
     { icon: Heart, title: 'Patient-Centered', desc: 'Personalized care for every individual' },
@@ -99,16 +112,26 @@ const ServicesPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service, index) => {
                 const IconComponent = serviceIcons[index % serviceIcons.length];
+                const serviceImage = serviceImages[index % serviceImages.length];
                 return (
                   <div 
                     key={service.id} 
-                    className="bg-white border border-gray-200 hover:border-primary-300 transition-colors"
+                    className="bg-white border border-gray-200 hover:border-primary-300 transition-colors flex flex-col h-full"
                   >
+                    {/* Service Image */}
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={serviceImage}
+                        alt={service.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
                     {/* Service Header */}
-                    <div className="p-6 border-b border-gray-100">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-6 h-6 text-primary-600" />
+                    <div className="p-5 border-b border-gray-100">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-5 h-5 text-primary-600" />
                         </div>
                         <div className="flex-1">
                           <h3 className="text-lg font-bold text-gray-800 mb-1">{service.name}</h3>
@@ -125,12 +148,12 @@ const ServicesPage = () => {
                     </div>
 
                     {/* Service Info */}
-                    <div className="p-6">
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">{service.description}</p>
+                    <div className="p-5 flex flex-col flex-grow">
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">{service.description}</p>
                       
                       <Link 
                         to="/book"
-                        className="inline-flex items-center gap-2 text-primary-600 font-medium text-sm hover:text-primary-700"
+                        className="inline-flex items-center justify-center gap-2 w-full bg-primary-600 hover:bg-primary-700 text-white font-medium text-sm py-2.5 px-4 transition-colors mt-auto"
                       >
                         Book Now
                         <ArrowRight size={16} />

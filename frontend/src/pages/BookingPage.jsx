@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight, Star, Award, GraduationCap } from 'lucide-react';
 import { doctorsAPI, bookingsAPI } from '../services/api';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
+
+const doctorImages = [
+  'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=400&fit=crop&crop=face',
+];
 
 const BookingPage = () => {
   const { doctorId } = useParams();
@@ -228,23 +236,80 @@ const BookingPage = () => {
             <div>
               <h2 className="text-lg font-semibold text-gray-800 mb-6">Select a Doctor</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {doctors.map((doctor) => (
+                {doctors.map((doctor, index) => (
                   <button
                     key={doctor.id}
                     onClick={() => handleDoctorSelect(doctor)}
-                    className="bg-white border border-gray-200 p-6 text-left hover:border-primary-300 transition-colors"
+                    className="bg-white border border-gray-200 text-left hover:border-primary-300 hover:shadow-md transition-all overflow-hidden group"
                   >
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 bg-primary-600 flex items-center justify-center text-white text-xl font-bold">
-                        {doctor.full_name.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800">{doctor.full_name}</h3>
-                        <p className="text-primary-600 text-sm">{doctor.specialization}</p>
+                    {/* Doctor Image */}
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={doctorImages[index % doctorImages.length]}
+                        alt={doctor.full_name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      
+                      {/* Rating Badge */}
+                      <div className="absolute top-4 right-4 bg-white px-3 py-1 flex items-center gap-1">
+                        <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <span className="font-semibold text-gray-900 text-sm">4.9</span>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{doctor.experience_years} years experience</p>
-                    <p className="text-primary-600 font-semibold">₹{doctor.consultation_fee}</p>
+                    
+                    <div className="p-5">
+                      <span className="text-xs font-medium text-primary-600 bg-primary-50 px-3 py-1 inline-block mb-3">
+                        {doctor.specialization}
+                      </span>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{doctor.full_name}</h3>
+                      
+                      {/* Qualification */}
+                      {doctor.qualification && (
+                        <div className="flex items-center gap-2 text-gray-600 mb-3">
+                          <GraduationCap size={16} className="text-primary-600" />
+                          <span className="text-sm">{doctor.qualification}</span>
+                        </div>
+                      )}
+
+                      {/* Experience & Fee */}
+                      <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+                        <div className="flex items-center gap-2">
+                          <div className="w-9 h-9 bg-primary-50 border border-primary-100 flex items-center justify-center">
+                            <Award size={16} className="text-primary-600" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-900 text-sm">{doctor.experience_years}+ Years</p>
+                            <p className="text-xs text-gray-500">Experience</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-xl text-primary-600">₹{doctor.consultation_fee}</p>
+                          <p className="text-xs text-gray-500">Per Session</p>
+                        </div>
+                      </div>
+
+                      {/* Availability */}
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className={`w-2 h-2 ${doctor.is_available ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                        <span className={`text-sm ${doctor.is_available ? 'text-green-600' : 'text-red-600'}`}>
+                          {doctor.is_available ? 'Available for appointments' : 'Currently unavailable'}
+                        </span>
+                      </div>
+
+                      {/* Book Button */}
+                      <div 
+                        className={`block w-full text-center py-3 font-medium transition-colors ${
+                          doctor.is_available 
+                            ? 'bg-primary-600 group-hover:bg-primary-700 text-white'
+                            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        }`}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <Calendar size={16} />
+                          {doctor.is_available ? 'Select Doctor' : 'Unavailable'}
+                        </span>
+                      </div>
+                    </div>
                   </button>
                 ))}
               </div>
