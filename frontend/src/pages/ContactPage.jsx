@@ -53,27 +53,33 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-primary-600 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+      {/* Hero Section - Matching HomePage Style */}
+      <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
-            src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1600&q=80"
+            src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1200&q=80"
             alt="Contact Background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-primary-900/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
         </div>
+        
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Get in Touch</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              We're Here to Help You
-            </h1>
-            <p className="text-xl text-primary-100 leading-relaxed">
-              Have questions about our services or need to schedule an appointment? 
-              Reach out to us - we'd love to hear from you.
-            </p>
+          <div className="min-h-[50vh] flex items-center py-12">
+            {/* Left Content */}
+            <div className="max-w-xl">
+              <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Get in Touch</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-5 leading-tight">
+                We're Here to
+                <br />
+                <span className="text-primary-600">Help You</span>
+              </h1>
+              <p className="text-base text-gray-600 mb-8 leading-relaxed">
+                Have questions about our services or need to schedule an appointment? 
+                Reach out to us - we'd love to hear from you.
+              </p>
+            </div>
           </div>
         </div>
       </section>

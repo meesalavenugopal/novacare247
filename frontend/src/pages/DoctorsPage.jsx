@@ -198,27 +198,33 @@ const DoctorsPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-primary-600 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+      {/* Hero Section - Matching HomePage Style */}
+      <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
-            src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1600&q=80"
+            src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1200&q=80"
             alt="Medical Team Background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-primary-900/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
         </div>
+        
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Our Medical Team</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              Meet Our Expert Physiotherapists
-            </h1>
-            <p className="text-xl text-primary-100 leading-relaxed">
-              Our team of highly qualified doctors brings years of experience and 
-              specialized expertise to help you on your journey to recovery and wellness.
-            </p>
+          <div className="min-h-[50vh] flex items-center py-12">
+            {/* Left Content */}
+            <div className="max-w-xl">
+              <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Our Medical Team</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-5 leading-tight">
+                Meet Our Expert
+                <br />
+                <span className="text-primary-600">Physiotherapists</span>
+              </h1>
+              <p className="text-base text-gray-600 mb-8 leading-relaxed">
+                Our team of highly qualified doctors brings years of experience and 
+                specialized expertise to help you on your journey to recovery and wellness.
+              </p>
+            </div>
           </div>
         </div>
       </section>
