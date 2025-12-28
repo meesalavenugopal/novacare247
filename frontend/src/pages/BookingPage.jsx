@@ -142,87 +142,123 @@ const BookingPage = () => {
 
   if (bookingSuccess) {
     return (
-      <div className="min-h-screen bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-lg mx-auto bg-white border border-gray-200 p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-6 bg-primary-50 border border-primary-100 flex items-center justify-center">
-              <CheckCircle className="w-8 h-8 text-primary-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Booking Confirmed!</h2>
-            <p className="text-gray-600 mb-6">
-              Your appointment has been successfully booked. You will receive a confirmation shortly.
-            </p>
-            <div className="bg-gray-50 border border-gray-200 p-4 mb-6 text-left">
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Booking ID:</strong> #{bookingId}
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Doctor:</strong> {selectedDoctor.full_name}
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Date:</strong> {format(selectedDate, 'EEEE, MMMM d, yyyy')}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Time:</strong> {selectedTime}
-              </p>
-            </div>
-            <div className="flex gap-4">
-              <button
-                onClick={() => navigate('/')}
-                className="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 transition-colors"
-              >
-                Go Home
-              </button>
-              <button
-                onClick={() => navigate('/check-booking')}
-                className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 transition-colors"
-              >
-                Check Status
-              </button>
+      <div className="min-h-screen bg-white">
+        {/* Hero Section - Matching HomePage Style */}
+        <section className="relative min-h-[40vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+          {/* Background Image - Right Side */}
+          <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
+            <img 
+              src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80"
+              alt="Success Background"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="min-h-[40vh] flex items-center py-12">
+              <div className="max-w-xl">
+                <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Success</span>
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-5 leading-tight">
+                  Booking
+                  <br />
+                  <span className="text-primary-600">Confirmed!</span>
+                </h1>
+                <p className="text-base text-gray-600 leading-relaxed">
+                  Your appointment has been successfully booked. You will receive a confirmation shortly.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section className="py-12 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-lg mx-auto bg-white border border-gray-200 p-8">
+              <div className="bg-gray-50 border border-gray-200 p-4 mb-6">
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>Booking ID:</strong> #{bookingId}
+                </p>
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>Doctor:</strong> {selectedDoctor.full_name}
+                </p>
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>Date:</strong> {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Time:</strong> {selectedTime}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => navigate('/')}
+                  className="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 transition-colors"
+                >
+                  Go Home
+                </button>
+                <button
+                  onClick={() => navigate('/check-booking')}
+                  className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 transition-colors"
+                >
+                  Check Status
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-12 bg-primary-600 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+      {/* Hero Section - Matching HomePage Style */}
+      <section className="relative min-h-[40vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
-            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80"
+            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80"
             alt="Booking Background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-primary-900/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
         </div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Schedule Visit</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-2">Book an Appointment</h1>
-          <p className="text-primary-100">Choose your doctor and preferred time slot</p>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="min-h-[40vh] flex items-center py-12">
+            {/* Left Content */}
+            <div className="max-w-xl">
+              <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Schedule Visit</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-5 leading-tight">
+                Book an
+                <br />
+                <span className="text-primary-600">Appointment</span>
+              </h1>
+              <p className="text-base text-gray-600 leading-relaxed">
+                Choose your preferred doctor and time slot for your physiotherapy session.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Progress Steps */}
       <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-center gap-4">
-            <div className={`flex items-center gap-2 ${step >= 1 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 flex items-center justify-center font-semibold ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>1</div>
-              <span className="hidden sm:inline font-medium text-sm">Select Doctor</span>
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center gap-6 md:gap-10">
+            <div className={`flex items-center gap-3 ${step >= 1 ? 'text-primary-600' : 'text-gray-400'}`}>
+              <div className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>1</div>
+              <span className="hidden sm:inline font-medium">Select Doctor</span>
             </div>
-            <div className={`w-12 h-px ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
-            <div className={`flex items-center gap-2 ${step >= 2 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 flex items-center justify-center font-semibold ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>2</div>
-              <span className="hidden sm:inline font-medium text-sm">Choose Slot</span>
+            <div className={`w-16 md:w-24 h-0.5 ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            <div className={`flex items-center gap-3 ${step >= 2 ? 'text-primary-600' : 'text-gray-400'}`}>
+              <div className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>2</div>
+              <span className="hidden sm:inline font-medium">Choose Slot</span>
             </div>
-            <div className={`w-12 h-px ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
-            <div className={`flex items-center gap-2 ${step >= 3 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 flex items-center justify-center font-semibold ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>3</div>
-              <span className="hidden sm:inline font-medium text-sm">Your Details</span>
+            <div className={`w-16 md:w-24 h-0.5 ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            <div className={`flex items-center gap-3 ${step >= 3 ? 'text-primary-600' : 'text-gray-400'}`}>
+              <div className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>3</div>
+              <span className="hidden sm:inline font-medium">Your Details</span>
             </div>
           </div>
         </div>

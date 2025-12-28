@@ -54,21 +54,33 @@ const CheckBookingPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-12 bg-primary-600 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+      {/* Hero Section - Matching HomePage Style */}
+      <section className="relative min-h-[40vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
-            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80"
+            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80"
             alt="Check Booking Background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-primary-900/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
         </div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <span className="text-primary-200 font-medium text-sm uppercase tracking-wider">Track Appointment</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-2">Check Booking Status</h1>
-          <p className="text-primary-100">Enter your phone number to view your appointments</p>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="min-h-[40vh] flex items-center py-12">
+            {/* Left Content */}
+            <div className="max-w-xl">
+              <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">Track Appointment</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-5 leading-tight">
+                Check Booking
+                <br />
+                <span className="text-primary-600">Status</span>
+              </h1>
+              <p className="text-base text-gray-600 leading-relaxed">
+                Enter your phone number to view and track your appointment details.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
