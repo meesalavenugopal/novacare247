@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee } from 'lucide-react';
+import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee, CalendarDays, ToggleLeft, ToggleRight } from 'lucide-react';
 import { doctorsAPI, aiAPI } from '../../services/api';
 
 const CONSULTATION_TYPES = ['clinic', 'home', 'video'];
 const COUNTRIES = [
   { code: 'India', currency: 'INR', symbol: '₹' },
   { code: 'USA', currency: 'USD', symbol: '$' },
+];
+
+const DAYS_OF_WEEK = [
+  { value: 0, label: 'Monday' },
+  { value: 1, label: 'Tuesday' },
+  { value: 2, label: 'Wednesday' },
+  { value: 3, label: 'Thursday' },
+  { value: 4, label: 'Friday' },
+  { value: 5, label: 'Saturday' },
+  { value: 6, label: 'Sunday' },
 ];
 
 const AdminDoctors = () => {
@@ -21,6 +31,19 @@ const AdminDoctors = () => {
   const [doctorFees, setDoctorFees] = useState([]);
   const [loadingFees, setLoadingFees] = useState(false);
   const [editingFee, setEditingFee] = useState(null);
+  
+  // Slot Management State
+  const [showSlotModal, setShowSlotModal] = useState(false);
+  const [doctorSlots, setDoctorSlots] = useState([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [editingSlot, setEditingSlot] = useState(null);
+  const [slotFormData, setSlotFormData] = useState({
+    day_of_week: 0,
+    start_time: '09:00',
+    end_time: '17:00',
+    slot_duration: 30,
+  });
+  
   const [feeFormData, setFeeFormData] = useState({
     consultation_type: 'clinic',
     country: 'India',
@@ -67,6 +90,97 @@ const AdminDoctors = () => {
     } finally {
       setLoadingFees(false);
     }
+  };
+
+  const loadDoctorSlots = async (doctorId) => {
+    setLoadingSlots(true);
+    try {
+      const response = await doctorsAPI.getSlots(doctorId);
+      setDoctorSlots(response.data);
+    } catch (error) {
+      console.error('Error loading slots:', error);
+      setDoctorSlots([]);
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
+  const handleSlotInputChange = (e) => {
+    const { name, value } = e.target;
+    setSlotFormData(prev => ({
+      ...prev,
+      [name]: name === 'day_of_week' || name === 'slot_duration' ? parseInt(value) : value
+    }));
+  };
+
+  const handleSlotSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editingSlot) {
+        await doctorsAPI.updateSlot(editingSlot.id, slotFormData);
+      } else {
+        await doctorsAPI.createSlot(selectedDoctor.id, slotFormData);
+      }
+      await loadDoctorSlots(selectedDoctor.id);
+      resetSlotForm();
+    } catch (error) {
+      console.error('Error saving slot:', error);
+      alert(error.response?.data?.detail || 'Failed to save slot');
+    }
+  };
+
+  const handleDeleteSlot = async (slotId) => {
+    if (!confirm('Are you sure you want to delete this slot?')) return;
+    try {
+      await doctorsAPI.deleteSlot(slotId);
+      await loadDoctorSlots(selectedDoctor.id);
+    } catch (error) {
+      console.error('Error deleting slot:', error);
+      alert('Failed to delete slot');
+    }
+  };
+
+  const handleEditSlot = (slot) => {
+    setEditingSlot(slot);
+    setSlotFormData({
+      day_of_week: slot.day_of_week,
+      start_time: slot.start_time,
+      end_time: slot.end_time,
+      slot_duration: slot.slot_duration,
+    });
+  };
+
+  const handleManageSlots = (doctor) => {
+    setSelectedDoctor(doctor);
+    setShowSlotModal(true);
+    loadDoctorSlots(doctor.id);
+    resetSlotForm();
+  };
+
+  const resetSlotForm = () => {
+    setEditingSlot(null);
+    setSlotFormData({
+      day_of_week: 0,
+      start_time: '09:00',
+      end_time: '17:00',
+      slot_duration: 30,
+    });
+  };
+
+  const handleToggleAvailability = async (doctor) => {
+    try {
+      await doctorsAPI.update(doctor.id, {
+        is_available: !doctor.is_available,
+      });
+      loadDoctors();
+    } catch (error) {
+      console.error('Error toggling availability:', error);
+      alert('Failed to update availability');
+    }
+  };
+
+  const getDayLabel = (dayNum) => {
+    return DAYS_OF_WEEK.find(d => d.value === dayNum)?.label || 'Unknown';
   };
 
   const handleInputChange = (e) => {
@@ -325,7 +439,21 @@ const AdminDoctors = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => handleToggleAvailability(doctor)}
+                          className={`p-2 ${doctor.is_available ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
+                          title={doctor.is_available ? 'Set Offline' : 'Set Online'}
+                        >
+                          {doctor.is_available ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                        </button>
+                        <button
+                          onClick={() => handleManageSlots(doctor)}
+                          className="p-2 text-blue-600 hover:bg-blue-50"
+                          title="Manage Slots"
+                        >
+                          <CalendarDays size={18} />
+                        </button>
                         <button
                           onClick={() => handleManageFees(doctor)}
                           className="p-2 text-green-600 hover:bg-green-50"
@@ -753,6 +881,259 @@ const AdminDoctors = () => {
                         Setup {country.code} Fees
                       </button>
                     ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Slot Management Modal */}
+      {showSlotModal && selectedDoctor && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white border border-gray-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Manage Availability Slots
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {selectedDoctor.user?.full_name} - {selectedDoctor.specialization}
+                </p>
+              </div>
+              <button 
+                onClick={() => {
+                  setShowSlotModal(false);
+                  setSelectedDoctor(null);
+                  resetSlotForm();
+                }} 
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {/* Add/Edit Slot Form */}
+              <form onSubmit={handleSlotSubmit} className="bg-gray-50 p-4 mb-6 border border-gray-200">
+                <h3 className="font-semibold text-gray-700 mb-4">
+                  {editingSlot ? 'Edit Slot' : 'Add New Slot'}
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Day</label>
+                    <select
+                      name="day_of_week"
+                      value={slotFormData.day_of_week}
+                      onChange={handleSlotInputChange}
+                      className="input-field"
+                    >
+                      {DAYS_OF_WEEK.map(day => (
+                        <option key={day.value} value={day.value}>
+                          {day.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                    <input
+                      type="time"
+                      name="start_time"
+                      value={slotFormData.start_time}
+                      onChange={handleSlotInputChange}
+                      className="input-field"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                    <input
+                      type="time"
+                      name="end_time"
+                      value={slotFormData.end_time}
+                      onChange={handleSlotInputChange}
+                      className="input-field"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Duration (mins)</label>
+                    <select
+                      name="slot_duration"
+                      value={slotFormData.slot_duration}
+                      onChange={handleSlotInputChange}
+                      className="input-field"
+                    >
+                      <option value={15}>15 minutes</option>
+                      <option value={30}>30 minutes</option>
+                      <option value={45}>45 minutes</option>
+                      <option value={60}>60 minutes</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-4">
+                  <button type="submit" className="btn-primary">
+                    {editingSlot ? 'Update Slot' : 'Add Slot'}
+                  </button>
+                  {editingSlot && (
+                    <button type="button" onClick={resetSlotForm} className="btn-outline">
+                      Cancel Edit
+                    </button>
+                  )}
+                </div>
+              </form>
+
+              {/* Slots Table */}
+              <div className="border border-gray-200">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Day</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Start Time</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">End Time</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Duration</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    {loadingSlots ? (
+                      <tr>
+                        <td colSpan="5" className="px-4 py-8 text-center">
+                          <div className="flex items-center justify-center">
+                            <div className="animate-spin w-6 h-6 border-4 border-primary-500 border-t-transparent rounded-full"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : doctorSlots.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="px-4 py-8 text-center text-gray-500">
+                          No slots configured. Add one above.
+                        </td>
+                      </tr>
+                    ) : (
+                      doctorSlots.sort((a, b) => a.day_of_week - b.day_of_week).map((slot) => (
+                        <tr key={slot.id} className="hover:bg-gray-50">
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <CalendarDays size={16} className="text-blue-500" />
+                              <span className="font-medium">{getDayLabel(slot.day_of_week)}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <Clock size={16} className="text-gray-400" />
+                              <span>{slot.start_time}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <Clock size={16} className="text-gray-400" />
+                              <span>{slot.end_time}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-gray-600">
+                            {slot.slot_duration} mins
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => handleEditSlot(slot)}
+                                className="p-1 text-gray-600 hover:bg-gray-100"
+                                title="Edit Slot"
+                              >
+                                <Edit size={16} />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteSlot(slot.id)}
+                                className="p-1 text-red-600 hover:bg-red-50"
+                                title="Delete Slot"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Quick Setup Buttons */}
+              {doctorSlots.length === 0 && (
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200">
+                  <p className="text-sm text-blue-700 mb-3">
+                    <strong>Quick Setup:</strong> Add standard working hours for weekdays
+                  </p>
+                  <div className="flex gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        // Add Mon-Fri 9am-5pm
+                        for (let day = 0; day <= 4; day++) {
+                          try {
+                            await doctorsAPI.createSlot(selectedDoctor.id, {
+                              day_of_week: day,
+                              start_time: '09:00',
+                              end_time: '17:00',
+                              slot_duration: 30,
+                            });
+                          } catch (err) {
+                            console.error('Error creating slot:', err);
+                          }
+                        }
+                        await loadDoctorSlots(selectedDoctor.id);
+                      }}
+                      className="btn-outline text-sm"
+                    >
+                      Mon-Fri (9 AM - 5 PM)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        // Add Mon-Sat 9am-6pm
+                        for (let day = 0; day <= 5; day++) {
+                          try {
+                            await doctorsAPI.createSlot(selectedDoctor.id, {
+                              day_of_week: day,
+                              start_time: '09:00',
+                              end_time: '18:00',
+                              slot_duration: 30,
+                            });
+                          } catch (err) {
+                            console.error('Error creating slot:', err);
+                          }
+                        }
+                        await loadDoctorSlots(selectedDoctor.id);
+                      }}
+                      className="btn-outline text-sm"
+                    >
+                      Mon-Sat (9 AM - 6 PM)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        // Add all 7 days
+                        for (let day = 0; day <= 6; day++) {
+                          try {
+                            await doctorsAPI.createSlot(selectedDoctor.id, {
+                              day_of_week: day,
+                              start_time: '10:00',
+                              end_time: '20:00',
+                              slot_duration: 30,
+                            });
+                          } catch (err) {
+                            console.error('Error creating slot:', err);
+                          }
+                        }
+                        await loadDoctorSlots(selectedDoctor.id);
+                      }}
+                      className="btn-outline text-sm"
+                    >
+                      All Week (10 AM - 8 PM)
+                    </button>
                   </div>
                 </div>
               )}
