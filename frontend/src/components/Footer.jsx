@@ -110,8 +110,8 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center text-sm">
             <p className="text-gray-500">&copy; 2025 NovaCare<sup className="text-[10px] text-gray-400">™</sup> 24/7 Physiotherapy Clinics. All rights reserved.</p>
             <div className="flex gap-6 mt-3 md:mt-0">
-              <a href="#" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-500 hover:text-primary-400 transition-colors">Terms of Service</a>
+              <Link to="/privacy-policy" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="text-gray-500 hover:text-primary-400 transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>

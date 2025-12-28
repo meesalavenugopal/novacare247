@@ -31,6 +31,8 @@ import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import ServiceProfilePage from './pages/ServiceProfilePage';
 import LocationPage from './pages/LocationPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
 
 function App() {
   return (
@@ -57,6 +59,10 @@ function App() {
           {/* Location-Based SEO Pages */}
           <Route path="/physiotherapy/:location" element={<><Navbar /><LocationPage /><Footer /></>} />
           <Route path="/:treatment/:location" element={<><Navbar /><LocationPage /><Footer /></>} />
+          
+          {/* Legal Pages */}
+          <Route path="/privacy-policy" element={<><Navbar /><PrivacyPolicyPage /><Footer /></>} />
+          <Route path="/terms-of-service" element={<><Navbar /><TermsOfServicePage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
