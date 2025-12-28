@@ -47,6 +47,11 @@ export const doctorsAPI = {
   // Doctor reviews
   getReviews: (doctorId) => api.get(`/doctors/${doctorId}/reviews/`),
   submitReview: (doctorId, data) => api.post(`/doctors/${doctorId}/reviews/`, data),
+  // Consultation fees
+  getFees: (doctorId) => api.get(`/doctors/${doctorId}/fees/`),
+  createFee: (doctorId, data) => api.post(`/doctors/${doctorId}/fees/`, data),
+  updateFee: (feeId, data) => api.put(`/doctors/fees/${feeId}/`, data),
+  deleteFee: (feeId) => api.delete(`/doctors/fees/${feeId}/`),
 };
 
 // Doctor Reviews Admin APIs
