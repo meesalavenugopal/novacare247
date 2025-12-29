@@ -19,10 +19,13 @@ const AdminDashboard = () => {
         adminAPI.getDashboardStats(),
         bookingsAPI.getToday(),
       ]);
+      console.log('Dashboard stats:', statsRes.data);
+      console.log('Today bookings:', todayRes.data);
       setStats(statsRes.data);
       setTodayBookings(todayRes.data);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      console.error('Error response:', error.response?.data);
     } finally {
       setLoading(false);
     }

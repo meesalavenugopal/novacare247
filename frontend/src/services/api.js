@@ -105,7 +105,7 @@ export const contactAPI = {
 
 // Admin APIs
 export const adminAPI = {
-  getDashboardStats: () => api.get('/admin/dashboard/'),
+  getDashboardStats: () => api.get('/admin/dashboard'),
   getUsers: (params) => api.get('/admin/users/', { params }),
 };
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter, Linkedin, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { siteSettingsAPI } from '../services/api';
+import { siteSettingsAPI, servicesAPI, branchesAPI } from '../services/api';
 
 const Footer = () => {
   const [contactSettings, setContactSettings] = useState({
@@ -10,6 +10,8 @@ const Footer = () => {
     address: '123 Health Street, Medical District, Hyderabad - 500001',
     business_hours: 'Mon - Sat: 9:00 AM - 8:00 PM'
   });
+  const [services, setServices] = useState([]);
+  const [branches, setBranches] = useState([]);
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -27,13 +29,34 @@ const Footer = () => {
         console.error('Failed to load contact settings:', error);
       }
     };
+
+    const loadServices = async () => {
+      try {
+        const res = await servicesAPI.getAll();
+        setServices(res.data.slice(0, 6)); // Show top 6 services
+      } catch (error) {
+        console.error('Failed to load services:', error);
+      }
+    };
+
+    const loadBranches = async () => {
+      try {
+        const res = await branchesAPI.getAll();
+        setBranches(res.data.filter(b => b.is_active).slice(0, 4)); // Show top 4 active branches
+      } catch (error) {
+        console.error('Failed to load branches:', error);
+      }
+    };
+
     loadSettings();
+    loadServices();
+    loadBranches();
   }, []);
 
   return (
     <footer className="bg-gray-900 text-gray-400">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* About Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
@@ -81,12 +104,71 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Our Services</h4>
             <ul className="space-y-3 text-sm">
-              <li className="hover:text-primary-400 transition-colors">Manual Therapy</li>
-              <li className="hover:text-primary-400 transition-colors">Electrotherapy</li>
-              <li className="hover:text-primary-400 transition-colors">Sports Rehabilitation</li>
-              <li className="hover:text-primary-400 transition-colors">Post-Surgical Care</li>
-              <li className="hover:text-primary-400 transition-colors">Neurological Therapy</li>
-              <li className="hover:text-primary-400 transition-colors">Pediatric Physiotherapy</li>
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <li key={service.id}>
+                    <Link 
+                      to={`/services/${service.slug}`} 
+                      className="hover:text-primary-400 transition-colors flex items-center gap-2"
+                    >
+                      <ArrowRight size={14} /> {service.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="hover:text-primary-400 transition-colors">Manual Therapy</li>
+                  <li className="hover:text-primary-400 transition-colors">Sports Rehabilitation</li>
+                  <li className="hover:text-primary-400 transition-colors">Post-Surgical Care</li>
+                  <li className="hover:text-primary-400 transition-colors">Neurological Therapy</li>
+                  <li className="hover:text-primary-400 transition-colors">Pediatric Physiotherapy</li>
+                </>
+              )}
+              <li className="pt-2">
+                <Link 
+                  to="/services" 
+                  className="text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1 font-medium"
+                >
+                  View All Services <ArrowRight size={14} />
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Our Branches */}
+          <div>
+            <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Our Branches</h4>
+            <ul className="space-y-3 text-sm">
+              {branches.length > 0 ? (
+                branches.map((branch) => (
+                  <li key={branch.id} className="flex items-start gap-2">
+                    <MapPin size={14} className="text-primary-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">{branch.name}</p>
+                      <p className="text-xs text-gray-500">{branch.city}</p>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="flex items-start gap-2">
+                    <MapPin size={14} className="text-primary-400 mt-0.5" />
+                    <span>Hyderabad</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <MapPin size={14} className="text-primary-400 mt-0.5" />
+                    <span>Bangalore</span>
+                  </li>
+                </>
+              )}
+              <li className="pt-2">
+                <Link 
+                  to="/contact" 
+                  className="text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1 font-medium"
+                >
+                  View All Branches <ArrowRight size={14} />
+                </Link>
+              </li>
             </ul>
           </div>
 
