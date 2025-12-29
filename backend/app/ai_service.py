@@ -369,3 +369,271 @@ Respond with the improved HTML content only, no explanations."""
     ]
     
     return generate_chat_response(messages, max_tokens=4000, temperature=0.6)
+
+
+# ============ DOCTOR ONBOARDING AI FUNCTIONS ============
+
+def verify_doctor_credentials(
+    name: str,
+    license_number: str,
+    license_authority: str,
+    qualification: str,
+    experience_years: int,
+    specialization: str
+) -> Optional[Dict]:
+    """
+    AI-assisted verification of doctor credentials.
+    Returns analysis, score, flags, and recommendations for human review.
+    NOTE: This is AI-ASSISTED only - requires human approval.
+    """
+    prompt = f"""You are a medical credentials verification assistant for NovaCare 24/7 Physiotherapy Clinics.
+
+Analyze the following doctor application for potential issues. This is for PRELIMINARY SCREENING only.
+A human administrator will make the final verification decision.
+
+Applicant Details:
+- Name: {name}
+- License Number: {license_number}
+- Issuing Authority: {license_authority}
+- Qualification: {qualification}
+- Experience: {experience_years} years
+- Specialization: {specialization}
+
+Analyze and provide a JSON response with:
+1. "score": Preliminary confidence score 0-100 based on information completeness
+2. "analysis": Object with:
+   - "license_format_valid": Boolean - does license format look valid for Indian physiotherapy councils?
+   - "qualification_recognized": Boolean - is the qualification recognized (BPT, MPT, DPT, PhD)?
+   - "experience_reasonable": Boolean - does experience align with qualification timeline?
+   - "specialization_valid": Boolean - is specialization legitimate in physiotherapy?
+3. "flags": Array of concerns that need human attention (e.g., "License format unusual", "Very high experience claim")
+4. "recommendations": Array of actions for human reviewer (e.g., "Verify license with State Council", "Request additional certificates")
+5. "verification_steps": Array of suggested verification steps for the human reviewer
+6. "notes": Brief summary for the reviewer
+
+IMPORTANT: This is preliminary AI analysis only. Always recommend human verification for:
+- License authenticity with issuing authority
+- Degree certificate verification
+- Background checks
+
+Respond ONLY with valid JSON."""
+
+    messages = [
+        {"role": "system", "content": "You are a careful medical credentials screening assistant. Flag any concerns for human review. Always recommend human verification for important credentials."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=1000, temperature=0.3)
+    if response:
+        try:
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
+def generate_interview_questions(
+    name: str,
+    specialization: str,
+    experience_years: int,
+    qualification: str
+) -> Optional[Dict]:
+    """
+    Generate customized interview questions for doctor candidates.
+    """
+    prompt = f"""You are an interview coordinator for NovaCare 24/7 Physiotherapy Clinics.
+
+Generate interview questions for this physiotherapist candidate:
+- Name: {name}
+- Specialization: {specialization}
+- Experience: {experience_years} years
+- Qualification: {qualification}
+
+Create a JSON response with 10 interview questions across these categories:
+1. "clinical_knowledge": 3 questions about their specialization
+2. "patient_handling": 2 questions about patient communication and care
+3. "ethics_compliance": 2 questions about medical ethics and professional conduct
+4. "platform_fit": 2 questions about working with NovaCare's model (home visits, video consults, 24/7 availability)
+5. "scenario_based": 1 complex scenario question
+
+Each question should be an object with:
+- "question": The interview question
+- "category": Category name
+- "expected_points": Array of 2-3 key points a good answer should cover
+- "difficulty": "basic", "intermediate", or "advanced"
+
+Adjust difficulty based on experience level.
+
+Respond ONLY with valid JSON."""
+
+    messages = [
+        {"role": "system", "content": "You are an expert physiotherapy interviewer. Create thoughtful, relevant questions."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=2000, temperature=0.6)
+    if response:
+        try:
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
+def generate_training_content(topic: str, for_specialization: str = None) -> Optional[Dict]:
+    """
+    Generate AI-powered training module content for doctor onboarding.
+    """
+    spec_context = f" with focus on {for_specialization}" if for_specialization else ""
+    
+    prompt = f"""You are a training content creator for NovaCare 24/7 Physiotherapy Clinics.
+
+Create training module content about: {topic}{spec_context}
+
+Generate a JSON response with:
+1. "title": Module title
+2. "description": Brief description (1-2 sentences)
+3. "content": HTML formatted training content with:
+   - Introduction
+   - 3-4 main sections with h2 headings
+   - Key points as bullet lists
+   - Best practices
+   - Do's and Don'ts
+   - Summary
+4. "duration_minutes": Estimated reading/learning time
+5. "quiz_questions": Array of 5 multiple choice questions, each with:
+   - "question": The question
+   - "options": Array of 4 options
+   - "correct_answer": Index of correct option (0-3)
+   - "explanation": Why this is correct
+6. "key_takeaways": Array of 3-5 main points to remember
+
+Respond ONLY with valid JSON."""
+
+    messages = [
+        {"role": "system", "content": "You are an expert medical training content creator. Create clear, professional training materials."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=3000, temperature=0.6)
+    if response:
+        try:
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
+def analyze_doctor_performance(
+    total_bookings: int,
+    completed_bookings: int,
+    average_rating: float,
+    total_reviews: int,
+    cancellation_rate: float,
+    response_time_minutes: float
+) -> Optional[Dict]:
+    """
+    AI analysis of doctor performance for monitoring phase.
+    """
+    prompt = f"""You are a quality assurance analyst for NovaCare 24/7 Physiotherapy Clinics.
+
+Analyze this doctor's performance metrics:
+- Total Bookings: {total_bookings}
+- Completed Bookings: {completed_bookings}
+- Average Rating: {average_rating}/5.0
+- Total Reviews: {total_reviews}
+- Cancellation Rate: {cancellation_rate}%
+- Average Response Time: {response_time_minutes} minutes
+
+Provide a JSON analysis with:
+1. "overall_score": 0-100 performance score
+2. "rating": "excellent", "good", "average", "needs_improvement", or "concerning"
+3. "strengths": Array of 2-3 strong areas
+4. "areas_for_improvement": Array of specific improvement suggestions
+5. "flags": Array of any concerning patterns (empty if none)
+6. "recommendations": Array of actionable recommendations
+7. "summary": 2-3 sentence summary for admin review
+
+Respond ONLY with valid JSON."""
+
+    messages = [
+        {"role": "system", "content": "You are a fair and constructive performance analyst. Provide balanced, actionable feedback."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=800, temperature=0.5)
+    if response:
+        try:
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
+def generate_onboarding_email(
+    recipient_name: str,
+    email_type: str,
+    context: Dict = None
+) -> Optional[Dict]:
+    """
+    Generate professional onboarding emails.
+    email_type: "application_received", "verification_approved", "verification_rejected", 
+                "interview_scheduled", "interview_passed", "interview_failed",
+                "training_started", "training_completed", "activated", "suspended"
+    """
+    context = context or {}
+    
+    prompt = f"""You are a professional email writer for NovaCare 24/7 Physiotherapy Clinics.
+
+Write a {email_type.replace('_', ' ')} email for a doctor onboarding process.
+
+Recipient: {recipient_name}
+Additional Context: {json.dumps(context)}
+
+Provide a JSON response with:
+1. "subject": Email subject line
+2. "body_html": Professional HTML email body with:
+   - Warm greeting
+   - Clear message about the status
+   - Next steps if applicable
+   - Contact information for questions
+   - Professional sign-off
+3. "body_text": Plain text version
+
+Keep the tone professional, warm, and encouraging.
+
+Respond ONLY with valid JSON."""
+
+    messages = [
+        {"role": "system", "content": "You are a professional healthcare communications specialist. Write clear, empathetic emails."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    response = generate_chat_response(messages, max_tokens=1000, temperature=0.6)
+    if response:
+        try:
+            if response.startswith("```"):
+                response = response.split("```")[1]
+                if response.startswith("json"):
+                    response = response[4:]
+            return json.loads(response.strip())
+        except json.JSONDecodeError:
+            return None
+    return None
+

@@ -97,6 +97,8 @@ const Footer = () => {
               <li><Link to="/services" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Services</Link></li>
               <li><Link to="/book" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Book Appointment</Link></li>
               <li><Link to="/contact" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Contact Us</Link></li>
+              <li><Link to="/apply-doctor" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Join Our Team</Link></li>
+              <li><Link to="/apply-doctor/status" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Check Application Status</Link></li>
             </ul>
           </div>
 

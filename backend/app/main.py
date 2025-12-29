@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.routes import auth, doctors, bookings, services, testimonials, contact, admin
 from app.routes import site_settings, site_stats, branches, milestones, ai, blog, sitemap, uploads
+from app.routes import onboarding
 from app.config import settings
 from app.seed import seed_database
 
@@ -40,6 +41,7 @@ app.include_router(ai.router)
 app.include_router(blog.router)
 app.include_router(sitemap.router)
 app.include_router(uploads.router)
+app.include_router(onboarding.router)
 
 @app.get("/")
 def root():

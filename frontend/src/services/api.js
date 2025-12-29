@@ -259,4 +259,40 @@ export const uploadAPI = {
   }
 };
 
+// Doctor Onboarding APIs
+export const onboardingAPI = {
+  // Public endpoints
+  createApplication: (data) => api.post('/onboarding/apply/', data),
+  updateApplication: (id, data) => api.put(`/onboarding/apply/${id}/`, data),
+  submitApplication: (id) => api.post(`/onboarding/apply/${id}/submit/`),
+  checkStatus: (id, email) => api.get(`/onboarding/apply/${id}/status/`, { params: { email } }),
+  
+  // Admin endpoints
+  getDashboardStats: () => api.get('/onboarding/admin/dashboard/'),
+  getApplications: (status) => api.get('/onboarding/admin/applications/', { params: { status } }),
+  getApplication: (id) => api.get(`/onboarding/admin/applications/${id}/`),
+  getApplicationLogs: (id) => api.get(`/onboarding/admin/applications/${id}/logs/`),
+  
+  // Verification workflow
+  runAIVerification: (id) => api.post(`/onboarding/admin/applications/${id}/ai-verify/`),
+  humanVerify: (id, data) => api.post(`/onboarding/admin/applications/${id}/verify/`, data),
+  
+  // Interview workflow
+  generateInterviewQuestions: (id) => api.post(`/onboarding/admin/applications/${id}/generate-questions/`),
+  scheduleInterview: (id, data) => api.post(`/onboarding/admin/applications/${id}/schedule-interview/`, data),
+  completeInterview: (id, data) => api.post(`/onboarding/admin/applications/${id}/complete-interview/`, data),
+  
+  // Training workflow
+  getTrainingModules: () => api.get('/onboarding/training-modules/'),
+  createTrainingModule: (data) => api.post('/onboarding/admin/training-modules/', data),
+  generateTrainingModule: (topic, specialization) => 
+    api.post('/onboarding/admin/training-modules/generate/', null, { params: { topic, specialization } }),
+  startTraining: (id) => api.post(`/onboarding/admin/applications/${id}/start-training/`),
+  completeTraining: (id, score) => api.post(`/onboarding/admin/applications/${id}/complete-training/`, null, { params: { score } }),
+  
+  // Activation workflow
+  activateDoctor: (id, data) => api.post(`/onboarding/admin/applications/${id}/activate/`, data),
+  suspendDoctor: (id, reason) => api.post(`/onboarding/admin/applications/${id}/suspend/`, null, { params: { reason } }),
+};
+
 export default api;

@@ -262,6 +262,154 @@ class BlogCategory(str, enum.Enum):
     SPORTS = "sports"
 
 
+class OnboardingStatus(str, enum.Enum):
+    """Doctor onboarding application status"""
+    DRAFT = "draft"                      # Application started but not submitted
+    SUBMITTED = "submitted"              # Application submitted, pending review
+    VERIFICATION_PENDING = "verification_pending"  # AI verified, awaiting human approval
+    VERIFICATION_APPROVED = "verification_approved"  # Human approved credentials
+    VERIFICATION_REJECTED = "verification_rejected"  # Credentials rejected
+    INTERVIEW_SCHEDULED = "interview_scheduled"      # Interview scheduled
+    INTERVIEW_COMPLETED = "interview_completed"      # Interview done, pending review
+    INTERVIEW_PASSED = "interview_passed"            # Passed interview
+    INTERVIEW_FAILED = "interview_failed"            # Failed interview
+    TRAINING_PENDING = "training_pending"            # Training not started
+    TRAINING_IN_PROGRESS = "training_in_progress"    # Training ongoing
+    TRAINING_COMPLETED = "training_completed"        # Training completed
+    ACTIVATION_PENDING = "activation_pending"        # Awaiting final human approval
+    ACTIVATED = "activated"                          # Profile is live
+    SUSPENDED = "suspended"                          # Account suspended
+    REJECTED = "rejected"                            # Application rejected
+
+
+class DoctorOnboardingApplication(Base):
+    """Doctor onboarding application with full workflow tracking"""
+    __tablename__ = "doctor_onboarding_applications"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    
+    # Personal Information
+    full_name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, index=True)
+    phone = Column(String(20), nullable=False)
+    date_of_birth = Column(Date)
+    gender = Column(String(20))
+    address = Column(Text)
+    city = Column(String(100))
+    state = Column(String(100))
+    country = Column(String(100), default="India")
+    pincode = Column(String(20))
+    profile_image = Column(String(500))
+    
+    # Professional Information
+    specialization = Column(String(255))
+    qualification = Column(String(500))
+    experience_years = Column(Integer, default=0)
+    current_employer = Column(String(255))
+    
+    # License & Credentials
+    license_number = Column(String(100))
+    license_issuing_authority = Column(String(255))
+    license_expiry_date = Column(Date)
+    license_document_url = Column(String(500))  # S3 URL
+    degree_certificate_url = Column(String(500))  # S3 URL
+    additional_certifications = Column(Text)  # JSON array of certification URLs
+    
+    # Preferred Branch
+    preferred_branch_id = Column(Integer, ForeignKey("branches.id"), nullable=True)
+    
+    # Application Status
+    status = Column(String(50), default=OnboardingStatus.DRAFT)
+    submitted_at = Column(DateTime)
+    
+    # AI Verification
+    ai_verification_score = Column(Integer)  # 0-100
+    ai_verification_notes = Column(Text)  # JSON with AI analysis
+    ai_verification_completed_at = Column(DateTime)
+    
+    # Human Verification
+    verified_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    verification_notes = Column(Text)
+    verified_at = Column(DateTime)
+    
+    # Interview
+    interview_scheduled_at = Column(DateTime)
+    interview_meeting_link = Column(String(500))
+    interview_notes = Column(Text)
+    ai_interview_questions = Column(Text)  # JSON array of AI-generated questions
+    interview_score = Column(Integer)  # 0-100
+    interview_conducted_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    interview_completed_at = Column(DateTime)
+    
+    # Training
+    training_started_at = Column(DateTime)
+    training_modules_completed = Column(Text)  # JSON array of completed modules
+    training_completed_at = Column(DateTime)
+    training_score = Column(Integer)  # 0-100
+    
+    # Activation
+    activated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    activated_at = Column(DateTime)
+    activation_notes = Column(Text)
+    
+    # Linked Doctor Account (after activation)
+    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=True)
+    
+    # Rejection/Suspension
+    rejection_reason = Column(Text)
+    rejected_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    rejected_at = Column(DateTime)
+    
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    preferred_branch = relationship("Branch", foreign_keys=[preferred_branch_id])
+    verifier = relationship("User", foreign_keys=[verified_by])
+    interviewer = relationship("User", foreign_keys=[interview_conducted_by])
+    activator = relationship("User", foreign_keys=[activated_by])
+    rejector = relationship("User", foreign_keys=[rejected_by])
+    doctor = relationship("Doctor", foreign_keys=[doctor_id])
+
+
+class OnboardingActivityLog(Base):
+    """Audit log for all onboarding activities"""
+    __tablename__ = "onboarding_activity_logs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    application_id = Column(Integer, ForeignKey("doctor_onboarding_applications.id"), nullable=False)
+    action = Column(String(100), nullable=False)  # e.g., "status_changed", "document_uploaded"
+    old_value = Column(Text)
+    new_value = Column(Text)
+    performed_by = Column(Integer, ForeignKey("users.id"), nullable=True)  # Null for system/AI actions
+    performed_by_type = Column(String(20), default="human")  # human, ai, system
+    notes = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    application = relationship("DoctorOnboardingApplication")
+    user = relationship("User", foreign_keys=[performed_by])
+
+
+class TrainingModule(Base):
+    """Training modules for doctor onboarding"""
+    __tablename__ = "training_modules"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    content = Column(Text)  # HTML or Markdown content
+    video_url = Column(String(500))
+    duration_minutes = Column(Integer, default=30)
+    display_order = Column(Integer, default=0)
+    is_mandatory = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True)
+    quiz_questions = Column(Text)  # JSON array of quiz questions
+    passing_score = Column(Integer, default=70)  # Minimum score to pass
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class BlogArticle(Base):
     """Blog articles for content marketing and SEO"""
     __tablename__ = "blog_articles"

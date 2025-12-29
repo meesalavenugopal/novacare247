@@ -28,6 +28,7 @@ import AdminStats from './pages/admin/AdminStats';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminAITools from './pages/admin/AdminAITools';
 import AdminBlog from './pages/admin/AdminBlog';
+import AdminOnboarding from './pages/admin/AdminOnboarding';
 import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import ServiceProfilePage from './pages/ServiceProfilePage';
@@ -37,6 +38,8 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import AllBranchesPage from './pages/AllBranchesPage';
+import DoctorApplicationPage from './pages/DoctorApplicationPage';
+import CheckApplicationStatusPage from './pages/CheckApplicationStatusPage';
 
 function App() {
   return (
@@ -72,6 +75,10 @@ function App() {
           {/* Blog Pages */}
           <Route path="/blog" element={<><Navbar /><BlogPage /><Footer /></>} />
           <Route path="/blog/:slug" element={<><Navbar /><BlogPostPage /><Footer /></>} />
+          
+          {/* Doctor Application */}
+          <Route path="/apply-doctor" element={<><Navbar /><DoctorApplicationPage /><Footer /></>} />
+          <Route path="/apply-doctor/status" element={<><Navbar /><CheckApplicationStatusPage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -88,6 +95,7 @@ function App() {
             <Route path="stats" element={<AdminStats />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="ai-tools" element={<AdminAITools />} />
+            <Route path="onboarding" element={<AdminOnboarding />} />
           </Route>
         </Routes>
       </Router>

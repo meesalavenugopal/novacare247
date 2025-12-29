@@ -478,3 +478,208 @@ class MilestoneUpdate(BaseModel):
     description: Optional[str] = None
     display_order: Optional[int] = None
     is_active: Optional[bool] = None
+
+
+# ============ DOCTOR ONBOARDING SCHEMAS ============
+
+class OnboardingApplicationBase(BaseModel):
+    full_name: str
+    email: EmailStr
+    phone: str
+    date_of_birth: Optional[date] = None
+    gender: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: str = "India"
+    pincode: Optional[str] = None
+    profile_image: Optional[str] = None
+    specialization: Optional[str] = None
+    qualification: Optional[str] = None
+    experience_years: Optional[int] = 0
+    current_employer: Optional[str] = None
+    license_number: Optional[str] = None
+    license_issuing_authority: Optional[str] = None
+    license_expiry_date: Optional[date] = None
+    license_document_url: Optional[str] = None
+    degree_certificate_url: Optional[str] = None
+    additional_certifications: Optional[str] = None  # JSON string
+    preferred_branch_id: Optional[int] = None
+
+
+class OnboardingApplicationCreate(OnboardingApplicationBase):
+    pass
+
+
+class OnboardingApplicationSubmit(BaseModel):
+    """Submit application for review"""
+    pass
+
+
+class OnboardingApplicationResponse(OnboardingApplicationBase):
+    id: int
+    status: str
+    submitted_at: Optional[datetime] = None
+    ai_verification_score: Optional[int] = None
+    ai_verification_notes: Optional[str] = None
+    ai_verification_completed_at: Optional[datetime] = None
+    verified_by: Optional[int] = None
+    verification_notes: Optional[str] = None
+    verified_at: Optional[datetime] = None
+    interview_scheduled_at: Optional[datetime] = None
+    interview_meeting_link: Optional[str] = None
+    interview_score: Optional[int] = None
+    training_score: Optional[int] = None
+    training_completed_at: Optional[datetime] = None
+    doctor_id: Optional[int] = None
+    activated_at: Optional[datetime] = None
+    rejection_reason: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class OnboardingApplicationUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    gender: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    pincode: Optional[str] = None
+    profile_image: Optional[str] = None
+    specialization: Optional[str] = None
+    qualification: Optional[str] = None
+    experience_years: Optional[int] = None
+    current_employer: Optional[str] = None
+    license_number: Optional[str] = None
+    license_issuing_authority: Optional[str] = None
+    license_expiry_date: Optional[date] = None
+    license_document_url: Optional[str] = None
+    degree_certificate_url: Optional[str] = None
+    additional_certifications: Optional[str] = None
+    preferred_branch_id: Optional[int] = None
+
+
+class AIVerificationRequest(BaseModel):
+    """Request AI verification of credentials"""
+    application_id: int
+
+
+class AIVerificationResponse(BaseModel):
+    """AI verification result"""
+    score: int
+    analysis: dict
+    recommendations: List[str]
+    flags: List[str]
+
+
+class HumanVerificationRequest(BaseModel):
+    """Human approval/rejection of verification"""
+    approved: bool
+    notes: Optional[str] = None
+
+
+class ScheduleInterviewRequest(BaseModel):
+    """Schedule interview for applicant"""
+    scheduled_at: datetime
+    meeting_link: Optional[str] = None
+
+
+class AIInterviewQuestionsRequest(BaseModel):
+    """Generate AI interview questions"""
+    application_id: int
+
+
+class AIInterviewQuestionsResponse(BaseModel):
+    """AI-generated interview questions"""
+    questions: List[dict]  # [{question, category, expected_points}]
+
+
+class CompleteInterviewRequest(BaseModel):
+    """Complete interview with score and notes"""
+    score: int  # 0-100
+    notes: str
+    passed: bool
+
+
+class TrainingModuleBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    content: Optional[str] = None
+    video_url: Optional[str] = None
+    duration_minutes: int = 30
+    display_order: int = 0
+    is_mandatory: bool = True
+    quiz_questions: Optional[str] = None  # JSON string
+    passing_score: int = 70
+
+
+class TrainingModuleCreate(TrainingModuleBase):
+    pass
+
+
+class TrainingModuleResponse(TrainingModuleBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class TrainingModuleUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    content: Optional[str] = None
+    video_url: Optional[str] = None
+    duration_minutes: Optional[int] = None
+    display_order: Optional[int] = None
+    is_mandatory: Optional[bool] = None
+    quiz_questions: Optional[str] = None
+    passing_score: Optional[int] = None
+    is_active: Optional[bool] = None
+
+
+class CompleteTrainingRequest(BaseModel):
+    """Mark training module as completed"""
+    module_id: int
+    score: int  # Quiz score
+
+
+class ActivationRequest(BaseModel):
+    """Human approval for activation"""
+    approved: bool
+    notes: Optional[str] = None
+    branch_id: Optional[int] = None  # Final branch assignment
+
+
+class OnboardingActivityLogResponse(BaseModel):
+    id: int
+    application_id: int
+    action: str
+    old_value: Optional[str] = None
+    new_value: Optional[str] = None
+    performed_by: Optional[int] = None
+    performed_by_type: str
+    notes: Optional[str] = None
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class OnboardingDashboardStats(BaseModel):
+    """Dashboard statistics for onboarding"""
+    total_applications: int
+    pending_verification: int
+    pending_interview: int
+    pending_training: int
+    pending_activation: int
+    activated_this_month: int
+    rejected_this_month: int

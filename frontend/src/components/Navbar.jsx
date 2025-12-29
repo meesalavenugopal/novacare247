@@ -89,6 +89,14 @@ const Navbar = () => {
               <span>Track Appointment</span>
               <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
+            <div className="w-px h-4 bg-gray-200"></div>
+            <Link 
+              to="/apply-doctor" 
+              className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors group"
+            >
+              <span>Join as Doctor</span>
+              <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+            </Link>
           </div>
         </div>
       </div>
