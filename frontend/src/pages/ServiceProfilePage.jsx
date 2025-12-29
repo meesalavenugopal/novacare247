@@ -133,7 +133,7 @@ const ServiceProfilePage = () => {
               {/* Quick Actions */}
               <div className="flex flex-wrap gap-4 mt-6 justify-center md:justify-start">
                 <Link 
-                  to="/book"
+                  to={`/book?service=${slug}`}
                   className="inline-flex items-center gap-2 bg-white text-primary-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
                 >
                   <Calendar size={18} />
@@ -315,7 +315,7 @@ const ServiceProfilePage = () => {
           
           <div className="flex flex-wrap gap-4 justify-center">
             <Link 
-              to="/book"
+              to={`/book?service=${slug}`}
               className="inline-flex items-center gap-2 bg-white text-primary-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors"
             >
               <Calendar size={20} />

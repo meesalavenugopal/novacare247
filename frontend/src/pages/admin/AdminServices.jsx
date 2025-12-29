@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, Clock, IndianRupee, Sparkles, Loader2 } from 'lucide-react';
+import { Plus, Edit, Trash2, X, Clock, IndianRupee, Sparkles, Loader2, Home, Video } from 'lucide-react';
 import { servicesAPI, aiAPI } from '../../services/api';
 
 const AdminServices = () => {
@@ -13,6 +13,8 @@ const AdminServices = () => {
     description: '',
     duration: 60,
     price: 500,
+    home_available: true,
+    video_available: false,
   });
 
   useEffect(() => {
@@ -31,10 +33,10 @@ const AdminServices = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'duration' || name === 'price' ? parseInt(value) || 0 : value
+      [name]: type === 'checkbox' ? checked : (name === 'duration' || name === 'price' ? parseInt(value) || 0 : value)
     }));
   };
 
@@ -63,6 +65,8 @@ const AdminServices = () => {
       description: service.description || '',
       duration: service.duration,
       price: service.price,
+      home_available: service.home_available !== false,
+      video_available: service.video_available === true,
     });
     setShowModal(true);
   };
@@ -84,6 +88,8 @@ const AdminServices = () => {
       description: '',
       duration: 60,
       price: 500,
+      home_available: true,
+      video_available: false,
     });
   };
 
@@ -159,6 +165,14 @@ const AdminServices = () => {
                   <IndianRupee size={16} className="text-primary-600" />
                   {service.price}
                 </div>
+              </div>
+              <div className="flex items-center gap-3 text-xs mb-4">
+                <span className={`flex items-center gap-1 px-2 py-1 ${service.home_available !== false ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                  <Home size={12} /> Home
+                </span>
+                <span className={`flex items-center gap-1 px-2 py-1 ${service.video_available === true ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-400'}`}>
+                  <Video size={12} /> Video
+                </span>
               </div>
               <div className="flex gap-2">
                 <button
@@ -255,6 +269,35 @@ const AdminServices = () => {
                     className="input-field"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Consultation Availability</label>
+                <div className="flex items-center gap-6">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="home_available"
+                      checked={formData.home_available}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                    />
+                    <Home size={16} className="text-gray-500" />
+                    <span className="text-sm text-gray-700">Home Visit</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="video_available"
+                      checked={formData.video_available}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                    />
+                    <Video size={16} className="text-gray-500" />
+                    <span className="text-sm text-gray-700">Video Call</span>
+                  </label>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Clinic visits are always available</p>
               </div>
 
               <div className="flex gap-4 pt-4">

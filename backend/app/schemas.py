@@ -242,6 +242,8 @@ class ServiceBase(BaseModel):
     conditions_treated: Optional[str] = None  # JSON string
     treatment_process: Optional[str] = None  # JSON string
     faqs: Optional[str] = None  # JSON string
+    home_available: Optional[bool] = True  # Whether home visit is available
+    video_available: Optional[bool] = False  # Whether video consultation is available
 
 class ServiceCreate(ServiceBase):
     pass
@@ -271,6 +273,8 @@ class ServicePublic(BaseModel):
     conditions_treated: Optional[List[str]] = None
     treatment_process: Optional[List[dict]] = None
     faqs: Optional[List[dict]] = None
+    home_available: bool = True
+    video_available: bool = False
     is_active: bool
     
     class Config:
@@ -289,6 +293,8 @@ class ServiceUpdate(BaseModel):
     conditions_treated: Optional[str] = None
     treatment_process: Optional[str] = None
     faqs: Optional[str] = None
+    home_available: Optional[bool] = None
+    video_available: Optional[bool] = None
     is_active: Optional[bool] = None
 
 # Testimonial Schemas

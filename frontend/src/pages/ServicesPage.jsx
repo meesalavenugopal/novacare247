@@ -215,7 +215,7 @@ const ServicesPage = () => {
                           Learn More
                         </Link>
                         <Link 
-                          to="/book"
+                          to={`/book?service=${service.slug}`}
                           className="flex-1 inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium text-sm py-2.5 px-4 transition-colors"
                         >
                           Book Now
@@ -281,7 +281,7 @@ const ServicesPage = () => {
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link 
-                    to="/book" 
+                    to="/book"
                     className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-3 px-6 transition-colors"
                   >
                     Book Appointment

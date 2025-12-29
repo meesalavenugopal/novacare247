@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight, Star, Award, GraduationCap, Building2, Home, Video } from 'lucide-react';
-import { doctorsAPI, bookingsAPI } from '../services/api';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight, Star, Award, GraduationCap, Building2, Home, Video, Stethoscope } from 'lucide-react';
+import { doctorsAPI, bookingsAPI, servicesAPI } from '../services/api';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
 import SEO from '../components/SEO';
 
@@ -25,8 +25,10 @@ const BookingPage = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [doctors, setDoctors] = useState([]);
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedConsultationType, setSelectedConsultationType] = useState(null);
+  const [selectedService, setSelectedService] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -45,7 +47,45 @@ const BookingPage = () => {
 
   useEffect(() => {
     loadDoctors();
+    loadServiceFromUrl();
   }, []);
+
+  useEffect(() => {
+    // Filter doctors based on selected service
+    if (selectedService && doctors.length > 0) {
+      const serviceName = selectedService.name.toLowerCase();
+      const filtered = doctors.filter(doctor => {
+        // Match by specialization containing service name or vice versa
+        const specialization = doctor.specialization?.toLowerCase() || '';
+        return specialization.includes(serviceName) || 
+               serviceName.includes(specialization) ||
+               specialization.includes('general') ||
+               specialization.includes('physiotherapy');
+      });
+      // If no specific matches, show all doctors (fallback)
+      setFilteredDoctors(filtered.length > 0 ? filtered : doctors);
+      
+      // Pre-fill symptoms with service name
+      setFormData(prev => ({
+        ...prev,
+        symptoms: prev.symptoms || `Booking for ${selectedService.name}`
+      }));
+    } else {
+      setFilteredDoctors(doctors);
+    }
+  }, [selectedService, doctors]);
+
+  const loadServiceFromUrl = async () => {
+    const serviceSlug = searchParams.get('service');
+    if (serviceSlug) {
+      try {
+        const response = await servicesAPI.getBySlug(serviceSlug);
+        setSelectedService(response.data);
+      } catch (error) {
+        console.error('Error loading service:', error);
+      }
+    }
+  };
 
   useEffect(() => {
     if (doctorId && doctors.length > 0) {
@@ -131,11 +171,39 @@ const BookingPage = () => {
   };
 
   const isConsultationTypeAvailable = (typeId) => {
+    // First check if the service allows this consultation type
+    if (selectedService) {
+      if (typeId === 'home' && selectedService.home_available === false) {
+        return false;
+      }
+      if (typeId === 'video' && selectedService.video_available === false) {
+        return false;
+      }
+    }
+    
+    // Then check doctor availability
     if (!selectedDoctor?.consultation_fees?.length) {
       return true; // All types available if no fees configured
     }
     const fee = selectedDoctor.consultation_fees.find(f => f.consultation_type === typeId);
     return fee?.is_available ?? true; // Default to available if not explicitly set
+  };
+
+  // Get available consultation types based on service
+  const getAvailableConsultationTypes = () => {
+    return CONSULTATION_TYPES.filter(type => {
+      // If no service selected, show all types
+      if (!selectedService) return true;
+      
+      // Clinic is always available
+      if (type.id === 'clinic') return true;
+      
+      // Check service availability
+      if (type.id === 'home') return selectedService.home_available !== false;
+      if (type.id === 'video') return selectedService.video_available !== false;
+      
+      return true;
+    });
   };
 
   const handleDateSelect = (date) => {
@@ -301,12 +369,43 @@ const BookingPage = () => {
                 <span className="text-primary-600">Appointment</span>
               </h1>
               <p className="text-base text-gray-600 leading-relaxed">
-                Choose your preferred doctor and time slot for your physiotherapy session.
+                {selectedService 
+                  ? `Book a ${selectedService.name} session with our expert physiotherapists.`
+                  : 'Choose your preferred doctor and time slot for your physiotherapy session.'
+                }
               </p>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Service Banner - Show if booking for specific service */}
+      {selectedService && (
+        <div className="bg-primary-50 border-b border-primary-100">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Stethoscope size={20} className="text-primary-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Booking for: <span className="text-primary-600">{selectedService.name}</span>
+                </span>
+                {!selectedService.home_available && (
+                  <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Home visits not available</span>
+                )}
+                {!selectedService.video_available && (
+                  <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Video calls not available</span>
+                )}
+              </div>
+              <button 
+                onClick={() => { setSelectedService(null); navigate('/book', { replace: true }); }}
+                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Clear filter
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Progress Steps */}
       <div className="bg-white border-b border-gray-200">
@@ -360,9 +459,17 @@ const BookingPage = () => {
           {/* Step 1: Select Doctor */}
           {step === 1 && (
             <div>
-              <h2 className="text-lg font-semibold text-gray-800 mb-6">Select a Doctor</h2>
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                {selectedService ? `Doctors for ${selectedService.name}` : 'Select a Doctor'}
+              </h2>
+              {selectedService && filteredDoctors.length < doctors.length && (
+                <p className="text-sm text-gray-500 mb-6">
+                  Showing {filteredDoctors.length} specialist{filteredDoctors.length !== 1 ? 's' : ''} for this treatment
+                </p>
+              )}
+              {!selectedService && <div className="mb-6"></div>}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {doctors.map((doctor, index) => (
+                {filteredDoctors.map((doctor, index) => (
                   <button
                     key={doctor.id}
                     onClick={() => handleDoctorSelect(doctor)}
@@ -497,13 +604,25 @@ const BookingPage = () => {
                           ₹{fee}
                         </span>
                         {!isAvailable && (
-                          <span className="text-xs text-red-500 font-medium">Not Available</span>
+                          <span className="text-xs text-red-500 font-medium">
+                            {selectedService && 
+                             ((type.id === 'home' && !selectedService.home_available) ||
+                              (type.id === 'video' && !selectedService.video_available))
+                              ? 'Not for this service'
+                              : 'Not Available'
+                            }
+                          </span>
                         )}
                       </div>
                     </button>
                   );
                 })}
               </div>
+              {selectedService && (!selectedService.home_available || !selectedService.video_available) && (
+                <p className="text-sm text-gray-500 mt-4 text-center">
+                  Some consultation types may not be available for {selectedService.name} treatment.
+                </p>
+              )}
             </div>
           )}
 

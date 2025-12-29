@@ -153,6 +153,8 @@ class Service(Base):
     conditions_treated = Column(Text)  # JSON array of conditions
     treatment_process = Column(Text)  # JSON array of treatment steps
     faqs = Column(Text)  # JSON array of FAQs
+    home_available = Column(Boolean, default=True)  # Whether home visit is available for this service
+    video_available = Column(Boolean, default=False)  # Whether video consultation is available for this service
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
