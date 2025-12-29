@@ -206,4 +206,57 @@ export const blogAPI = {
   delete: (id) => api.delete(`/blog/${id}/`),
 };
 
+// Upload APIs (AWS S3 integration)
+export const uploadAPI = {
+  // Get upload service status
+  getStatus: () => api.get('/uploads/status'),
+  
+  // Get allowed file types
+  getAllowedTypes: () => api.get('/uploads/allowed-types'),
+  
+  // Generate presigned URL for direct S3 upload
+  getPresignedUrl: (filename, contentType, folder = 'misc', fileSize = 0) => 
+    api.post('/uploads/presigned-url', {
+      filename,
+      content_type: contentType,
+      folder,
+      file_size: fileSize
+    }),
+  
+  // Upload file directly through server (for small files)
+  uploadDirect: (file, folder = 'misc') => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/uploads/direct?folder=${folder}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+  
+  // Delete a file
+  deleteFile: (fileUrl) => api.delete('/uploads/', { data: { file_url: fileUrl } }),
+  
+  // Helper: Upload file to S3 using presigned URL
+  uploadToS3: async (file, folder = 'misc') => {
+    // 1. Get presigned URL
+    const presignedRes = await api.post('/uploads/presigned-url', {
+      filename: file.name,
+      content_type: file.type,
+      folder,
+      file_size: file.size
+    });
+    
+    // 2. Upload directly to S3
+    await fetch(presignedRes.data.upload_url, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type
+      }
+    });
+    
+    // 3. Return the final file URL
+    return presignedRes.data.file_url;
+  }
+};
+
 export default api;

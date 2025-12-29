@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee, CalendarDays, ToggleLeft, ToggleRight } from 'lucide-react';
-import { doctorsAPI, aiAPI } from '../../services/api';
+import { doctorsAPI, aiAPI, uploadAPI } from '../../services/api';
+import ImageUpload from '../../components/admin/ImageUpload';
 
 const CONSULTATION_TYPES = ['clinic', 'home', 'video'];
 const COUNTRIES = [
@@ -24,6 +25,7 @@ const AdminDoctors = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingDoctor, setEditingDoctor] = useState(null);
   const [generatingBio, setGeneratingBio] = useState(false);
+  const [originalProfileImage, setOriginalProfileImage] = useState(''); // Track original image for cleanup
   
   // Fee Management State
   const [showFeeModal, setShowFeeModal] = useState(false);
@@ -62,6 +64,7 @@ const AdminDoctors = () => {
     experience_years: 0,
     bio: '',
     consultation_fee: 500,
+    profile_image: '',
   });
 
   useEffect(() => {
@@ -218,6 +221,7 @@ const AdminDoctors = () => {
           experience_years: formData.experience_years,
           bio: formData.bio,
           consultation_fee: formData.consultation_fee,
+          profile_image: formData.profile_image,
         });
       } else {
         await doctorsAPI.create(formData);
@@ -288,7 +292,9 @@ const AdminDoctors = () => {
       experience_years: doctor.experience_years,
       bio: doctor.bio || '',
       consultation_fee: doctor.consultation_fee,
+      profile_image: doctor.profile_image || '',
     });
+    setOriginalProfileImage(doctor.profile_image || ''); // Track original for cleanup
     setShowModal(true);
   };
 
@@ -321,7 +327,25 @@ const AdminDoctors = () => {
       experience_years: 0,
       bio: '',
       consultation_fee: 500,
+      profile_image: '',
     });
+    setOriginalProfileImage('');
+  };
+
+  // Cleanup orphaned uploads when cancelling
+  const handleCancelModal = async () => {
+    // If a new image was uploaded but not saved, delete it from S3
+    if (formData.profile_image && formData.profile_image !== originalProfileImage) {
+      try {
+        await uploadAPI.deleteFile(formData.profile_image);
+        console.log('Cleaned up orphaned upload');
+      } catch (err) {
+        console.error('Failed to cleanup:', err);
+      }
+    }
+    setShowModal(false);
+    setEditingDoctor(null);
+    resetForm();
   };
 
   const resetFeeForm = () => {
@@ -419,9 +443,17 @@ const AdminDoctors = () => {
                   <tr key={doctor.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 font-semibold">
-                          {doctor.user?.full_name?.charAt(0) || 'D'}
-                        </div>
+                        {doctor.profile_image ? (
+                          <img 
+                            src={doctor.profile_image} 
+                            alt={doctor.user?.full_name} 
+                            className="w-10 h-10 object-cover rounded-full border border-gray-200"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 font-semibold rounded-full">
+                            {doctor.user?.full_name?.charAt(0) || 'D'}
+                          </div>
+                        )}
                         <div>
                           <p className="font-medium text-gray-800">{doctor.user?.full_name}</p>
                           <p className="text-sm text-gray-500">{doctor.user?.email}</p>
@@ -493,7 +525,7 @@ const AdminDoctors = () => {
               <h2 className="text-xl font-semibold text-gray-800">
                 {editingDoctor ? 'Edit Doctor' : 'Add New Doctor'}
               </h2>
-              <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600">
+              <button onClick={handleCancelModal} className="text-gray-400 hover:text-gray-600">
                 <X size={24} />
               </button>
             </div>
@@ -645,8 +677,20 @@ const AdminDoctors = () => {
                 ></textarea>
               </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
+                <ImageUpload
+                  value={formData.profile_image}
+                  onChange={(url) => setFormData({...formData, profile_image: url})}
+                  folder="doctors"
+                  placeholder="Upload doctor photo"
+                  aspectRatio="square"
+                  originalValue={originalProfileImage}
+                />
+              </div>
+
               <div className="flex gap-4 pt-4">
-                <button type="button" onClick={() => setShowModal(false)} className="btn-outline flex-1">
+                <button type="button" onClick={handleCancelModal} className="btn-outline flex-1">
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary flex-1">
