@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 
+
 import HomePage from './pages/HomePage';
 import DoctorsPage from './pages/DoctorsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -27,7 +28,6 @@ import AdminStats from './pages/admin/AdminStats';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminAITools from './pages/admin/AdminAITools';
 import AdminBlog from './pages/admin/AdminBlog';
-
 import StoryPage from './pages/StoryPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import ServiceProfilePage from './pages/ServiceProfilePage';
@@ -36,6 +36,7 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
+import AllBranchesPage from './pages/AllBranchesPage';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="/services/:slug" element={<><Navbar /><ServiceProfilePage /><Footer /></>} />
           <Route path="/book/:doctorId?" element={<><Navbar /><BookingPage /><Footer /></>} />
           <Route path="/contact" element={<><Navbar /><ContactPage /><Footer /></>} />
+          <Route path="/branches" element={<><Navbar /><AllBranchesPage /><Footer /></>} />
           <Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} />
           <Route path="/login" element={<><Navbar /><LoginPage /><Footer /></>} />
           <Route path="/register" element={<><Navbar /><RegisterPage /><Footer /></>} />
