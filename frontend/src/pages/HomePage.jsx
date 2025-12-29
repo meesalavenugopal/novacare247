@@ -355,8 +355,7 @@ const HomePage = () => {
                       <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.name}</h3>
                       <p className="text-gray-600 text-sm mb-4 leading-relaxed">{service.description}</p>
                       <div className="flex items-center gap-4">
-                        <span className="text-primary-600 font-bold text-lg">₹{service.price}</span>
-                        <span className="text-gray-400 text-sm">{service.duration} mins</span>
+                        <span className="text-gray-500 text-sm">{service.duration} mins session</span>
                       </div>
                     </div>
                   </div>
