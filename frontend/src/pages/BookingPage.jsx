@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight, Star, Award, GraduationCap } from 'lucide-react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, ChevronLeft, ChevronRight, Star, Award, GraduationCap, Building2, Home, Video } from 'lucide-react';
 import { doctorsAPI, bookingsAPI } from '../services/api';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
 import SEO from '../components/SEO';
+
+const CONSULTATION_TYPES = [
+  { id: 'clinic', name: 'Clinic Visit', icon: Building2, description: 'Visit our clinic for in-person consultation' },
+  { id: 'home', name: 'Home Visit', icon: Home, description: 'Our physiotherapist will visit your home' },
+  { id: 'video', name: 'Video Call', icon: Video, description: 'Online consultation via video call' },
+];
 
 const doctorImages = [
   'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
@@ -15,10 +21,12 @@ const doctorImages = [
 
 const BookingPage = () => {
   const { doctorId } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedConsultationType, setSelectedConsultationType] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -44,10 +52,34 @@ const BookingPage = () => {
       const doctor = doctors.find(d => d.id === parseInt(doctorId));
       if (doctor) {
         setSelectedDoctor(doctor);
-        setStep(2);
+        
+        // Check if consultation type was passed from doctors page
+        const typeFromUrl = searchParams.get('type');
+        if (typeFromUrl) {
+          const consultationType = CONSULTATION_TYPES.find(t => t.id === typeFromUrl);
+          if (consultationType) {
+            // Check if doctor offers this consultation type
+            // If no fees configured or empty array, default to all types available
+            const hasFees = doctor.consultation_fees && doctor.consultation_fees.length > 0;
+            const isAvailable = hasFees
+              ? doctor.consultation_fees.some(f => f.consultation_type === typeFromUrl && f.is_available)
+              : true; // All types available if no fees configured
+            
+            if (isAvailable) {
+              setSelectedConsultationType(consultationType);
+              setStep(3); // Skip to date/time selection
+            } else {
+              setStep(2); // Go to consultation type selection
+            }
+          } else {
+            setStep(2);
+          }
+        } else {
+          setStep(2);
+        }
       }
     }
-  }, [doctorId, doctors]);
+  }, [doctorId, doctors, searchParams]);
 
   useEffect(() => {
     if (selectedDoctor && selectedDate) {
@@ -80,8 +112,30 @@ const BookingPage = () => {
 
   const handleDoctorSelect = (doctor) => {
     setSelectedDoctor(doctor);
+    setSelectedConsultationType(null);
     setStep(2);
     setSelectedTime(null);
+  };
+
+  const handleConsultationTypeSelect = (type) => {
+    setSelectedConsultationType(type);
+    setStep(3);
+  };
+
+  const getConsultationFee = (typeId) => {
+    if (!selectedDoctor?.consultation_fees?.length) {
+      return selectedDoctor?.consultation_fee || 500;
+    }
+    const fee = selectedDoctor.consultation_fees.find(f => f.consultation_type === typeId);
+    return fee?.fee || selectedDoctor?.consultation_fee || 500;
+  };
+
+  const isConsultationTypeAvailable = (typeId) => {
+    if (!selectedDoctor?.consultation_fees?.length) {
+      return true; // All types available if no fees configured
+    }
+    const fee = selectedDoctor.consultation_fees.find(f => f.consultation_type === typeId);
+    return fee?.is_available ?? true; // Default to available if not explicitly set
   };
 
   const handleDateSelect = (date) => {
@@ -91,7 +145,7 @@ const BookingPage = () => {
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
-    setStep(3);
+    setStep(4);
   };
 
   const handleInputChange = (e) => {
@@ -108,6 +162,7 @@ const BookingPage = () => {
         doctor_id: selectedDoctor.id,
         booking_date: format(selectedDate, 'yyyy-MM-dd'),
         booking_time: selectedTime,
+        consultation_type: selectedConsultationType?.id || 'clinic',
         ...formData,
       };
 
@@ -184,6 +239,9 @@ const BookingPage = () => {
                   <strong>Doctor:</strong> {selectedDoctor.full_name}
                 </p>
                 <p className="text-sm text-gray-600 mb-2">
+                  <strong>Consultation Type:</strong> {selectedConsultationType?.name || 'Clinic Visit'}
+                </p>
+                <p className="text-sm text-gray-600 mb-2">
                   <strong>Date:</strong> {format(selectedDate, 'EEEE, MMMM d, yyyy')}
                 </p>
                 <p className="text-sm text-gray-600">
@@ -253,20 +311,44 @@ const BookingPage = () => {
       {/* Progress Steps */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center gap-6 md:gap-10">
-            <div className={`flex items-center gap-3 ${step >= 1 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>1</div>
-              <span className="hidden sm:inline font-medium">Select Doctor</span>
-            </div>
-            <div className={`w-16 md:w-24 h-0.5 ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
-            <div className={`flex items-center gap-3 ${step >= 2 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>2</div>
-              <span className="hidden sm:inline font-medium">Choose Slot</span>
-            </div>
-            <div className={`w-16 md:w-24 h-0.5 ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
-            <div className={`flex items-center gap-3 ${step >= 3 ? 'text-primary-600' : 'text-gray-400'}`}>
-              <div className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>3</div>
-              <span className="hidden sm:inline font-medium">Your Details</span>
+          <div className="flex items-center justify-center gap-4 md:gap-8">
+            {/* Step 1: Doctor */}
+            <button 
+              onClick={() => step > 1 && setStep(1)}
+              className={`flex items-center gap-2 ${step >= 1 ? 'text-primary-600' : 'text-gray-400'} ${step > 1 ? 'cursor-pointer hover:opacity-80' : ''}`}
+              disabled={step < 1}
+            >
+              <div className={`w-10 h-10 flex items-center justify-center font-bold text-base rounded-full ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>1</div>
+              <span className="hidden sm:inline font-medium text-sm">Doctor</span>
+            </button>
+            <div className={`w-8 md:w-16 h-0.5 ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            
+            {/* Step 2: Type */}
+            <button 
+              onClick={() => step > 2 && selectedDoctor && setStep(2)}
+              className={`flex items-center gap-2 ${step >= 2 ? 'text-primary-600' : 'text-gray-400'} ${step > 2 && selectedDoctor ? 'cursor-pointer hover:opacity-80' : ''}`}
+              disabled={step < 2 || !selectedDoctor}
+            >
+              <div className={`w-10 h-10 flex items-center justify-center font-bold text-base rounded-full ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>2</div>
+              <span className="hidden sm:inline font-medium text-sm">Type</span>
+            </button>
+            <div className={`w-8 md:w-16 h-0.5 ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            
+            {/* Step 3: Slot */}
+            <button 
+              onClick={() => step > 3 && selectedConsultationType && setStep(3)}
+              className={`flex items-center gap-2 ${step >= 3 ? 'text-primary-600' : 'text-gray-400'} ${step > 3 && selectedConsultationType ? 'cursor-pointer hover:opacity-80' : ''}`}
+              disabled={step < 3 || !selectedConsultationType}
+            >
+              <div className={`w-10 h-10 flex items-center justify-center font-bold text-base rounded-full ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>3</div>
+              <span className="hidden sm:inline font-medium text-sm">Slot</span>
+            </button>
+            <div className={`w-8 md:w-16 h-0.5 ${step >= 4 ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
+            
+            {/* Step 4: Details */}
+            <div className={`flex items-center gap-2 ${step >= 4 ? 'text-primary-600' : 'text-gray-400'}`}>
+              <div className={`w-10 h-10 flex items-center justify-center font-bold text-base rounded-full ${step >= 4 ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}>4</div>
+              <span className="hidden sm:inline font-medium text-sm">Details</span>
             </div>
           </div>
         </div>
@@ -360,11 +442,11 @@ const BookingPage = () => {
             </div>
           )}
 
-          {/* Step 2: Choose Date & Time */}
+          {/* Step 2: Select Consultation Type */}
           {step === 2 && selectedDoctor && (
             <div>
               <button
-                onClick={() => { setStep(1); setSelectedDoctor(null); }}
+                onClick={() => { setStep(1); setSelectedDoctor(null); setSelectedConsultationType(null); }}
                 className="text-primary-600 hover:text-primary-700 mb-4 flex items-center gap-1 text-sm font-medium"
               >
                 <ChevronLeft size={16} /> Change Doctor
@@ -378,7 +460,83 @@ const BookingPage = () => {
                   <div>
                     <h3 className="font-semibold text-gray-800">{selectedDoctor.full_name}</h3>
                     <p className="text-primary-600 text-sm">{selectedDoctor.specialization}</p>
-                    <p className="text-sm text-gray-500">₹{selectedDoctor.consultation_fee} per consultation</p>
+                  </div>
+                </div>
+              </div>
+
+              <h2 className="text-lg font-semibold text-gray-800 mb-6">Select Consultation Type</h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                {CONSULTATION_TYPES.map((type) => {
+                  const TypeIcon = type.icon;
+                  const isAvailable = isConsultationTypeAvailable(type.id);
+                  const fee = getConsultationFee(type.id);
+                  const isSelected = selectedConsultationType?.id === type.id;
+
+                  return (
+                    <button
+                      key={type.id}
+                      onClick={() => isAvailable && handleConsultationTypeSelect(type)}
+                      disabled={!isAvailable}
+                      className={`group bg-white border-2 transition-all p-6 text-left ${
+                        isSelected
+                          ? 'border-primary-600 ring-2 ring-primary-200 shadow-lg'
+                          : isAvailable
+                            ? 'border-gray-200 hover:border-primary-500 hover:shadow-lg cursor-pointer'
+                            : 'border-gray-100 opacity-60 cursor-not-allowed'
+                      }`}
+                    >
+                      <div className={`w-14 h-14 flex items-center justify-center mb-4 ${
+                        isSelected ? 'bg-primary-600 text-white' : isAvailable ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-400'
+                      }`}>
+                        <TypeIcon size={28} />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{type.name}</h3>
+                      <p className="text-sm text-gray-500 mb-4">{type.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className={`font-bold text-xl ${isAvailable ? 'text-primary-600' : 'text-gray-400'}`}>
+                          ₹{fee}
+                        </span>
+                        {!isAvailable && (
+                          <span className="text-xs text-red-500 font-medium">Not Available</span>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Choose Date & Time */}
+          {step === 3 && selectedDoctor && selectedConsultationType && (
+            <div>
+              <button
+                onClick={() => { setStep(2); }}
+                className="text-primary-600 hover:text-primary-700 mb-4 flex items-center gap-1 text-sm font-medium"
+              >
+                <ChevronLeft size={16} /> Change Consultation Type
+              </button>
+
+              <div className="bg-white border border-gray-200 p-6 mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-primary-600 flex items-center justify-center text-white text-xl font-bold">
+                    {selectedDoctor.full_name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">{selectedDoctor.full_name}</h3>
+                    <p className="text-primary-600 text-sm">{selectedDoctor.specialization}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      {selectedConsultationType && (() => {
+                        const TypeIcon = selectedConsultationType.icon;
+                        return (
+                          <>
+                            <TypeIcon size={14} className="text-gray-500" />
+                            <span className="text-sm text-gray-500">{selectedConsultationType.name}</span>
+                            <span className="text-sm font-medium text-primary-600">₹{getConsultationFee(selectedConsultationType.id)}</span>
+                          </>
+                        );
+                      })()}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -479,11 +637,11 @@ const BookingPage = () => {
             </div>
           )}
 
-          {/* Step 3: Patient Details */}
-          {step === 3 && (
+          {/* Step 4: Patient Details */}
+          {step === 4 && (
             <div className="max-w-2xl mx-auto">
               <button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
                 className="text-primary-600 hover:text-primary-700 mb-4 flex items-center gap-1 text-sm font-medium"
               >
                 <ChevronLeft size={16} /> Change Time Slot
@@ -501,6 +659,10 @@ const BookingPage = () => {
                     <p className="font-medium">{selectedDoctor.specialization}</p>
                   </div>
                   <div>
+                    <p className="text-gray-500">Consultation Type</p>
+                    <p className="font-medium">{selectedConsultationType?.name || 'Clinic Visit'}</p>
+                  </div>
+                  <div>
                     <p className="text-gray-500">Date</p>
                     <p className="font-medium">{format(selectedDate, 'EEEE, MMMM d, yyyy')}</p>
                   </div>
@@ -510,7 +672,7 @@ const BookingPage = () => {
                   </div>
                   <div>
                     <p className="text-gray-500">Consultation Fee</p>
-                    <p className="font-medium text-primary-600">₹{selectedDoctor.consultation_fee}</p>
+                    <p className="font-medium text-primary-600">₹{selectedConsultationType ? getConsultationFee(selectedConsultationType.id) : selectedDoctor.consultation_fee}</p>
                   </div>
                 </div>
               </div>

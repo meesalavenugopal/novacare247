@@ -123,6 +123,7 @@ class Booking(Base):
     doctor_id = Column(Integer, ForeignKey("doctors.id"))
     booking_date = Column(Date, nullable=False)
     booking_time = Column(Time, nullable=False)
+    consultation_type = Column(String(20), default=ConsultationType.CLINIC)  # clinic, home, video
     status = Column(String(20), default=BookingStatus.PENDING)
     patient_name = Column(String(255))
     patient_phone = Column(String(20))

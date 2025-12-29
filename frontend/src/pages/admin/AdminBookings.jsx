@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Search, Check, X, Clock, Eye } from 'lucide-react';
+import { Calendar, Search, Check, X, Clock, Eye, Building2, Home, Video } from 'lucide-react';
 import { bookingsAPI } from '../../services/api';
 import { format } from 'date-fns';
+
+const CONSULTATION_TYPE_MAP = {
+  clinic: { name: 'Clinic Visit', icon: Building2 },
+  home: { name: 'Home Visit', icon: Home },
+  video: { name: 'Video Call', icon: Video },
+};
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -99,6 +105,7 @@ const AdminBookings = () => {
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Patient</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Date & Time</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Type</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Doctor</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
                   <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase">Actions</th>
@@ -121,6 +128,18 @@ const AdminBookings = () => {
                         </p>
                         <p className="text-sm text-gray-500">{booking.booking_time}</p>
                       </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      {(() => {
+                        const typeInfo = CONSULTATION_TYPE_MAP[booking.consultation_type] || CONSULTATION_TYPE_MAP.clinic;
+                        const TypeIcon = typeInfo.icon;
+                        return (
+                          <div className="flex items-center gap-1.5">
+                            <TypeIcon size={14} className="text-primary-600" />
+                            <span className="text-sm text-gray-600">{typeInfo.name}</span>
+                          </div>
+                        );
+                      })()}
                     </td>
                     <td className="px-6 py-4 text-gray-600">Doctor #{booking.doctor_id}</td>
                     <td className="px-6 py-4">
@@ -219,6 +238,19 @@ const AdminBookings = () => {
                 <div>
                   <p className="text-sm text-gray-500">Time</p>
                   <p className="font-medium">{selectedBooking.booking_time}</p>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-sm text-gray-500">Consultation Type</p>
+                  {(() => {
+                    const typeInfo = CONSULTATION_TYPE_MAP[selectedBooking.consultation_type] || CONSULTATION_TYPE_MAP.clinic;
+                    const TypeIcon = typeInfo.icon;
+                    return (
+                      <div className="flex items-center gap-2 mt-1">
+                        <TypeIcon size={16} className="text-primary-600" />
+                        <span className="font-medium">{typeInfo.name}</span>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
 

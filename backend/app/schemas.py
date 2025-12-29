@@ -193,6 +193,7 @@ class BookingBase(BaseModel):
     doctor_id: int
     booking_date: date
     booking_time: str  # Accept as string like "09:00"
+    consultation_type: str = "clinic"  # clinic, home, video
     patient_name: str
     patient_phone: str
     patient_email: Optional[EmailStr] = None
@@ -206,6 +207,7 @@ class BookingResponse(BaseModel):
     doctor_id: int
     booking_date: date
     booking_time: time  # Return as time object (Pydantic will serialize)
+    consultation_type: Optional[str] = "clinic"  # clinic, home, video
     patient_name: str
     patient_phone: str
     patient_email: Optional[EmailStr] = None

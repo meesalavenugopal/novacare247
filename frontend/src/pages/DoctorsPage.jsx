@@ -649,7 +649,7 @@ const DoctorsPage = () => {
 
                     {/* Book Button */}
                     <Link 
-                      to={`/book/${doctor.id}`}
+                      to={`/book/${doctor.id}${selectedConsultationType !== 'all' ? `?type=${selectedConsultationType}` : ''}`}
                       className={`block w-full text-center py-3 font-medium transition-colors ${
                         doctor.is_available 
                           ? 'bg-primary-600 hover:bg-primary-700 text-white'
