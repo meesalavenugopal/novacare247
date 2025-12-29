@@ -15,6 +15,11 @@ const HomePage = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [stats, setStats] = useState([]);
   const [heroSettings, setHeroSettings] = useState({});
+  const [contactSettings, setContactSettings] = useState({
+    phone: '+91 98765 43210',
+    address: 'Hyderabad, India',
+    business_hours: 'Mon-Sat: 9AM - 8PM'
+  });
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   // Icon mapping for stats
@@ -49,6 +54,15 @@ const HomePage = () => {
       // Set hero settings
       if (settingsRes.data.hero) {
         setHeroSettings(settingsRes.data.hero);
+      }
+      
+      // Set contact settings
+      if (settingsRes.data.contact) {
+        setContactSettings({
+          phone: settingsRes.data.contact.phone || '+91 98765 43210',
+          address: settingsRes.data.contact.address || 'Hyderabad, India',
+          business_hours: settingsRes.data.contact.business_hours || 'Mon-Sat: 9AM - 8PM'
+        });
       }
     } catch (error) {
       console.error('Error loading data:', error);
@@ -184,8 +198,8 @@ const HomePage = () => {
               <p className="text-white/80 text-sm mb-4">
                 Quick response for urgent physiotherapy needs and consultations.
               </p>
-              <a href="tel:+919876543210" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
-                +91 98765 43210
+              <a href={`tel:${contactSettings.phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
+                {contactSettings.phone}
               </a>
             </div>
             
@@ -545,22 +559,22 @@ const HomePage = () => {
       <section className="py-6 bg-primary-900">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="flex items-center gap-3 justify-center md:justify-start">
+            <a href={`tel:${contactSettings.phone.replace(/\s/g, '')}`} className="flex items-center gap-3 justify-center md:justify-start hover:opacity-80 transition-opacity">
               <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
                 <Phone className="w-5 h-5 text-white" />
               </div>
               <div>
                 <p className="text-primary-300 text-xs">Call Us</p>
-                <p className="text-white font-medium">+91 98765 43210</p>
+                <p className="text-white font-medium">{contactSettings.phone}</p>
               </div>
-            </div>
+            </a>
             <div className="flex items-center gap-3 justify-center">
               <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
                 <MapPin className="w-5 h-5 text-white" />
               </div>
               <div>
                 <p className="text-primary-300 text-xs">Visit Us</p>
-                <p className="text-white font-medium">Hyderabad, India</p>
+                <p className="text-white font-medium">{contactSettings.address}</p>
               </div>
             </div>
             <div className="flex items-center gap-3 justify-center md:justify-end">
@@ -569,7 +583,7 @@ const HomePage = () => {
               </div>
               <div>
                 <p className="text-primary-300 text-xs">Working Hours</p>
-                <p className="text-white font-medium">Mon-Sat: 9AM - 8PM</p>
+                <p className="text-white font-medium">{contactSettings.business_hours}</p>
               </div>
             </div>
           </div>

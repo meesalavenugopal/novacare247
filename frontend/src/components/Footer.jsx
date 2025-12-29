@@ -1,7 +1,35 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter, Linkedin, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { siteSettingsAPI } from '../services/api';
 
 const Footer = () => {
+  const [contactSettings, setContactSettings] = useState({
+    phone: '+91 98765 43210',
+    email: 'info@novacare247.com',
+    address: '123 Health Street, Medical District, Hyderabad - 500001',
+    business_hours: 'Mon - Sat: 9:00 AM - 8:00 PM'
+  });
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const res = await siteSettingsAPI.getGrouped();
+        if (res.data.contact) {
+          setContactSettings({
+            phone: res.data.contact.phone || '+91 98765 43210',
+            email: res.data.contact.email || 'info@novacare247.com',
+            address: res.data.contact.address || '123 Health Street, Medical District, Hyderabad - 500001',
+            business_hours: res.data.contact.business_hours || 'Mon - Sat: 9:00 AM - 8:00 PM'
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load contact settings:', error);
+      }
+    };
+    loadSettings();
+  }, []);
+
   return (
     <footer className="bg-gray-900 text-gray-400">
       <div className="container mx-auto px-4 py-16">
@@ -70,25 +98,29 @@ const Footer = () => {
                 <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin size={16} className="text-primary-400" />
                 </div>
-                <span>123 Health Street, Medical District, Hyderabad - 500001</span>
+                <span>{contactSettings.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0">
                   <Phone size={16} className="text-primary-400" />
                 </div>
-                <span>+91 98765 43210</span>
+                <a href={`tel:${contactSettings.phone.replace(/\s/g, '')}`} className="hover:text-primary-400 transition-colors">
+                  {contactSettings.phone}
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0">
                   <Mail size={16} className="text-primary-400" />
                 </div>
-                <span>info@novacare247.com</span>
+                <a href={`mailto:${contactSettings.email}`} className="hover:text-primary-400 transition-colors">
+                  {contactSettings.email}
+                </a>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Clock size={16} className="text-primary-400" />
                 </div>
-                <span>Mon - Sat: 9:00 AM - 8:00 PM<br />Sunday: Closed</span>
+                <span>{contactSettings.business_hours}<br />Sunday: Closed</span>
               </li>
             </ul>
           </div>
