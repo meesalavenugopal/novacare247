@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import date, time, datetime, timedelta
@@ -9,6 +9,7 @@ from app.schemas import (
     BookingWithDoctor, AvailableSlot
 )
 from app.auth import get_current_active_user, get_admin_user, get_doctor_user
+from app.email_service import email_service
 
 router = APIRouter(prefix="/api/bookings", tags=["Bookings"])
 
@@ -73,6 +74,7 @@ def get_available_slots(
 @router.post("/", response_model=BookingResponse)
 def create_booking(
     booking_data: BookingCreate,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
 ):
     """Create a new booking (public endpoint)"""
@@ -112,6 +114,21 @@ def create_booking(
     db.add(new_booking)
     db.commit()
     db.refresh(new_booking)
+    
+    # Send confirmation email in background
+    if new_booking.patient_email:
+        background_tasks.add_task(
+            email_service.send_booking_confirmation,
+            to_email=new_booking.patient_email,
+            patient_name=new_booking.patient_name,
+            doctor_name=doctor.user.full_name,
+            doctor_specialization=doctor.specialization or "Physiotherapy",
+            booking_date=new_booking.booking_date.strftime("%B %d, %Y"),
+            booking_time=new_booking.booking_time.strftime("%I:%M %p"),
+            consultation_type="Clinic Visit",  # TODO: Add consultation type to booking
+            booking_id=new_booking.id
+        )
+    
     return new_booking
 
 @router.get("/", response_model=List[BookingResponse])
@@ -198,6 +215,7 @@ def update_booking(
 @router.delete("/{booking_id}/")
 def cancel_booking(
     booking_id: int,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
 ):
     """Cancel a booking"""
@@ -205,8 +223,24 @@ def cancel_booking(
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     
+    # Get doctor info before cancelling
+    doctor = db.query(Doctor).filter(Doctor.id == booking.doctor_id).first()
+    
     booking.status = BookingStatus.CANCELLED
     db.commit()
+    
+    # Send cancellation email in background
+    if booking.patient_email and doctor:
+        background_tasks.add_task(
+            email_service.send_booking_cancellation,
+            to_email=booking.patient_email,
+            patient_name=booking.patient_name,
+            doctor_name=doctor.user.full_name,
+            booking_date=booking.booking_date.strftime("%B %d, %Y"),
+            booking_time=booking.booking_time.strftime("%I:%M %p"),
+            cancellation_reason=None
+        )
+    
     return {"message": "Booking cancelled successfully"}
 
 @router.get("/check/{phone}/")

@@ -303,7 +303,7 @@ const HomePage = () => {
             <div className="flex flex-col gap-4">
               <div className="relative h-80 lg:h-96 overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
+                  src="/home-about.png"
                   alt="Physiotherapy Session"
                   className="w-full h-full object-cover"
                 />

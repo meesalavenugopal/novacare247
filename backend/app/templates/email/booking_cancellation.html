@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Cancelled</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <table role="presentation" style="width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); padding: 30px 40px; border-radius: 12px 12px 0 0;">
+                            <table role="presentation" style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">NovaCare 24/7</h1>
+                                        <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">Physiotherapy & Wellness</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Cancellation Banner -->
+                    <tr>
+                        <td style="background-color: #fef2f2; padding: 20px 40px; border-bottom: 1px solid #fecaca;">
+                            <table role="presentation" style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h2 style="margin: 0; color: #991b1b; font-size: 20px;">Appointment Cancelled</h2>
+                                    </td>
+                                    <td align="right">
+                                        <div style="background-color: rgba(220, 38, 38, 0.1); border-radius: 50%; width: 40px; height: 40px; display: inline-block; text-align: center; line-height: 40px;">
+                                            <span style="color: #dc2626; font-size: 20px; font-weight: bold;">X</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            <p style="margin: 0 0 20px 0; color: #374151; font-size: 16px; line-height: 1.6;">
+                                Dear <strong>{{ patient_name }}</strong>,
+                            </p>
+                            <p style="margin: 0 0 30px 0; color: #374151; font-size: 16px; line-height: 1.6;">
+                                We're sorry to inform you that your appointment has been cancelled.
+                            </p>
+                            
+                            <!-- Cancelled Appointment Details -->
+                            <table role="presentation" style="width: 100%; background-color: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <p style="margin: 0 0 5px 0; color: #6b7280; font-size: 14px;">Cancelled Appointment</p>
+                                        <p style="margin: 0 0 10px 0; color: #111827; font-size: 16px; font-weight: 600; text-decoration: line-through;">Dr. {{ doctor_name }}</p>
+                                        <p style="margin: 0; color: #6b7280; font-size: 14px; text-decoration: line-through;">{{ booking_date }} at {{ booking_time }}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            {% if cancellation_reason %}
+                            <!-- Cancellation Reason -->
+                            <div style="margin-top: 25px; padding: 15px 20px; background-color: #fef3c7; border-radius: 8px;">
+                                <p style="margin: 0; color: #92400e; font-size: 14px;">
+                                    <strong>Reason:</strong> {{ cancellation_reason }}
+                                </p>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Rebook CTA -->
+                            <div style="margin-top: 30px; padding: 25px; background-color: #ecfdf5; border-radius: 8px; text-align: center;">
+                                <p style="margin: 0 0 20px 0; color: #065f46; font-size: 16px; font-weight: 500;">
+                                    Would you like to book another appointment?
+                                </p>
+                                <a href="https://novacare247.com/book" style="display: inline-block; background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600;">Book New Appointment</a>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 30px 40px; border-radius: 0 0 12px 12px; border-top: 1px solid #e5e7eb;">
+                            <table role="presentation" style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 14px;">Questions about this cancellation?</p>
+                                        <p style="margin: 0; color: #374151; font-size: 14px;">📞 {{ support_phone }}</p>
+                                    </td>
+                                    <td align="right" valign="top">
+                                        <p style="margin: 0; color: #9ca3af; font-size: 12px;">© 2025 NovaCare 24/7</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
@@ -6,12 +6,17 @@ from app.models import ContactInquiry
 from app.schemas import ContactInquiryCreate, ContactInquiryResponse
 from app.auth import get_admin_user
 from app.models import User
+from app.email_service import email_service
 
 router = APIRouter(prefix="/api/contact", tags=["Contact"])
+
+# Admin email for notifications
+ADMIN_EMAIL = "meesalavenugopal@gmail.com"
 
 @router.post("/", response_model=ContactInquiryResponse)
 def create_inquiry(
     inquiry_data: ContactInquiryCreate,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
 ):
     """Submit a contact inquiry (public endpoint)"""
@@ -19,6 +24,27 @@ def create_inquiry(
     db.add(new_inquiry)
     db.commit()
     db.refresh(new_inquiry)
+    
+    # Send confirmation email to the user
+    if new_inquiry.email:
+        background_tasks.add_task(
+            email_service.send_contact_confirmation,
+            to_email=new_inquiry.email,
+            name=new_inquiry.name,
+            message=new_inquiry.message
+        )
+    
+    # Notify admin about new inquiry
+    background_tasks.add_task(
+        email_service.send_contact_notification,
+        admin_email=ADMIN_EMAIL,
+        name=new_inquiry.name,
+        email=new_inquiry.email,
+        phone=new_inquiry.phone or "Not provided",
+        subject_text=new_inquiry.subject or "General Inquiry",
+        message=new_inquiry.message
+    )
+    
     return new_inquiry
 
 @router.get("/", response_model=List[ContactInquiryResponse])

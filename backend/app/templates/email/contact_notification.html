@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Inquiry</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <table role="presentation" style="width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); padding: 30px 40px; border-radius: 12px 12px 0 0;">
+                            <table role="presentation" style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">New Contact Inquiry</h1>
+                                        <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">NovaCare 24/7 Admin Notification</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            <p style="margin: 0 0 25px 0; color: #374151; font-size: 16px; line-height: 1.6;">
+                                A new contact inquiry has been submitted through the website:
+                            </p>
+                            
+                            <!-- Contact Details -->
+                            <table role="presentation" style="width: 100%; background-color: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <table role="presentation" style="width: 100%;">
+                                            <tr>
+                                                <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                                    <span style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</span><br>
+                                                    <span style="color: #111827; font-size: 16px; font-weight: 600;">{{ name }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                                    <span style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</span><br>
+                                                    <a href="mailto:{{ email }}" style="color: #0d9488; font-size: 16px; text-decoration: none;">{{ email }}</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                                    <span style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</span><br>
+                                                    <a href="tel:{{ phone }}" style="color: #0d9488; font-size: 16px; text-decoration: none;">{{ phone }}</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                                    <span style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Subject</span><br>
+                                                    <span style="color: #111827; font-size: 16px;">{{ subject }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 12px 0;">
+                                                    <span style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Message</span><br>
+                                                    <p style="margin: 10px 0 0 0; color: #374151; font-size: 14px; line-height: 1.6; background-color: #ffffff; padding: 15px; border-radius: 6px; border: 1px solid #e5e7eb;">{{ message }}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Action Buttons -->
+                            <div style="margin-top: 30px; text-align: center;">
+                                <a href="mailto:{{ email }}" style="display: inline-block; background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; margin-right: 10px;">Reply via Email</a>
+                                <a href="tel:{{ phone }}" style="display: inline-block; background-color: #ffffff; color: #0d9488; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 2px solid #0d9488;">Call Customer</a>
+                            </div>
+                            
+                            <!-- Response Reminder -->
+                            <div style="margin-top: 30px; padding: 15px 20px; background-color: #fef3c7; border-radius: 8px;">
+                                <p style="margin: 0; color: #92400e; font-size: 14px;">
+                                    <strong>Reminder:</strong> Please respond within 24 hours as per our SLA.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 20px 40px; border-radius: 0 0 12px 12px; border-top: 1px solid #e5e7eb;">
+                            <table role="presentation" style="width: 100%;">
+                                <tr>
+                                    <td align="center">
+                                        <p style="margin: 0; color: #9ca3af; font-size: 12px;">NovaCare 24/7 Admin System</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

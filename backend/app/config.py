@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     OPENAI_MAX_TOKENS: int = 4000
     OPENAI_TEMPERATURE: float = 0.7
     
+    # Email Configuration
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    EMAIL_FROM: str = ""
+    EMAIL_FROM_NAME: str = "NovaCare 24/7"
+    
     class Config:
         env_file = ".env"
 

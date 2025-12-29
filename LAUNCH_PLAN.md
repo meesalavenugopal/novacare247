@@ -43,7 +43,7 @@ NovaCare is a 24/7 physiotherapy clinic platform connecting patients with expert
 - [ ] Doctor profiles with professional photos
 - [ ] Patient testimonials (initial 10-15)
 - [ ] Video content for social media
-- [ ] Email templates for all touchpoints
+- [x] Email templates for all touchpoints
 
 ### 1.3 Legal & Compliance
 
