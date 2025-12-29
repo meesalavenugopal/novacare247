@@ -125,7 +125,7 @@ const HomePage = () => {
             alt="Physiotherapy Treatment"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
