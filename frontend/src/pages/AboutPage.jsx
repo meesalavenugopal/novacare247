@@ -125,7 +125,7 @@ const AboutPage = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80"
+                src="/about.png"
                 alt="Our Clinic"
                 className="w-full object-cover h-[480px]"
               />

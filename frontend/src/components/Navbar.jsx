@@ -110,7 +110,7 @@ const Navbar = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold tracking-tight">
-                  <span className="bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">NovaCare</span><sup className="text-[10px] text-gray-500 ml-0.5 font-normal">™</sup>
+                  <span className="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">NovaCare</span><sup className="text-[10px] text-gray-500 ml-0.5 font-normal">™</sup>
                 </h1>
                 <p className="text-[11px] font-medium text-primary-500 tracking-wide uppercase flex items-center gap-1.5">
                   Physiotherapy Clinics
