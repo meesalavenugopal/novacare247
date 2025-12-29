@@ -56,7 +56,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-400">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* About Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
@@ -135,42 +135,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Our Branches */}
-          <div>
-            <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Our Branches</h4>
-            <ul className="space-y-3 text-sm">
-              {branches.length > 0 ? (
-                branches.map((branch) => (
-                  <li key={branch.id} className="flex items-start gap-2">
-                    <MapPin size={14} className="text-primary-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-white font-medium">{branch.name}</p>
-                      <p className="text-xs text-gray-500">{branch.city}</p>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li className="flex items-start gap-2">
-                    <MapPin size={14} className="text-primary-400 mt-0.5" />
-                    <span>Hyderabad</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <MapPin size={14} className="text-primary-400 mt-0.5" />
-                    <span>Bangalore</span>
-                  </li>
-                </>
-              )}
-              <li className="pt-2">
-                <Link 
-                  to="/contact" 
-                  className="text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1 font-medium"
-                >
-                  View All Branches <ArrowRight size={14} />
-                </Link>
-              </li>
-            </ul>
-          </div>
+
 
           {/* Contact Info */}
           <div>
@@ -209,10 +174,43 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
+      {/* Branches Row above the line */}
+      <div className="container mx-auto px-4 pt-6">
+        <div className="flex flex-wrap justify-center gap-6">
+          {branches.length > 0 ? (
+            branches.map((branch) => (
+              <div key={branch.id} className="flex flex-col items-center text-sm text-gray-400 min-w-[100px]">
+                <div className="flex items-center gap-2">
+                  <MapPin size={14} className="text-primary-400" />
+                  <span className="font-medium text-white">{branch.name}</span>
+                </div>
+                <span className="text-xs text-gray-500 mt-1">{branch.city}</span>
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="flex flex-col items-center text-sm text-gray-400 min-w-[100px]">
+                <div className="flex items-center gap-2">
+                  <MapPin size={14} className="text-primary-400" />
+                  <span className="font-medium text-white">Bangalore</span>
+                </div>
+                <span className="text-xs text-gray-500 mt-1">Bangalore</span>
+              </div>
+            </>
+          )}
+          <Link 
+            to="/branches" 
+            className="text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1 font-medium border border-primary-400 rounded px-2 py-0.5 ml-2"
+          >
+            View All Branches <ArrowRight size={14} />
+          </Link>
+        </div>
+      </div>
+      {/* Bottom Bar with Hyderabad */}
+      <div className="border-t border-gray-800 mt-6">
         <div className="container mx-auto px-4 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm">
+            {/* Removed static Hyderabad location from bottom bar */}
             <p className="text-gray-500">&copy; 2025 NovaCare<sup className="text-[10px] text-gray-400">™</sup> 24/7 Physiotherapy Clinics. All rights reserved.</p>
             <div className="flex gap-6 mt-3 md:mt-0">
               <Link to="/privacy-policy" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</Link>
