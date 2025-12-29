@@ -85,6 +85,34 @@ class EmailService:
     
     # ==================== Booking Emails ====================
     
+    def send_booking_received(
+        self,
+        to_email: str,
+        patient_name: str,
+        doctor_name: str,
+        doctor_specialization: str,
+        booking_date: str,
+        booking_time: str,
+        consultation_type: str,
+        booking_id: int
+    ) -> bool:
+        """Send booking received email (pending status)"""
+        context = {
+            "patient_name": patient_name,
+            "doctor_name": doctor_name,
+            "doctor_specialization": doctor_specialization,
+            "booking_date": booking_date,
+            "booking_time": booking_time,
+            "consultation_type": consultation_type,
+            "booking_id": booking_id,
+            "support_phone": "+91 98765 43210"
+        }
+        
+        html_content = self._render_template("booking_received.html", context)
+        subject = f"Booking Request Received - NovaCare 24/7 (#{booking_id})"
+        
+        return self.send_email(to_email, subject, html_content)
+    
     def send_booking_confirmation(
         self,
         to_email: str,

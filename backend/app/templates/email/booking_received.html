@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Request Received - NovaCare 24/7</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" style="width: 100%; max-width: 600px; border-collapse: collapse; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #00749c 0%, #00627f 100%); padding: 40px 40px 30px 40px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">NovaCare 24/7</h1>
+                            <p style="margin: 8px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">Expert Physiotherapy Care</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Status Banner -->
+                    <tr>
+                        <td style="background-color: #fef3c7; padding: 20px 40px; border-bottom: 1px solid #fde68a;">
+                            <table role="presentation" style="width: 100%;">
+                                <tr>
+                                    <td style="width: 50px; vertical-align: top;">
+                                        <div style="width: 40px; height: 40px; background-color: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <span style="color: #ffffff; font-size: 20px; font-weight: bold; line-height: 40px; text-align: center; display: block; width: 40px;">!</span>
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 15px;">
+                                        <h2 style="margin: 0; color: #92400e; font-size: 20px;">Booking Request Received</h2>
+                                        <p style="margin: 5px 0 0 0; color: #b45309; font-size: 14px;">Booking ID: #{{ booking_id }} - Awaiting Confirmation</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            <p style="margin: 0 0 25px 0; color: #374151; font-size: 16px; line-height: 1.6;">
+                                Dear <strong>{{ patient_name }}</strong>,
+                            </p>
+                            
+                            <p style="margin: 0 0 25px 0; color: #374151; font-size: 16px; line-height: 1.6;">
+                                Thank you for booking an appointment with NovaCare 24/7. We have received your request and our team will confirm your booking shortly.
+                            </p>
+                            
+                            <!-- Appointment Details -->
+                            <div style="background-color: #f9fafb; border-radius: 8px; padding: 25px; margin-bottom: 25px;">
+                                <h3 style="margin: 0 0 20px 0; color: #111827; font-size: 16px; font-weight: 600;">Your Appointment Request</h3>
+                                
+                                <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                            <span style="color: #6b7280; font-size: 14px;">Doctor</span>
+                                        </td>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
+                                            <span style="color: #111827; font-size: 14px; font-weight: 500;">Dr. {{ doctor_name }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                            <span style="color: #6b7280; font-size: 14px;">Specialization</span>
+                                        </td>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
+                                            <span style="color: #111827; font-size: 14px; font-weight: 500;">{{ doctor_specialization }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                            <span style="color: #6b7280; font-size: 14px;">Date</span>
+                                        </td>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
+                                            <span style="color: #111827; font-size: 14px; font-weight: 500;">{{ booking_date }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                                            <span style="color: #6b7280; font-size: 14px;">Time</span>
+                                        </td>
+                                        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">
+                                            <span style="color: #111827; font-size: 14px; font-weight: 500;">{{ booking_time }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 0;">
+                                            <span style="color: #6b7280; font-size: 14px;">Consultation Type</span>
+                                        </td>
+                                        <td style="padding: 12px 0; text-align: right;">
+                                            <span style="display: inline-block; background-color: #00749c; color: #ffffff; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 500;">{{ consultation_type }}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <!-- What's Next -->
+                            <div style="background-color: #e8f4f8; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                                <h3 style="margin: 0 0 15px 0; color: #00749c; font-size: 16px; font-weight: 600;">What Happens Next?</h3>
+                                <table role="presentation" style="width: 100%;">
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #00627f; font-size: 14px;">
+                                            <span style="display: inline-block; width: 24px; height: 24px; background-color: #00749c; color: #fff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: bold; margin-right: 10px;">1</span>
+                                            Our team will review your booking request
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #00627f; font-size: 14px;">
+                                            <span style="display: inline-block; width: 24px; height: 24px; background-color: #00749c; color: #fff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: bold; margin-right: 10px;">2</span>
+                                            You'll receive a confirmation email once approved
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #00627f; font-size: 14px;">
+                                            <span style="display: inline-block; width: 24px; height: 24px; background-color: #00749c; color: #fff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: bold; margin-right: 10px;">3</span>
+                                            We'll send a reminder before your appointment
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <!-- CTA -->
+                            <div style="text-align: center; margin-top: 30px;">
+                                <a href="https://novacare247.com/check-booking" style="display: inline-block; background: linear-gradient(135deg, #00749c 0%, #00627f 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 14px; font-weight: 600;">Check Booking Status</a>
+                            </div>
+                            
+                            <!-- Contact Info -->
+                            <p style="margin: 30px 0 0 0; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; text-align: center;">
+                                Questions? Call us at <strong style="color: #00749c;">{{ support_phone }}</strong>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 30px 40px; text-align: center; border-top: 1px solid #e5e7eb;">
+                            <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 14px;">
+                                NovaCare 24/7 Physiotherapy
+                            </p>
+                            <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                                © 2025 NovaCare 24/7. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

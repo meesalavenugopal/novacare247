@@ -100,11 +100,19 @@ def create_booking(
     if existing_booking:
         raise HTTPException(status_code=400, detail="This slot is already booked")
     
+    # Map consultation type to display name
+    consultation_type_display = {
+        "clinic": "In-Clinic Visit",
+        "home": "Home Visit",
+        "video": "Video Consultation"
+    }.get(booking_data.consultation_type, "Clinic Visit")
+    
     # Create booking
     new_booking = Booking(
         doctor_id=booking_data.doctor_id,
         booking_date=booking_data.booking_date,
         booking_time=booking_time,
+        consultation_type=booking_data.consultation_type,
         patient_name=booking_data.patient_name,
         patient_phone=booking_data.patient_phone,
         patient_email=booking_data.patient_email,
@@ -115,17 +123,17 @@ def create_booking(
     db.commit()
     db.refresh(new_booking)
     
-    # Send confirmation email in background
+    # Send booking received email (pending status)
     if new_booking.patient_email:
         background_tasks.add_task(
-            email_service.send_booking_confirmation,
+            email_service.send_booking_received,
             to_email=new_booking.patient_email,
             patient_name=new_booking.patient_name,
             doctor_name=doctor.user.full_name,
             doctor_specialization=doctor.specialization or "Physiotherapy",
             booking_date=new_booking.booking_date.strftime("%B %d, %Y"),
             booking_time=new_booking.booking_time.strftime("%I:%M %p"),
-            consultation_type="Clinic Visit",  # TODO: Add consultation type to booking
+            consultation_type=consultation_type_display,
             booking_id=new_booking.id
         )
     
@@ -196,6 +204,7 @@ def get_booking(
 def update_booking(
     booking_id: int,
     booking_data: BookingUpdate,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     user: User = Depends(get_doctor_user)
 ):
@@ -204,12 +213,63 @@ def update_booking(
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     
+    # Store old status to detect changes
+    old_status = booking.status
+    
     update_data = booking_data.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(booking, key, value)
     
     db.commit()
     db.refresh(booking)
+    
+    # Send email notifications based on status change
+    new_status = booking.status
+    if old_status != new_status and booking.patient_email:
+        doctor = db.query(Doctor).filter(Doctor.id == booking.doctor_id).first()
+        
+        # Map consultation type to display name
+        consultation_type_display = {
+            "clinic": "In-Clinic Visit",
+            "home": "Home Visit",
+            "video": "Video Consultation"
+        }.get(booking.consultation_type, "Clinic Visit")
+        
+        if new_status == BookingStatus.CONFIRMED and doctor:
+            # Send confirmation email
+            background_tasks.add_task(
+                email_service.send_booking_confirmation,
+                to_email=booking.patient_email,
+                patient_name=booking.patient_name,
+                doctor_name=doctor.user.full_name,
+                doctor_specialization=doctor.specialization or "Physiotherapy",
+                booking_date=booking.booking_date.strftime("%B %d, %Y"),
+                booking_time=booking.booking_time.strftime("%I:%M %p"),
+                consultation_type=consultation_type_display,
+                booking_id=booking.id
+            )
+        elif new_status == BookingStatus.COMPLETED and doctor:
+            # Send feedback request email
+            background_tasks.add_task(
+                email_service.send_booking_completed,
+                to_email=booking.patient_email,
+                patient_name=booking.patient_name,
+                doctor_name=doctor.user.full_name,
+                booking_date=booking.booking_date.strftime("%B %d, %Y"),
+                booking_id=booking.id
+            )
+        elif new_status == BookingStatus.CANCELLED and doctor:
+            # Send cancellation email
+            background_tasks.add_task(
+                email_service.send_booking_cancellation,
+                to_email=booking.patient_email,
+                patient_name=booking.patient_name,
+                doctor_name=doctor.user.full_name,
+                booking_date=booking.booking_date.strftime("%B %d, %Y"),
+                booking_time=booking.booking_time.strftime("%I:%M %p"),
+                cancellation_reason=booking.cancellation_reason
+            )
+    
     return booking
 
 @router.delete("/{booking_id}/")
@@ -237,8 +297,7 @@ def cancel_booking(
             patient_name=booking.patient_name,
             doctor_name=doctor.user.full_name,
             booking_date=booking.booking_date.strftime("%B %d, %Y"),
-            booking_time=booking.booking_time.strftime("%I:%M %p"),
-            cancellation_reason=None
+            booking_time=booking.booking_time.strftime("%I:%M %p")
         )
     
     return {"message": "Booking cancelled successfully"}

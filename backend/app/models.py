@@ -130,6 +130,7 @@ class Booking(Base):
     patient_email = Column(String(255))
     symptoms = Column(Text)
     notes = Column(Text)
+    cancellation_reason = Column(String(500))
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     

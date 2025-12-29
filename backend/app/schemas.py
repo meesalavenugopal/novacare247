@@ -224,6 +224,7 @@ class BookingResponse(BaseModel):
 class BookingUpdate(BaseModel):
     status: Optional[str] = None
     notes: Optional[str] = None
+    cancellation_reason: Optional[str] = None
 
 class BookingWithDoctor(BookingResponse):
     doctor_name: str
