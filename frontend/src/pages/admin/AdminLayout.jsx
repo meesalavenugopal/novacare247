@@ -78,12 +78,19 @@ const AdminLayout = () => {
         <div className="p-5 border-b border-primary-800">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 bg-primary-500 rounded-lg flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-xl">N</span>
+              <div className="w-11 h-11 bg-white rounded-xl shadow-sm flex items-center justify-center">
+                <img 
+                  src="/logo.png" 
+                  alt="NovaCare Logo" 
+                  className="w-9 h-9 object-contain"
+                />
               </div>
               <div>
-                <h1 className="text-white font-bold text-lg">NovaCare 24/7</h1>
-                <p className="text-primary-300 text-xs">Admin Dashboard</p>
+                <h1 className="text-white font-bold text-lg">NovaCare<sup className="text-[10px] text-primary-300 ml-0.5 font-normal">™</sup></h1>
+                <p className="text-primary-300 text-xs flex items-center gap-1.5">
+                  Admin Dashboard
+                  <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5 rounded animate-pulse">24/7</span>
+                </p>
               </div>
             </div>
             <button 
