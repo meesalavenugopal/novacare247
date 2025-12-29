@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Star, Check, X, Trash2, Sparkles, Loader2 } from 'lucide-react';
-import { testimonialsAPI, aiAPI } from '../../services/api';
+import { Star, Check, X, Trash2, Sparkles, Loader2, Pencil } from 'lucide-react';
+import { testimonialsAPI, aiAPI, uploadAPI } from '../../services/api';
 import { format } from 'date-fns';
+import ImageUpload from '../../components/admin/ImageUpload';
 
 const AdminTestimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null); // testimonial being edited
+  const [originalImage, setOriginalImage] = useState(''); // Track original for cleanup
   const [generatingContent, setGeneratingContent] = useState(null); // ID of testimonial generating content for
   const [form, setForm] = useState({
     patient_name: '',
@@ -38,6 +40,7 @@ const AdminTestimonials = () => {
 
   const handleEdit = (testimonial) => {
     setEditing(testimonial.id);
+    setOriginalImage(testimonial.image_url || '');
     setForm({
       patient_name: testimonial.patient_name || '',
       content: testimonial.content || '',
@@ -64,8 +67,17 @@ const AdminTestimonials = () => {
     }
   };
 
-  const handleFormCancel = () => {
+  const handleFormCancel = async () => {
+    // Cleanup orphaned uploads
+    if (form.image_url && form.image_url !== originalImage) {
+      try {
+        await uploadAPI.deleteFile(form.image_url);
+      } catch (err) {
+        console.error('Failed to cleanup:', err);
+      }
+    }
     setEditing(null);
+    setOriginalImage('');
   };
 
   useEffect(() => {
@@ -130,8 +142,15 @@ const AdminTestimonials = () => {
                     <input name="subtitle" value={form.subtitle} onChange={handleFormChange} className="input input-bordered w-full" />
                   </div>
                   <div className="mb-2">
-                    <label className="block text-xs font-semibold mb-1">Image/Video URL</label>
-                    <input name="image_url" value={form.image_url} onChange={handleFormChange} className="input input-bordered w-full" />
+                    <label className="block text-xs font-semibold mb-1">Patient Photo</label>
+                    <ImageUpload
+                      value={form.image_url}
+                      onChange={(url) => setForm({...form, image_url: url})}
+                      folder="testimonials"
+                      placeholder="Upload patient photo"
+                      aspectRatio="square"
+                      originalValue={originalImage}
+                    />
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-semibold mb-1">Story Type</label>

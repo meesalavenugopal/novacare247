@@ -3,7 +3,8 @@ import {
   Plus, Pencil, Trash2, Eye, EyeOff, Star, Search,
   Loader2, X, Save, ChevronDown, Image as ImageIcon, Sparkles, Wand2, Zap, Calendar
 } from 'lucide-react';
-import { blogAPI, aiAPI } from '../../services/api';
+import { blogAPI, aiAPI, uploadAPI } from '../../services/api';
+import ImageUpload from '../../components/admin/ImageUpload';
 
 const categories = [
   { id: 'conditions', name: 'Conditions' },
@@ -22,6 +23,7 @@ const AdminBlog = () => {
   const [editingArticle, setEditingArticle] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [originalImage, setOriginalImage] = useState('');
 
   // AI Generation states
   const [showAIModal, setShowAIModal] = useState(false);
@@ -151,6 +153,7 @@ const AdminBlog = () => {
         is_featured: article.is_featured || false,
         is_published: article.is_published !== false
       });
+      setOriginalImage(article.image || '');
       setEditingArticle(article);
     } else {
       setFormData({
@@ -168,15 +171,31 @@ const AdminBlog = () => {
         is_featured: false,
         is_published: true
       });
+      setOriginalImage('');
       setEditingArticle(null);
     }
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
+  // Simple close - used after successful save (no cleanup needed)
+  const closeModal = () => {
     setShowModal(false);
     setEditingArticle(null);
+    setOriginalImage('');
     setError(null);
+  };
+
+  // Close with cleanup - used when canceling (delete orphaned uploads)
+  const handleCancelModal = async () => {
+    // Cleanup orphaned uploads only if image changed and wasn't saved
+    if (formData.image && formData.image !== originalImage) {
+      try {
+        await uploadAPI.deleteFile(formData.image);
+      } catch (err) {
+        console.error('Failed to cleanup:', err);
+      }
+    }
+    closeModal();
   };
 
   const handleAddFaq = () => {
@@ -218,7 +237,7 @@ const AdminBlog = () => {
       }
 
       await fetchArticles();
-      handleCloseModal();
+      closeModal(); // Use simple close after successful save (no cleanup)
     } catch (err) {
       console.error('Error saving article:', err);
       setError(err.response?.data?.detail || 'Failed to save article');
@@ -542,7 +561,7 @@ const AdminBlog = () => {
               <h2 className="text-xl font-bold text-gray-900">
                 {editingArticle ? 'Edit Article' : 'New Article'}
               </h2>
-              <button onClick={handleCloseModal} className="text-gray-400 hover:text-gray-600">
+              <button onClick={handleCancelModal} className="text-gray-400 hover:text-gray-600">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -629,13 +648,14 @@ const AdminBlog = () => {
 
                 {/* Image URL */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                  <input
-                    type="url"
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Featured Image</label>
+                  <ImageUpload
                     value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="https://..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    onChange={(url) => setFormData({ ...formData, image: url })}
+                    folder="blog"
+                    placeholder="Upload featured image"
+                    aspectRatio="landscape"
+                    originalValue={originalImage}
                   />
                 </div>
 
@@ -748,7 +768,7 @@ const AdminBlog = () => {
               <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-100">
                 <button
                   type="button"
-                  onClick={handleCloseModal}
+                  onClick={handleCancelModal}
                   className="px-4 py-2 text-gray-600 hover:text-gray-800"
                 >
                   Cancel

@@ -168,7 +168,7 @@ const ServicesPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service, index) => {
                 const IconComponent = serviceIcons[index % serviceIcons.length];
-                const serviceImage = serviceImages[index % serviceImages.length];
+                const serviceImage = service.image || serviceImages[index % serviceImages.length];
                 return (
                   <div 
                     key={service.id} 
