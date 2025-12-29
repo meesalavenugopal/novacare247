@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Users, CheckCircle, XCircle, Clock, FileText, Video, GraduationCap, 
   UserPlus, AlertTriangle, ChevronRight, Search, Filter, Eye, 
@@ -824,9 +825,9 @@ const ActionModal = ({ type, application, onClose, onAction, loading }) => {
       
       case 'view':
         return (
-          <div className="space-y-4">
-            {/* Tabs */}
-            <div className="flex border-b border-gray-200">
+          <div className="flex flex-col h-full">
+            {/* Tabs - Fixed */}
+            <div className="flex border-b border-gray-200 flex-shrink-0">
               {[
                 { id: 'details', label: 'Details', icon: User },
                 { id: 'documents', label: 'Documents', icon: FileText },
@@ -848,7 +849,8 @@ const ActionModal = ({ type, application, onClose, onAction, loading }) => {
               ))}
             </div>
 
-            {/* Tab Content */}
+            {/* Tab Content - Scrollable */}
+            <div className="flex-1 overflow-y-auto mt-4">
             {activeTab === 'details' && (
               <div className="space-y-4">
                 {/* Profile Header */}
@@ -1280,6 +1282,7 @@ const ActionModal = ({ type, application, onClose, onAction, loading }) => {
                 />
               </div>
             )}
+            </div>
           </div>
         );
       
@@ -1288,13 +1291,13 @@ const ActionModal = ({ type, application, onClose, onAction, loading }) => {
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className={`bg-white rounded-lg w-full max-h-[90vh] overflow-y-auto ${
-        type === 'view' ? 'max-w-3xl' : 'max-w-lg'
+  return createPortal(
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
+      <div className={`bg-white rounded-lg w-full flex flex-col ${
+        type === 'view' ? 'max-w-3xl h-[85vh]' : 'max-w-lg max-h-[90vh]'
       }`}>
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
+        <div className={`p-6 ${type === 'view' ? 'flex flex-col h-full overflow-hidden' : ''}`}>
+          <div className="flex justify-between items-center mb-4 flex-shrink-0">
             <h3 className="text-lg font-semibold">
               {type === 'view' ? 'Application Details' : `${application?.full_name}`}
             </h3>
@@ -1302,10 +1305,13 @@ const ActionModal = ({ type, application, onClose, onAction, loading }) => {
               <XCircle size={20} />
             </button>
           </div>
-          {renderContent()}
+          <div className={type === 'view' ? 'flex-1 overflow-hidden' : ''}>
+            {renderContent()}
+          </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
