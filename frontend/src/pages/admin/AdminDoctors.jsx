@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee, CalendarDays, ToggleLeft, ToggleRight } from 'lucide-react';
-import { doctorsAPI, aiAPI, uploadAPI } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee, CalendarDays, ToggleLeft, ToggleRight, FileText } from 'lucide-react';
+import { doctorsAPI, aiAPI, uploadAPI, onboardingAPI } from '../../services/api';
 import ImageUpload from '../../components/admin/ImageUpload';
 
 const CONSULTATION_TYPES = ['clinic', 'home', 'video'];
@@ -20,6 +21,7 @@ const DAYS_OF_WEEK = [
 ];
 
 const AdminDoctors = () => {
+  const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -158,6 +160,21 @@ const AdminDoctors = () => {
     setShowSlotModal(true);
     loadDoctorSlots(doctor.id);
     resetSlotForm();
+  };
+
+  const handleViewApplication = async (doctor) => {
+    try {
+      const response = await onboardingAPI.getApplicationByDoctor(doctor.id);
+      // Navigate to onboarding page with the application ID
+      navigate(`/admin/onboarding?applicationId=${response.data.id}`);
+    } catch (error) {
+      if (error.response?.status === 404) {
+        alert('No onboarding application found for this doctor. They may have been added manually.');
+      } else {
+        console.error('Error fetching application:', error);
+        alert('Failed to fetch application details');
+      }
+    }
   };
 
   const resetSlotForm = () => {
@@ -478,6 +495,13 @@ const AdminDoctors = () => {
                           title="View Profile"
                         >
                           <User size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleViewApplication(doctor)}
+                          className="p-2 text-purple-600 hover:bg-purple-50"
+                          title="View Application"
+                        >
+                          <FileText size={18} />
                         </button>
                         <button
                           onClick={() => handleToggleAvailability(doctor)}

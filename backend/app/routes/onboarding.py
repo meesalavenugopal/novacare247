@@ -356,6 +356,23 @@ def get_application(
     return application
 
 
+@router.get("/admin/applications/by-doctor/{doctor_id}/", response_model=OnboardingApplicationResponse)
+def get_application_by_doctor(
+    doctor_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Get application details by linked doctor ID"""
+    application = db.query(DoctorOnboardingApplication).filter(
+        DoctorOnboardingApplication.doctor_id == doctor_id
+    ).first()
+    
+    if not application:
+        raise HTTPException(status_code=404, detail="No application found for this doctor")
+    
+    return application
+
+
 @router.get("/admin/applications/{application_id}/logs/", response_model=List[OnboardingActivityLogResponse])
 def get_application_logs(
     application_id: int,

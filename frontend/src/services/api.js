@@ -336,6 +336,9 @@ export const onboardingAPI = {
   // Activation workflow
   activateDoctor: (id, data) => api.post(`/onboarding/admin/applications/${id}/activate/`, data),
   suspendDoctor: (id, reason) => api.post(`/onboarding/admin/applications/${id}/suspend/`, null, { params: { reason } }),
+  
+  // Lookup by doctor
+  getApplicationByDoctor: (doctorId) => api.get(`/onboarding/admin/applications/by-doctor/${doctorId}/`),
 };
 
 // Clinic Onboarding APIs

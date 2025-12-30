@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useSearchParams } from 'react-router-dom';
 import { 
   Users, CheckCircle, XCircle, Clock, FileText, Video, GraduationCap, 
   UserPlus, AlertTriangle, ChevronRight, Search, Filter, Eye, 
@@ -48,6 +49,7 @@ const statusLabels = {
 };
 
 const AdminOnboarding = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [stats, setStats] = useState(null);
   const [applications, setApplications] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
@@ -61,6 +63,27 @@ const AdminOnboarding = () => {
   useEffect(() => {
     loadData();
   }, [filter]);
+
+  // Handle applicationId from URL params (coming from AdminDoctors)
+  useEffect(() => {
+    const applicationId = searchParams.get('applicationId');
+    if (applicationId && applications.length > 0) {
+      const app = applications.find(a => a.id === parseInt(applicationId));
+      if (app) {
+        setSelectedApplication(app);
+        // Clear the URL param after selecting
+        setSearchParams({});
+      } else {
+        // If not found in current list, fetch directly
+        onboardingAPI.getApplication(applicationId)
+          .then(res => {
+            setSelectedApplication(res.data);
+            setSearchParams({});
+          })
+          .catch(err => console.error('Failed to load application:', err));
+      }
+    }
+  }, [searchParams, applications]);
 
   const loadData = async () => {
     try {

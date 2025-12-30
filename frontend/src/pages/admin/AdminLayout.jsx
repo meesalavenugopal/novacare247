@@ -35,21 +35,32 @@ const AdminLayout = () => {
   }
 
   const menuItems = [
+    // Dashboard
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    
+    // Operations
+    { path: '/admin/bookings', label: 'Bookings', icon: Calendar },
+    { path: '/admin/branches', label: 'Branches', icon: MapPin },
+    
+    // People Management
     { path: '/admin/doctors', label: 'Doctors', icon: Stethoscope },
     { path: '/admin/onboarding', label: 'Doctor Onboarding', icon: UserPlus },
     { path: '/admin/clinic-onboarding', label: 'Clinic Onboarding', icon: Building2 },
-    { path: '/admin/bookings', label: 'Bookings', icon: Calendar },
+    
+    // Content
     { path: '/admin/services', label: 'Services', icon: Activity },
     { path: '/admin/blog', label: 'Blog', icon: FileText },
     { path: '/admin/testimonials', label: 'Testimonials', icon: Star },
     { path: '/admin/reviews', label: 'Reviews', icon: MessageCircle },
-    { path: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
-    { path: '/admin/branches', label: 'Branches', icon: MapPin },
     { path: '/admin/milestones', label: 'Milestones', icon: Flag },
+    
+    // Communication
+    { path: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
+    
+    // System
     { path: '/admin/stats', label: 'Site Stats', icon: BarChart3 },
-    { path: '/admin/settings', label: 'Settings', icon: Settings },
     { path: '/admin/ai-tools', label: 'AI Tools', icon: Bot },
+    { path: '/admin/settings', label: 'Settings', icon: Settings },
   ];
 
   const isActive = (path) => {
