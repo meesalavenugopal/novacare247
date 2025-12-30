@@ -123,6 +123,36 @@ def generate_presigned_url(
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@router.post("/presigned-url/public", response_model=PresignedUrlResponse)
+def generate_public_presigned_url(request: PresignedUrlRequest):
+    """
+    Generate a presigned URL for doctor application uploads (public endpoint)
+    Only allows uploads to 'documents' folder for security
+    """
+    if not s3_service.is_configured:
+        raise HTTPException(
+            status_code=503,
+            detail="File upload service is not configured. Please configure AWS S3 credentials."
+        )
+    
+    # Restrict to documents folder only for public uploads
+    if request.folder not in ['documents']:
+        request.folder = 'documents'  # Force documents folder
+    
+    try:
+        result = s3_service.generate_presigned_upload_url(
+            original_filename=request.filename,
+            content_type=request.content_type,
+            folder=request.folder,
+            file_size=request.file_size
+        )
+        
+        return PresignedUrlResponse(**result)
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @router.post("/direct")
 async def upload_file_directly(
     file: UploadFile = File(...),

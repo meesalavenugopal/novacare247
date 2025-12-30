@@ -268,6 +268,10 @@ def get_dashboard_stats(
         ])
     ).scalar()
     
+    training_pending = db.query(func.count(DoctorOnboardingApplication.id)).filter(
+        DoctorOnboardingApplication.status == OnboardingStatus.TRAINING_PENDING
+    ).scalar()
+    
     pending_training = db.query(func.count(DoctorOnboardingApplication.id)).filter(
         DoctorOnboardingApplication.status.in_([
             OnboardingStatus.INTERVIEW_PASSED,
@@ -301,6 +305,7 @@ def get_dashboard_stats(
         total_applications=total or 0,
         pending_verification=pending_verification or 0,
         pending_interview=pending_interview or 0,
+        training_pending=training_pending or 0,
         pending_training=pending_training or 0,
         pending_activation=pending_activation or 0,
         activated_this_month=activated_this_month or 0,
@@ -311,6 +316,7 @@ def get_dashboard_stats(
 @router.get("/admin/applications/", response_model=List[OnboardingApplicationResponse])
 def list_applications(
     status: Optional[str] = Query(None),
+    statuses: Optional[str] = Query(None),  # Comma-separated list
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
@@ -319,7 +325,11 @@ def list_applications(
     """List all applications with optional status filter"""
     query = db.query(DoctorOnboardingApplication)
     
-    if status:
+    if statuses:
+        # Support multiple statuses as comma-separated list
+        status_list = [s.strip() for s in statuses.split(',')]
+        query = query.filter(DoctorOnboardingApplication.status.in_(status_list))
+    elif status:
         query = query.filter(DoctorOnboardingApplication.status == status)
     
     applications = query.order_by(

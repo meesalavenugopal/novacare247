@@ -679,6 +679,7 @@ class OnboardingDashboardStats(BaseModel):
     total_applications: int
     pending_verification: int
     pending_interview: int
+    training_pending: int
     pending_training: int
     pending_activation: int
     activated_this_month: int

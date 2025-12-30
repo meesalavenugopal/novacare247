@@ -473,6 +473,13 @@ const AdminDoctors = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-1">
                         <button
+                          onClick={() => window.open(`/doctors/${doctor.slug}`, '_blank')}
+                          className="p-2 text-primary-600 hover:bg-primary-50"
+                          title="View Profile"
+                        >
+                          <User size={18} />
+                        </button>
+                        <button
                           onClick={() => handleToggleAvailability(doctor)}
                           className={`p-2 ${doctor.is_available ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
                           title={doctor.is_available ? 'Set Offline' : 'Set Online'}

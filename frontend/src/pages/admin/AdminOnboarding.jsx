@@ -220,52 +220,62 @@ const AdminOnboarding = () => {
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
           <StatCard 
             label="Total" 
             value={stats.total_applications} 
             icon={Users}
             color="gray"
+            onClick={() => setFilter('all')}
           />
           <StatCard 
             label="Pending Verification" 
             value={stats.pending_verification} 
             icon={FileText}
             color="yellow"
-            onClick={() => setFilter('verification_pending')}
+            onClick={() => setFilter(['submitted', 'verification_pending'])}
           />
           <StatCard 
             label="Pending Interview" 
             value={stats.pending_interview} 
             icon={Video}
             color="purple"
-            onClick={() => setFilter('interview_scheduled')}
+            onClick={() => setFilter(['verification_approved', 'interview_scheduled', 'interview_completed'])}
+          />
+          <StatCard 
+            label="Training Pending" 
+            value={stats.training_pending} 
+            icon={Clock}
+            color="orange"
+            onClick={() => setFilter('training_pending')}
           />
           <StatCard 
             label="In Training" 
             value={stats.pending_training} 
             icon={GraduationCap}
             color="orange"
-            onClick={() => setFilter('training_in_progress')}
+            onClick={() => setFilter(['interview_passed', 'training_pending', 'training_in_progress'])}
           />
           <StatCard 
             label="Pending Activation" 
             value={stats.pending_activation} 
             icon={UserPlus}
             color="indigo"
-            onClick={() => setFilter('activation_pending')}
+            onClick={() => setFilter(['training_completed', 'activation_pending'])}
           />
           <StatCard 
             label="Activated (Month)" 
             value={stats.activated_this_month} 
             icon={CheckCircle}
             color="green"
+            onClick={() => setFilter('activated')}
           />
           <StatCard 
             label="Rejected (Month)" 
             value={stats.rejected_this_month} 
             icon={XCircle}
             color="red"
+            onClick={() => setFilter(['rejected', 'verification_rejected', 'interview_failed'])}
           />
         </div>
       )}
@@ -314,7 +324,7 @@ const AdminOnboarding = () => {
           />
         </div>
         <select
-          value={filter}
+          value={Array.isArray(filter) ? 'all' : filter}
           onChange={(e) => setFilter(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
         >
@@ -323,7 +333,10 @@ const AdminOnboarding = () => {
           <option value="verification_pending">Verification Pending</option>
           <option value="verification_approved">Verified</option>
           <option value="interview_scheduled">Interview Scheduled</option>
+          <option value="interview_passed">Interview Passed</option>
+          <option value="training_pending">Training Pending</option>
           <option value="training_in_progress">Training In Progress</option>
+          <option value="training_completed">Training Completed</option>
           <option value="activation_pending">Activation Pending</option>
           <option value="activated">Activated</option>
           <option value="rejected">Rejected</option>
@@ -408,12 +421,14 @@ const AdminOnboarding = () => {
                             {nextAction.label}
                           </button>
                         )}
-                        <button
-                          onClick={() => openModal('view', app)}
-                          className="p-1 text-gray-400 hover:text-gray-600"
-                        >
-                          <Eye size={18} />
-                        </button>
+                        {nextAction?.action !== 'view' && (
+                          <button
+                            onClick={() => openModal('view', app)}
+                            className="p-1 text-gray-400 hover:text-gray-600"
+                          >
+                            <Eye size={18} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

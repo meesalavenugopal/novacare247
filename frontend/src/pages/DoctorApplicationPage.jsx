@@ -149,7 +149,7 @@ const DoctorApplicationPage = () => {
     setError('');
     
     try {
-      const fileUrl = await uploadAPI.uploadToS3(file, 'onboarding');
+      const fileUrl = await uploadAPI.uploadToS3Public(file, 'documents');
       setFormData(prev => ({
         ...prev,
         [field]: fileUrl
@@ -202,13 +202,34 @@ const DoctorApplicationPage = () => {
     setError('');
 
     try {
+      // Map frontend fields to backend schema
+      const applicationData = {
+        full_name: `${formData.first_name} ${formData.last_name}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        date_of_birth: formData.date_of_birth || null,
+        gender: formData.gender || null,
+        address: formData.address || null,
+        city: formData.city || null,
+        state: formData.state || null,
+        country: "India",
+        pincode: formData.pincode || null,
+        profile_image: formData.photo_url || null,
+        specialization: formData.specialization || null,
+        qualification: formData.qualification || null,
+        experience_years: formData.experience_years ? parseInt(formData.experience_years) : 0,
+        current_employer: formData.current_hospital || null,
+        license_number: formData.medical_council_registration_number || null,
+        license_issuing_authority: formData.registration_state || null,
+        license_expiry_date: null,
+        license_document_url: formData.medical_license_url || null,
+        degree_certificate_url: formData.degree_certificate_url || null,
+        additional_certifications: null,
+        preferred_branch_id: formData.preferred_branch ? parseInt(formData.preferred_branch) : null,
+      };
+      
       // Create application
-      const createRes = await onboardingAPI.createApplication({
-        ...formData,
-        languages_spoken: formData.languages_spoken.split(',').map(l => l.trim()),
-        experience_years: parseInt(formData.experience_years),
-        registration_year: formData.registration_year ? parseInt(formData.registration_year) : null,
-      });
+      const createRes = await onboardingAPI.createApplication(applicationData);
       
       const appId = createRes.data.id;
       
@@ -218,7 +239,26 @@ const DoctorApplicationPage = () => {
       setApplicationData({ id: appId, email: formData.email });
       setSuccess(true);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to submit application. Please try again.');
+      console.error('Application submission error:', err);
+      
+      // Handle validation errors
+      if (err.response?.data?.detail) {
+        const detail = err.response.data.detail;
+        
+        // If it's an array of validation errors
+        if (Array.isArray(detail)) {
+          const errorMessages = detail.map(e => 
+            `${e.loc ? e.loc.join(' > ') : 'Field'}: ${e.msg}`
+          ).join(', ');
+          setError(errorMessages);
+        } else if (typeof detail === 'string') {
+          setError(detail);
+        } else {
+          setError('Failed to submit application. Please check all fields and try again.');
+        }
+      } else {
+        setError('Failed to submit application. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

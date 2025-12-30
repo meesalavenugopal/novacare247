@@ -214,9 +214,18 @@ export const uploadAPI = {
   // Get allowed file types
   getAllowedTypes: () => api.get('/uploads/allowed-types'),
   
-  // Generate presigned URL for direct S3 upload
+  // Generate presigned URL for direct S3 upload (admin only)
   getPresignedUrl: (filename, contentType, folder = 'misc', fileSize = 0) => 
     api.post('/uploads/presigned-url', {
+      filename,
+      content_type: contentType,
+      folder,
+      file_size: fileSize
+    }),
+  
+  // Generate presigned URL for public uploads (doctor applications)
+  getPublicPresignedUrl: (filename, contentType, folder = 'documents', fileSize = 0) => 
+    api.post('/uploads/presigned-url/public', {
       filename,
       content_type: contentType,
       folder,
@@ -235,10 +244,33 @@ export const uploadAPI = {
   // Delete a file
   deleteFile: (fileUrl) => api.delete('/uploads/', { data: { file_url: fileUrl } }),
   
-  // Helper: Upload file to S3 using presigned URL
+  // Helper: Upload file to S3 using presigned URL (admin)
   uploadToS3: async (file, folder = 'misc') => {
     // 1. Get presigned URL
     const presignedRes = await api.post('/uploads/presigned-url', {
+      filename: file.name,
+      content_type: file.type,
+      folder,
+      file_size: file.size
+    });
+    
+    // 2. Upload directly to S3
+    await fetch(presignedRes.data.upload_url, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type
+      }
+    });
+    
+    // 3. Return the final file URL
+    return presignedRes.data.file_url;
+  },
+  
+  // Helper: Upload file to S3 using public presigned URL (for doctor applications)
+  uploadToS3Public: async (file, folder = 'documents') => {
+    // 1. Get presigned URL (public endpoint)
+    const presignedRes = await api.post('/uploads/presigned-url/public', {
       filename: file.name,
       content_type: file.type,
       folder,
@@ -269,7 +301,18 @@ export const onboardingAPI = {
   
   // Admin endpoints
   getDashboardStats: () => api.get('/onboarding/admin/dashboard/'),
-  getApplications: (status) => api.get('/onboarding/admin/applications/', { params: { status } }),
+  getApplications: (status) => {
+    // Support single status or array of statuses
+    const params = {};
+    if (status) {
+      if (Array.isArray(status)) {
+        params.statuses = status.join(',');
+      } else {
+        params.status = status;
+      }
+    }
+    return api.get('/onboarding/admin/applications/', { params });
+  },
   getApplication: (id) => api.get(`/onboarding/admin/applications/${id}/`),
   getApplicationLogs: (id) => api.get(`/onboarding/admin/applications/${id}/logs/`),
   
