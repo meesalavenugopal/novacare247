@@ -116,7 +116,10 @@ def get_all_doctors(
     admin: User = Depends(get_admin_user)
 ):
     """Get all doctors (admin only)"""
-    doctors = db.query(Doctor).order_by(Doctor.id).offset(skip).limit(limit).all()
+    doctors = db.query(Doctor).options(
+        joinedload(Doctor.user),
+        joinedload(Doctor.branch)
+    ).order_by(Doctor.id).offset(skip).limit(limit).all()
     return doctors
 
 

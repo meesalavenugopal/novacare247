@@ -69,6 +69,7 @@ class DoctorResponse(DoctorBase):
     is_available: bool
     created_at: datetime
     user: UserResponse
+    branch: Optional["BranchResponse"] = None
     
     class Config:
         from_attributes = True
@@ -869,3 +870,7 @@ class ClinicOnboardingDashboardStats(BaseModel):
     pending_activation: int
     activated_this_month: int
     rejected_this_month: int
+
+
+# Rebuild models with forward references
+DoctorResponse.model_rebuild()

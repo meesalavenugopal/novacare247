@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee, CalendarDays, ToggleLeft, ToggleRight, FileText } from 'lucide-react';
-import { doctorsAPI, aiAPI, uploadAPI, onboardingAPI } from '../../services/api';
+import { Plus, Edit, Trash2, X, User, Mail, Phone, Award, Clock, Sparkles, Loader2, DollarSign, MapPin, Video, Home, Building, IndianRupee, CalendarDays, ToggleLeft, ToggleRight, FileText, Building2, MoreVertical, ExternalLink } from 'lucide-react';
+import { doctorsAPI, aiAPI, uploadAPI, onboardingAPI, branchesAPI } from '../../services/api';
 import ImageUpload from '../../components/admin/ImageUpload';
 
 const CONSULTATION_TYPES = ['clinic', 'home', 'video'];
@@ -48,6 +48,16 @@ const AdminDoctors = () => {
     slot_duration: 30,
   });
   
+  // Branch Assignment State
+  const [branches, setBranches] = useState([]);
+  const [showBranchModal, setShowBranchModal] = useState(false);
+  const [selectedBranchId, setSelectedBranchId] = useState(null);
+  const [savingBranch, setSavingBranch] = useState(false);
+  
+  // Action Dropdown State
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+  const dropdownRef = useRef(null);
+  
   const [feeFormData, setFeeFormData] = useState({
     consultation_type: 'clinic',
     country: 'India',
@@ -71,6 +81,7 @@ const AdminDoctors = () => {
 
   useEffect(() => {
     loadDoctors();
+    loadBranches();
   }, []);
 
   const loadDoctors = async () => {
@@ -83,6 +94,26 @@ const AdminDoctors = () => {
       setLoading(false);
     }
   };
+
+  const loadBranches = async () => {
+    try {
+      const response = await branchesAPI.getAll();
+      setBranches(response.data);
+    } catch (error) {
+      console.error('Error loading branches:', error);
+    }
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const loadDoctorFees = async (doctorId) => {
     setLoadingFees(true);
@@ -322,6 +353,29 @@ const AdminDoctors = () => {
     resetFeeForm();
   };
 
+  const handleAssignBranch = (doctor) => {
+    setSelectedDoctor(doctor);
+    setSelectedBranchId(doctor.branch_id || null);
+    setShowBranchModal(true);
+  };
+
+  const handleSaveBranch = async () => {
+    if (!selectedDoctor) return;
+    setSavingBranch(true);
+    try {
+      await doctorsAPI.update(selectedDoctor.id, {
+        branch_id: selectedBranchId || null,
+      });
+      setShowBranchModal(false);
+      loadDoctors();
+    } catch (error) {
+      console.error('Error updating branch:', error);
+      alert('Failed to update branch assignment');
+    } finally {
+      setSavingBranch(false);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!confirm('Are you sure you want to delete this doctor?')) return;
     try {
@@ -450,6 +504,7 @@ const AdminDoctors = () => {
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Doctor</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Specialization</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Experience</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Branch</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Base Fee</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
                   <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase">Actions</th>
@@ -479,6 +534,22 @@ const AdminDoctors = () => {
                     </td>
                     <td className="px-6 py-4 text-gray-600">{doctor.specialization}</td>
                     <td className="px-6 py-4 text-gray-600">{doctor.experience_years} years</td>
+                    <td className="px-6 py-4">
+                      {doctor.branch ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded">
+                          <MapPin size={12} />
+                          {doctor.branch.name}
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handleAssignBranch(doctor)}
+                          className="inline-flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded border border-dashed border-gray-300"
+                        >
+                          <Building2 size={12} />
+                          Assign
+                        </button>
+                      )}
+                    </td>
                     <td className="px-6 py-4 text-gray-600">₹{doctor.consultation_fee}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 text-xs font-medium ${
@@ -488,56 +559,88 @@ const AdminDoctors = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => window.open(`/doctors/${doctor.slug}`, '_blank')}
-                          className="p-2 text-primary-600 hover:bg-primary-50"
-                          title="View Profile"
-                        >
-                          <User size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleViewApplication(doctor)}
-                          className="p-2 text-purple-600 hover:bg-purple-50"
-                          title="View Application"
-                        >
-                          <FileText size={18} />
-                        </button>
+                      <div className="flex items-center justify-end gap-2">
+                        {/* Quick Actions */}
                         <button
                           onClick={() => handleToggleAvailability(doctor)}
-                          className={`p-2 ${doctor.is_available ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
+                          className={`p-2 rounded ${doctor.is_available ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
                           title={doctor.is_available ? 'Set Offline' : 'Set Online'}
                         >
                           {doctor.is_available ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
                         </button>
                         <button
-                          onClick={() => handleManageSlots(doctor)}
-                          className="p-2 text-blue-600 hover:bg-blue-50"
-                          title="Manage Slots"
-                        >
-                          <CalendarDays size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleManageFees(doctor)}
-                          className="p-2 text-green-600 hover:bg-green-50"
-                          title="Manage Consultation Fees"
-                        >
-                          <IndianRupee size={18} />
-                        </button>
-                        <button
                           onClick={() => handleEdit(doctor)}
-                          className="p-2 text-gray-600 hover:bg-gray-100"
+                          className="p-2 text-gray-600 hover:bg-gray-100 rounded"
                           title="Edit Doctor"
                         >
                           <Edit size={18} />
                         </button>
-                        <button
-                          onClick={() => handleDelete(doctor.id)}
-                          className="p-2 text-red-600 hover:bg-red-50"
-                          title="Delete Doctor"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        
+                        {/* Actions Dropdown */}
+                        <div className="relative" ref={openDropdownId === doctor.id ? dropdownRef : null}>
+                          <button
+                            onClick={() => setOpenDropdownId(openDropdownId === doctor.id ? null : doctor.id)}
+                            className="p-2 text-gray-500 hover:bg-gray-100 rounded"
+                            title="More Actions"
+                          >
+                            <MoreVertical size={18} />
+                          </button>
+                          
+                          {openDropdownId === doctor.id && (
+                            <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                              <div className="py-1">
+                                <button
+                                  onClick={() => { window.open(`/doctors/${doctor.slug}`, '_blank'); setOpenDropdownId(null); }}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+                                >
+                                  <ExternalLink size={16} className="text-primary-600" />
+                                  View Public Profile
+                                </button>
+                                <button
+                                  onClick={() => { handleViewApplication(doctor); setOpenDropdownId(null); }}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+                                >
+                                  <FileText size={16} className="text-purple-600" />
+                                  View Application
+                                </button>
+                                
+                                <div className="border-t border-gray-100 my-1"></div>
+                                
+                                <button
+                                  onClick={() => { handleAssignBranch(doctor); setOpenDropdownId(null); }}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+                                >
+                                  <Building2 size={16} className="text-blue-600" />
+                                  {doctor.branch ? 'Change Branch' : 'Assign Branch'}
+                                </button>
+                                <button
+                                  onClick={() => { handleManageSlots(doctor); setOpenDropdownId(null); }}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+                                >
+                                  <CalendarDays size={16} className="text-blue-600" />
+                                  Manage Slots
+                                </button>
+                                <button
+                                  onClick={() => { handleManageFees(doctor); setOpenDropdownId(null); }}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+                                >
+                                  <IndianRupee size={16} className="text-green-600" />
+                                  Manage Fees
+                                </button>
+                                
+                                <div className="border-t border-gray-100 my-1"></div>
+                                
+                                <button
+                                  onClick={() => { handleDelete(doctor.id); setOpenDropdownId(null); }}
+                                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3"
+                                >
+                                  <Trash2 size={16} />
+                                  Delete Doctor
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -1212,6 +1315,77 @@ const AdminDoctors = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Branch Assignment Modal */}
+      {showBranchModal && selectedDoctor && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white border border-gray-200 max-w-md w-full">
+            <div className="flex items-center justify-between p-6 border-b">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Assign Branch
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {selectedDoctor.user?.full_name}
+                </p>
+              </div>
+              <button 
+                onClick={() => {
+                  setShowBranchModal(false);
+                  setSelectedDoctor(null);
+                }} 
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select Branch (Optional)
+              </label>
+              <select
+                value={selectedBranchId || ''}
+                onChange={(e) => setSelectedBranchId(e.target.value ? parseInt(e.target.value) : null)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              >
+                <option value="">No Branch Assigned</option>
+                {branches.map((branch) => (
+                  <option key={branch.id} value={branch.id}>
+                    {branch.name} - {branch.city}, {branch.state}
+                  </option>
+                ))}
+              </select>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowBranchModal(false);
+                    setSelectedDoctor(null);
+                  }}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveBranch}
+                  disabled={savingBranch}
+                  className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {savingBranch ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save'
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

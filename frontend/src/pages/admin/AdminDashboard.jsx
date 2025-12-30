@@ -61,15 +61,13 @@ const AdminDashboard = () => {
           <Link 
             key={index}
             to={stat.link}
-            className="bg-white border border-gray-200 p-6 hover:border-primary-300 transition-colors"
+            className="p-4 rounded-lg bg-primary-50 text-primary-600 hover:opacity-80 transition-opacity"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 bg-primary-50 border border-primary-100 flex items-center justify-center">
-                <stat.icon className="w-5 h-5 text-primary-600" />
-              </div>
+            <div className="flex items-center gap-2">
+              <stat.icon size={18} />
+              <span className="text-2xl font-bold">{stat.value}</span>
             </div>
-            <h3 className="text-2xl font-bold text-gray-800">{stat.value}</h3>
-            <p className="text-gray-600 text-sm">{stat.label}</p>
+            <p className="text-xs mt-1 opacity-80">{stat.label}</p>
           </Link>
         ))}
       </div>
