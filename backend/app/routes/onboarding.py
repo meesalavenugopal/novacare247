@@ -220,22 +220,22 @@ def check_application_status(
 def get_stage_description(status: str) -> dict:
     """Get human-readable stage information"""
     stages = {
-        OnboardingStatus.DRAFT: {"stage": 1, "name": "Application", "description": "Complete your application"},
-        OnboardingStatus.SUBMITTED: {"stage": 1, "name": "Application", "description": "Application under review"},
-        OnboardingStatus.VERIFICATION_PENDING: {"stage": 2, "name": "Verification", "description": "Credentials being verified"},
-        OnboardingStatus.VERIFICATION_APPROVED: {"stage": 2, "name": "Verification", "description": "Credentials verified"},
-        OnboardingStatus.VERIFICATION_REJECTED: {"stage": 2, "name": "Verification", "description": "Verification failed"},
-        OnboardingStatus.INTERVIEW_SCHEDULED: {"stage": 3, "name": "Interview", "description": "Interview scheduled"},
-        OnboardingStatus.INTERVIEW_COMPLETED: {"stage": 3, "name": "Interview", "description": "Interview under review"},
-        OnboardingStatus.INTERVIEW_PASSED: {"stage": 3, "name": "Interview", "description": "Interview passed"},
-        OnboardingStatus.INTERVIEW_FAILED: {"stage": 3, "name": "Interview", "description": "Interview not passed"},
-        OnboardingStatus.TRAINING_PENDING: {"stage": 4, "name": "Training", "description": "Training not started"},
-        OnboardingStatus.TRAINING_IN_PROGRESS: {"stage": 4, "name": "Training", "description": "Training in progress"},
-        OnboardingStatus.TRAINING_COMPLETED: {"stage": 4, "name": "Training", "description": "Training completed"},
-        OnboardingStatus.ACTIVATION_PENDING: {"stage": 5, "name": "Activation", "description": "Awaiting final approval"},
-        OnboardingStatus.ACTIVATED: {"stage": 6, "name": "Active", "description": "Profile is live!"},
-        OnboardingStatus.SUSPENDED: {"stage": 0, "name": "Suspended", "description": "Account suspended"},
-        OnboardingStatus.REJECTED: {"stage": 0, "name": "Rejected", "description": "Application rejected"},
+        "draft": {"stage": 1, "name": "Application", "description": "Complete your application"},
+        "submitted": {"stage": 1, "name": "Application", "description": "Application under review"},
+        "verification_pending": {"stage": 2, "name": "Verification", "description": "Credentials being verified"},
+        "verification_approved": {"stage": 2, "name": "Verification", "description": "Credentials verified"},
+        "verification_rejected": {"stage": 2, "name": "Verification", "description": "Verification failed"},
+        "interview_scheduled": {"stage": 3, "name": "Interview", "description": "Interview scheduled"},
+        "interview_completed": {"stage": 3, "name": "Interview", "description": "Interview under review"},
+        "interview_passed": {"stage": 3, "name": "Interview", "description": "Interview passed"},
+        "interview_failed": {"stage": 3, "name": "Interview", "description": "Interview not passed"},
+        "training_pending": {"stage": 4, "name": "Training", "description": "Training not started"},
+        "training_in_progress": {"stage": 4, "name": "Training", "description": "Training in progress"},
+        "training_completed": {"stage": 4, "name": "Training", "description": "Training completed"},
+        "activation_pending": {"stage": 5, "name": "Activation", "description": "Awaiting final approval"},
+        "activated": {"stage": 6, "name": "Active", "description": "Profile is live!"},
+        "suspended": {"stage": 0, "name": "Suspended", "description": "Account suspended"},
+        "rejected": {"stage": 0, "name": "Rejected", "description": "Application rejected"},
     }
     return stages.get(status, {"stage": 0, "name": "Unknown", "description": "Unknown status"})
 

@@ -35,11 +35,16 @@ import ServiceProfilePage from './pages/ServiceProfilePage';
 import LocationPage from './pages/LocationPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import RefundPolicyPage from './pages/RefundPolicyPage';
+import DisclaimerPage from './pages/DisclaimerPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import AllBranchesPage from './pages/AllBranchesPage';
 import DoctorApplicationPage from './pages/DoctorApplicationPage';
 import CheckApplicationStatusPage from './pages/CheckApplicationStatusPage';
+import ClinicApplicationPage from './pages/ClinicApplicationPage';
+import CheckClinicApplicationStatusPage from './pages/CheckClinicApplicationStatusPage';
+import AdminClinicOnboarding from './pages/admin/AdminClinicOnboarding';
 
 function App() {
   return (
@@ -71,6 +76,8 @@ function App() {
           {/* Legal Pages */}
           <Route path="/privacy-policy" element={<><Navbar /><PrivacyPolicyPage /><Footer /></>} />
           <Route path="/terms-of-service" element={<><Navbar /><TermsOfServicePage /><Footer /></>} />
+          <Route path="/refund-policy" element={<><Navbar /><RefundPolicyPage /><Footer /></>} />
+          <Route path="/disclaimer" element={<><Navbar /><DisclaimerPage /><Footer /></>} />
           
           {/* Blog Pages */}
           <Route path="/blog" element={<><Navbar /><BlogPage /><Footer /></>} />
@@ -79,6 +86,10 @@ function App() {
           {/* Doctor Application */}
           <Route path="/apply-doctor" element={<><Navbar /><DoctorApplicationPage /><Footer /></>} />
           <Route path="/apply-doctor/status" element={<><Navbar /><CheckApplicationStatusPage /><Footer /></>} />
+          
+          {/* Clinic Application */}
+          <Route path="/apply-clinic" element={<><Navbar /><ClinicApplicationPage /><Footer /></>} />
+          <Route path="/apply-clinic/status" element={<><Navbar /><CheckClinicApplicationStatusPage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -96,6 +107,7 @@ function App() {
             <Route path="settings" element={<AdminSettings />} />
             <Route path="ai-tools" element={<AdminAITools />} />
             <Route path="onboarding" element={<AdminOnboarding />} />
+            <Route path="clinic-onboarding" element={<AdminClinicOnboarding />} />
           </Route>
         </Routes>
       </Router>

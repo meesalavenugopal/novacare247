@@ -282,6 +282,38 @@ class OnboardingStatus(str, enum.Enum):
     REJECTED = "rejected"                            # Application rejected
 
 
+class ClinicOnboardingStatus(str, enum.Enum):
+    """Clinic/Branch onboarding application status"""
+    DRAFT = "draft"                          # Application started but not submitted
+    SUBMITTED = "submitted"                  # Application submitted, pending review
+    DOCUMENTATION_PENDING = "documentation_pending"      # Awaiting document verification
+    DOCUMENTATION_APPROVED = "documentation_approved"    # Documents verified
+    DOCUMENTATION_REJECTED = "documentation_rejected"    # Documents rejected
+    SITE_VERIFICATION_PENDING = "site_verification_pending"  # Awaiting site inspection
+    SITE_VERIFICATION_SCHEDULED = "site_verification_scheduled"  # Inspection scheduled
+    SITE_VERIFICATION_COMPLETED = "site_verification_completed"  # Inspection done
+    SITE_VERIFICATION_PASSED = "site_verification_passed"        # Passed inspection
+    SITE_VERIFICATION_FAILED = "site_verification_failed"        # Failed inspection
+    CONTRACT_PENDING = "contract_pending"                # Awaiting contract signing
+    CONTRACT_SIGNED = "contract_signed"                  # Contract signed
+    SETUP_PENDING = "setup_pending"                      # Awaiting platform setup
+    SETUP_COMPLETED = "setup_completed"                  # Platform setup done
+    TRAINING_PENDING = "training_pending"                # Training not started
+    TRAINING_IN_PROGRESS = "training_in_progress"        # Training ongoing
+    TRAINING_COMPLETED = "training_completed"            # Training completed
+    ACTIVATION_PENDING = "activation_pending"            # Awaiting final approval
+    ACTIVATED = "activated"                              # Clinic is live
+    SUSPENDED = "suspended"                              # Account suspended
+    REJECTED = "rejected"                                # Application rejected
+
+
+class PartnershipTier(str, enum.Enum):
+    """Clinic partnership tier"""
+    BASIC = "basic"        # 25% commission
+    PARTNER = "partner"    # 20% commission
+    PREMIUM = "premium"    # 15% commission
+
+
 class DoctorOnboardingApplication(Base):
     """Doctor onboarding application with full workflow tracking"""
     __tablename__ = "doctor_onboarding_applications"
@@ -432,3 +464,141 @@ class BlogArticle(Base):
     display_order = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class ClinicOnboardingApplication(Base):
+    """Clinic/Branch onboarding application with full workflow tracking"""
+    __tablename__ = "clinic_onboarding_applications"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    
+    # Clinic Information
+    clinic_name = Column(String(255), nullable=False)
+    business_type = Column(String(100))  # Sole Proprietorship, Partnership, Pvt Ltd, etc.
+    registration_number = Column(String(100))
+    gst_number = Column(String(50))
+    established_year = Column(Integer)
+    
+    # Contact Information
+    owner_name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, index=True)
+    phone = Column(String(20), nullable=False)
+    alternate_phone = Column(String(20))
+    website = Column(String(255))
+    
+    # Location
+    address = Column(Text)
+    city = Column(String(100))
+    state = Column(String(100))
+    country = Column(String(100), default="India")
+    pincode = Column(String(20))
+    latitude = Column(String(50))
+    longitude = Column(String(50))
+    
+    # Facility Details
+    total_rooms = Column(Integer)
+    treatment_rooms = Column(Integer)
+    has_parking = Column(Boolean, default=False)
+    has_wheelchair_access = Column(Boolean, default=False)
+    operating_hours = Column(String(255))  # e.g., "Mon-Sat: 9AM-8PM"
+    services_offered = Column(Text)  # JSON array of service types
+    equipment_list = Column(Text)  # JSON array of equipment
+    
+    # Staff Information
+    total_physiotherapists = Column(Integer, default=0)
+    staff_credentials = Column(Text)  # JSON array of staff with credentials
+    
+    # Documents (S3 URLs)
+    registration_certificate_url = Column(String(500))
+    gst_certificate_url = Column(String(500))
+    owner_id_proof_url = Column(String(500))
+    facility_photos_urls = Column(Text)  # JSON array of photo URLs
+    insurance_certificate_url = Column(String(500))
+    
+    # Partnership Details
+    partnership_tier = Column(String(20), default=PartnershipTier.BASIC)
+    commission_rate = Column(Integer, default=25)  # Percentage
+    
+    # Application Status
+    status = Column(String(50), default=ClinicOnboardingStatus.DRAFT)
+    submitted_at = Column(DateTime)
+    
+    # Documentation Verification
+    documentation_verified_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    documentation_notes = Column(Text)
+    documentation_verified_at = Column(DateTime)
+    
+    # Site Verification
+    site_verification_scheduled_at = Column(DateTime)
+    site_verification_type = Column(String(20))  # virtual, physical
+    site_verification_notes = Column(Text)
+    site_verification_photos = Column(Text)  # JSON array of inspection photos
+    site_verification_score = Column(Integer)  # 0-100
+    site_verified_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    site_verified_at = Column(DateTime)
+    
+    # Contract
+    contract_document_url = Column(String(500))
+    contract_signed_at = Column(DateTime)
+    contract_start_date = Column(Date)
+    contract_end_date = Column(Date)
+    
+    # Setup
+    setup_completed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    setup_completed_at = Column(DateTime)
+    setup_notes = Column(Text)
+    
+    # Training
+    training_scheduled_at = Column(DateTime)
+    training_attendees = Column(Text)  # JSON array of attendee names
+    training_completed_at = Column(DateTime)
+    training_notes = Column(Text)
+    training_score = Column(Integer)  # 0-100
+    
+    # Activation
+    activated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    activated_at = Column(DateTime)
+    activation_notes = Column(Text)
+    
+    # Linked Branch (after activation)
+    branch_id = Column(Integer, ForeignKey("branches.id"), nullable=True)
+    
+    # Rejection/Suspension
+    rejection_reason = Column(Text)
+    rejected_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    rejected_at = Column(DateTime)
+    
+    # Performance (updated monthly)
+    performance_score = Column(Integer)  # 0-100
+    last_performance_review = Column(DateTime)
+    
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    documentation_verifier = relationship("User", foreign_keys=[documentation_verified_by])
+    site_verifier = relationship("User", foreign_keys=[site_verified_by])
+    setup_user = relationship("User", foreign_keys=[setup_completed_by])
+    activator = relationship("User", foreign_keys=[activated_by])
+    rejector = relationship("User", foreign_keys=[rejected_by])
+    branch = relationship("Branch", foreign_keys=[branch_id])
+
+
+class ClinicOnboardingActivityLog(Base):
+    """Audit log for clinic onboarding activities"""
+    __tablename__ = "clinic_onboarding_activity_logs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    application_id = Column(Integer, ForeignKey("clinic_onboarding_applications.id"), nullable=False)
+    action = Column(String(100), nullable=False)  # e.g., "status_changed", "document_uploaded"
+    old_value = Column(Text)
+    new_value = Column(Text)
+    performed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    performed_by_type = Column(String(20), default="human")  # human, system
+    notes = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    application = relationship("ClinicOnboardingApplication")
+    user = relationship("User", foreign_keys=[performed_by])

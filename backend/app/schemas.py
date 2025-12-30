@@ -684,3 +684,188 @@ class OnboardingDashboardStats(BaseModel):
     pending_activation: int
     activated_this_month: int
     rejected_this_month: int
+
+
+# ============ CLINIC ONBOARDING SCHEMAS ============
+
+class ClinicOnboardingApplicationBase(BaseModel):
+    clinic_name: str
+    business_type: Optional[str] = None
+    registration_number: Optional[str] = None
+    gst_number: Optional[str] = None
+    established_year: Optional[int] = None
+    owner_name: str
+    email: EmailStr
+    phone: str
+    alternate_phone: Optional[str] = None
+    website: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: str = "India"
+    pincode: Optional[str] = None
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
+    total_rooms: Optional[int] = None
+    treatment_rooms: Optional[int] = None
+    has_parking: bool = False
+    has_wheelchair_access: bool = False
+    operating_hours: Optional[str] = None
+    services_offered: Optional[str] = None  # JSON string
+    equipment_list: Optional[str] = None  # JSON string
+    total_physiotherapists: Optional[int] = 0
+    staff_credentials: Optional[str] = None  # JSON string
+    registration_certificate_url: Optional[str] = None
+    gst_certificate_url: Optional[str] = None
+    owner_id_proof_url: Optional[str] = None
+    facility_photos_urls: Optional[str] = None  # JSON string
+    insurance_certificate_url: Optional[str] = None
+    partnership_tier: str = "basic"
+
+
+class ClinicOnboardingApplicationCreate(ClinicOnboardingApplicationBase):
+    pass
+
+
+class ClinicOnboardingApplicationResponse(ClinicOnboardingApplicationBase):
+    id: int
+    status: str
+    commission_rate: int = 25
+    submitted_at: Optional[datetime] = None
+    documentation_verified_at: Optional[datetime] = None
+    documentation_notes: Optional[str] = None
+    site_verification_scheduled_at: Optional[datetime] = None
+    site_verification_type: Optional[str] = None
+    site_verification_score: Optional[int] = None
+    site_verified_at: Optional[datetime] = None
+    contract_signed_at: Optional[datetime] = None
+    contract_start_date: Optional[date] = None
+    contract_end_date: Optional[date] = None
+    setup_completed_at: Optional[datetime] = None
+    training_scheduled_at: Optional[datetime] = None
+    training_completed_at: Optional[datetime] = None
+    training_score: Optional[int] = None
+    activated_at: Optional[datetime] = None
+    branch_id: Optional[int] = None
+    rejection_reason: Optional[str] = None
+    performance_score: Optional[int] = None
+    last_performance_review: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class ClinicOnboardingApplicationUpdate(BaseModel):
+    clinic_name: Optional[str] = None
+    business_type: Optional[str] = None
+    registration_number: Optional[str] = None
+    gst_number: Optional[str] = None
+    established_year: Optional[int] = None
+    owner_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    alternate_phone: Optional[str] = None
+    website: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    pincode: Optional[str] = None
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
+    total_rooms: Optional[int] = None
+    treatment_rooms: Optional[int] = None
+    has_parking: Optional[bool] = None
+    has_wheelchair_access: Optional[bool] = None
+    operating_hours: Optional[str] = None
+    services_offered: Optional[str] = None
+    equipment_list: Optional[str] = None
+    total_physiotherapists: Optional[int] = None
+    staff_credentials: Optional[str] = None
+    registration_certificate_url: Optional[str] = None
+    gst_certificate_url: Optional[str] = None
+    owner_id_proof_url: Optional[str] = None
+    facility_photos_urls: Optional[str] = None
+    insurance_certificate_url: Optional[str] = None
+    partnership_tier: Optional[str] = None
+
+
+class VerifyDocumentationRequest(BaseModel):
+    """Verify clinic documentation"""
+    approved: bool
+    notes: Optional[str] = None
+
+
+class ScheduleSiteVerificationRequest(BaseModel):
+    """Schedule site verification"""
+    scheduled_at: datetime
+    verification_type: str = "virtual"  # virtual or physical
+
+
+class CompleteSiteVerificationRequest(BaseModel):
+    """Complete site verification"""
+    score: int  # 0-100
+    notes: str
+    passed: bool
+    photos: Optional[List[str]] = None  # List of photo URLs
+
+
+class SignContractRequest(BaseModel):
+    """Sign partnership contract"""
+    contract_document_url: str
+    start_date: date
+    end_date: date
+    partnership_tier: str = "basic"
+
+
+class CompleteSetupRequest(BaseModel):
+    """Complete platform setup"""
+    notes: Optional[str] = None
+
+
+class ScheduleTrainingRequest(BaseModel):
+    """Schedule staff training"""
+    scheduled_at: datetime
+    attendees: List[str]
+
+
+class CompleteClinicTrainingRequest(BaseModel):
+    """Complete training"""
+    score: int  # 0-100
+    notes: Optional[str] = None
+
+
+class ActivateClinicRequest(BaseModel):
+    """Activate clinic on platform"""
+    approved: bool
+    notes: Optional[str] = None
+
+
+class ClinicOnboardingActivityLogResponse(BaseModel):
+    id: int
+    application_id: int
+    action: str
+    old_value: Optional[str] = None
+    new_value: Optional[str] = None
+    performed_by: Optional[int] = None
+    performed_by_type: str
+    notes: Optional[str] = None
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class ClinicOnboardingDashboardStats(BaseModel):
+    """Dashboard statistics for clinic onboarding"""
+    total_applications: int
+    pending_documentation: int
+    pending_site_verification: int
+    pending_contract: int
+    pending_setup: int
+    pending_training: int
+    pending_activation: int
+    activated_this_month: int
+    rejected_this_month: int

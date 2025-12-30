@@ -97,7 +97,8 @@ const Footer = () => {
               <li><Link to="/services" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Services</Link></li>
               <li><Link to="/book" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Book Appointment</Link></li>
               <li><Link to="/contact" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Contact Us</Link></li>
-              <li><Link to="/apply-doctor" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Join Our Team</Link></li>
+              <li><Link to="/apply-doctor" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Join as Doctor</Link></li>
+              <li><Link to="/apply-clinic" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Partner Your Clinic</Link></li>
               <li><Link to="/apply-doctor/status" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Check Application Status</Link></li>
             </ul>
           </div>
@@ -214,9 +215,11 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center text-sm">
             {/* Removed static Hyderabad location from bottom bar */}
             <p className="text-gray-500">&copy; 2025 NovaCare<sup className="text-[10px] text-gray-400">™</sup> 24/7 Physiotherapy Clinics. All rights reserved.</p>
-            <div className="flex gap-6 mt-3 md:mt-0">
+            <div className="flex gap-6 mt-3 md:mt-0 flex-wrap justify-center">
               <Link to="/privacy-policy" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</Link>
               <Link to="/terms-of-service" className="text-gray-500 hover:text-primary-400 transition-colors">Terms of Service</Link>
+              <Link to="/refund-policy" className="text-gray-500 hover:text-primary-400 transition-colors">Refund Policy</Link>
+              <Link to="/disclaimer" className="text-gray-500 hover:text-primary-400 transition-colors">Disclaimer</Link>
             </div>
           </div>
         </div>

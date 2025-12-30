@@ -338,4 +338,53 @@ export const onboardingAPI = {
   suspendDoctor: (id, reason) => api.post(`/onboarding/admin/applications/${id}/suspend/`, null, { params: { reason } }),
 };
 
+// Clinic Onboarding APIs
+export const clinicOnboardingAPI = {
+  // Public endpoints
+  createApplication: (data) => api.post('/clinic-onboarding/apply/', data),
+  updateApplication: (id, data) => api.put(`/clinic-onboarding/apply/${id}/`, data),
+  submitApplication: (id) => api.post(`/clinic-onboarding/apply/${id}/submit/`),
+  checkStatus: (id, email) => api.get(`/clinic-onboarding/apply/${id}/status/`, { params: { email } }),
+  
+  // Admin endpoints
+  getDashboardStats: () => api.get('/clinic-onboarding/admin/dashboard/'),
+  getApplications: (status) => {
+    const params = {};
+    if (status) {
+      if (Array.isArray(status)) {
+        params.statuses = status.join(',');
+      } else {
+        params.status = status;
+      }
+    }
+    return api.get('/clinic-onboarding/admin/applications/', { params });
+  },
+  getApplication: (id) => api.get(`/clinic-onboarding/admin/applications/${id}/`),
+  getApplicationLogs: (id) => api.get(`/clinic-onboarding/admin/applications/${id}/logs/`),
+  
+  // Documentation verification
+  verifyDocumentation: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/verify-documentation/`, data),
+  
+  // Site verification
+  scheduleSiteVerification: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/schedule-site-verification/`, data),
+  completeSiteVerification: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/complete-site-verification/`, data),
+  
+  // Contract
+  signContract: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/sign-contract/`, data),
+  
+  // Setup
+  completeSetup: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/complete-setup/`, data),
+  
+  // Training
+  scheduleTraining: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/schedule-training/`, data),
+  completeTraining: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/complete-training/`, data),
+  
+  // Activation
+  activateClinic: (id, data) => api.post(`/clinic-onboarding/admin/applications/${id}/activate/`, data),
+  
+  // Rejection & Suspension
+  rejectApplication: (id, reason) => api.post(`/clinic-onboarding/admin/applications/${id}/reject/`, null, { params: { reason } }),
+  suspendClinic: (id, reason) => api.post(`/clinic-onboarding/admin/applications/${id}/suspend/`, null, { params: { reason } }),
+};
+
 export default api;

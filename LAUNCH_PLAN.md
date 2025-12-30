@@ -364,6 +364,35 @@ NovaCare is a 24/7 physiotherapy clinic platform connecting patients with expert
 5. **Activation** - Profile goes live
 6. **Monitoring** - Regular quality checks
 
+### 6.3 Clinic/Branch Onboarding Process
+
+**For clinics wanting to partner with NovaCare 24/7**
+
+1. **Application** - Online form with clinic details, facilities, photos
+2. **Documentation** - Business registration, licenses, certifications
+3. **Site Verification** - Virtual or physical inspection of facilities
+4. **Contract & Agreement** - Partnership terms, commission structure
+5. **Setup** - Add clinic to platform, assign doctors, set availability
+6. **Training** - Staff training on booking management, protocols (4 hrs)
+7. **Activation** - Clinic listing goes live
+8. **Performance Review** - Monthly quality audits, patient feedback
+
+**Required Documents:**
+- Clinic registration certificate
+- GST registration
+- Owner/Manager ID proof
+- Facility photos (reception, treatment rooms, equipment)
+- List of physiotherapists with credentials
+- Insurance certificate (if applicable)
+
+**Partnership Tiers:**
+
+| Tier | Commission | Benefits |
+|------|-----------|----------|
+| Basic | 25% | Standard listing, booking management |
+| Partner | 20% | Featured listing, priority support |
+| Premium | 15% | Top listing, dedicated account manager, marketing support |
+
 ### 6.3 Quality Assurance
 
 - Post-session patient feedback (mandatory)
