@@ -82,8 +82,8 @@ const Layout = ({ children }) => {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400">
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {/* About Section */}
             <div>
               <div className="flex items-center gap-3 mb-6">
@@ -112,7 +112,7 @@ const Layout = ({ children }) => {
                 </div>
               </div>
               <p className="text-sm mb-6 leading-relaxed">
-                Providing expert physiotherapy care with experienced doctors and modern facilities. 
+                Providing expert healthcare services with experienced doctors and modern facilities. 
                 Your journey to better health starts here.
               </p>
               <div className="flex gap-3">
@@ -140,6 +140,23 @@ const Layout = ({ children }) => {
                 <li><Link to="/terms-of-service" className="hover:text-primary-400 transition-colors">Terms of Service</Link></li>
                 <li><Link to="/disclaimer" className="hover:text-primary-400 transition-colors">Disclaimer</Link></li>
                 <li><Link to="/contact" className="hover:text-primary-400 transition-colors">Contact Us</Link></li>
+              </ul>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Our Services</h4>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a href="http://localhost:5173" className="hover:text-primary-400 transition-colors">
+                    Physiotherapy Clinics
+                  </a>
+                </li>
+                <li>
+                  <span className="text-gray-500 cursor-not-allowed">
+                    General Medicine <span className="text-xs text-orange-400">(Coming Soon)</span>
+                  </span>
+                </li>
               </ul>
             </div>
 
@@ -173,7 +190,7 @@ const Layout = ({ children }) => {
                   <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Clock size={16} className="text-primary-400" />
                   </div>
-                  <span>Mon-Sun: 0:00 AM - 11:59 PM<br />Sunday: Closed</span>
+                  <span>Mon-Sun: 24/7 Available</span>
                 </li>
               </ul>
             </div>
@@ -182,10 +199,10 @@ const Layout = ({ children }) => {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800">
-          <div className="max-w-7xl mx-auto px-6 py-5">
+          <div className="container mx-auto px-4 py-5">
             <div className="flex flex-col md:flex-row justify-between items-center text-sm">
               <p className="text-gray-500">
-                &copy; 2026 NovaCare<sup className="text-[10px] text-gray-400">™</sup> 24/7 Physiotherapy Clinics. All rights reserved.
+                &copy; 2026 NovaCare<sup className="text-[10px] text-gray-400">™</sup> 24/7. All rights reserved.
               </p>
               <div className="flex gap-6 mt-3 md:mt-0">
                 <Link to="/privacy-policy" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</Link>
