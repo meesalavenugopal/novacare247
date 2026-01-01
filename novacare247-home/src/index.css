@@ -14,6 +14,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6;
+  }
+}
+
 /* Fix dropdown caret positioning */
 select {
   appearance: none;

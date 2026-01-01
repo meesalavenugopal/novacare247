@@ -51,14 +51,14 @@ const HomePage = () => {
         {/* Background Image - Right Side */}
         <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
-            src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1200&q=80"
+            src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1200&q=80"
             alt="Healthcare Services"
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent"></div>
         </div>
         
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="min-h-[85vh] flex items-center py-16">
             {/* Left Content */}
             <div className="max-w-xl">
@@ -70,8 +70,8 @@ const HomePage = () => {
               </h1>
               
               <p className="text-base text-gray-600 mb-8 leading-relaxed">
-                Access quality healthcare services 24 hours a day, 7 days a week. 
-                Choose the care that fits your needs.
+                At NovaCare™ 24/7, we provide personalized healthcare solutions to help you live healthier and pain-free. 
+                Our experienced specialists across physiotherapy and general medicine are dedicated to your well-being.
               </p>
 
               {/* Info Pills */}
@@ -92,7 +92,7 @@ const HomePage = () => {
 
       {/* Feature Cards Section */}
       <section className="pb-16 -mt-20 relative z-20">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-0">
             {/* Card 1 */}
             <div className="bg-primary-400 p-6 text-white">
@@ -141,7 +141,7 @@ const HomePage = () => {
 
       {/* Stats Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
               We're a network of healthcare experts
@@ -167,18 +167,17 @@ const HomePage = () => {
 
       {/* About Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Left Column - Content */}
             <div className="flex flex-col justify-center">
               <span className="text-primary-600 font-medium text-sm uppercase tracking-wider">About Us</span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
-                Why Choose <span className="text-primary-600">NovaCare247?</span>
+                Why Choose <span className="text-primary-600">NovaCare™ 24/7?</span>
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
-                At NovaCare247, we combine decades of expertise with 
-                compassionate care to deliver exceptional outcomes. Our holistic approach 
-                ensures every treatment is personalized to your unique needs.
+                At NovaCare™ 24/7, we combine decades of expertise with compassionate care to deliver 
+                exceptional outcomes. Our holistic approach ensures every treatment is personalized to your unique needs.
               </p>
               
               {/* Feature Grid */}
@@ -235,7 +234,7 @@ const HomePage = () => {
 
       {/* Services Section */}
       <section className="py-20 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold text-gray-800 mb-3">Our Services</h3>
             <p className="text-gray-600">Choose the healthcare service you need</p>
@@ -303,7 +302,7 @@ const HomePage = () => {
 
       {/* CTA Section */}
       <section className="py-20 bg-primary-600">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <Calendar className="w-12 h-12 text-white mx-auto mb-4" />
             <h2 className="text-3xl font-bold text-white mb-4">
