@@ -5,30 +5,32 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center">
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-20">
+            <Link to="/" className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-gray-50 rounded-xl shadow-sm border border-gray-100 flex items-center justify-center">
                 <img 
                   src="/logo.png" 
                   alt="NovaCare247" 
-                  className="w-10 h-10 object-contain"
+                  className="w-9 h-9 object-contain"
                   onError={(e) => {
                     e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<span class="text-primary-600 font-bold text-xl">N</span>';
+                    e.target.nextElementSibling.classList.remove('hidden');
                   }}
                 />
+                <div className="w-9 h-9 bg-primary-600 rounded-xl items-center justify-center hidden">
+                  <Activity className="text-white" size={20} />
+                </div>
               </div>
-              <div className="relative">
-                <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                  <span className="text-primary-600">NovaCare<sup className="text-xs">™</sup></span> 
-                  <span className="flex items-center gap-1.5 bg-[rgb(242,145,35)] text-white text-xs font-medium px-3 py-1 rounded-full">
-                    <Clock size={14} />
-                    <span>24 | 7</span>
-                  </span>
+              <div>
+                <h1 className="text-xl font-bold tracking-tight">
+                  <span className="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">NovaCare</span><sup className="text-[10px] text-gray-500 ml-0.5 font-normal">™</sup>
                 </h1>
-                <p className="text-sm text-gray-500">Your Health, Our Priority</p>
+                <p className="text-[11px] font-medium text-gray-500 flex items-center gap-1.5">
+                  Your Health, Our Priority
+                  <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5 animate-pulse">24/7</span>
+                </p>
               </div>
             </Link>
             <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">

@@ -330,41 +330,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Contact Info Bar */}
-      <section className="py-6 bg-primary-900">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-4">
-            <a href="tel:+919876543210" className="flex items-center gap-3 justify-center md:justify-start hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
-                <Phone className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-primary-300 text-xs">Call Us</p>
-                <p className="text-white font-medium">+91 98765 43210</p>
-              </div>
-            </a>
-            <div className="flex items-center gap-3 justify-center">
-              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-primary-300 text-xs">Visit Us</p>
-                <p className="text-white font-medium">Hyderabad, India</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 justify-center md:justify-end">
-              <div className="w-10 h-10 bg-primary-600 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-primary-300 text-xs">Working Hours</p>
-                <p className="text-white font-medium">24/7 Available</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </Layout>
   );
 };
