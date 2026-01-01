@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import ContactPage from './pages/ContactPage';
+import DisclaimerPage from './pages/DisclaimerPage';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/disclaimer" element={<DisclaimerPage />} />
       </Routes>
     </Router>
   );
