@@ -37,14 +37,14 @@ const ContactPage = () => {
     {
       icon: Phone,
       title: 'Phone',
-      details: ['+91 98765 43210', '+91 98765 43211'],
-      action: 'tel:+919876543210'
+      details: ['+91 40 1234 5678', '+91 40 1234 5679'],
+      action: 'tel:+914012345678'
     },
     {
       icon: Mail,
       title: 'Email',
-      details: ['info@novacare247.com', 'support@novacare247.com'],
-      action: 'mailto:info@novacare247.com'
+      details: ['care@novacare247.com', 'support@novacare247.com'],
+      action: 'mailto:care@novacare247.com'
     },
     {
       icon: MapPin,
@@ -66,14 +66,14 @@ const ContactPage = () => {
       title: 'NovaCare™ Physiotherapy',
       description: 'For physiotherapy related inquiries',
       email: 'physio@novacare247.com',
-      phone: '+91 98765 43212'
+      phone: '+91 40 1234 5680'
     },
     {
       icon: Stethoscope,
       title: 'NovaCare™ General Medicine',
       description: 'For general medicine inquiries',
       email: 'medicine@novacare247.com',
-      phone: '+91 98765 43213',
+      phone: '+91 40 1234 5681',
       comingSoon: true
     }
   ];
@@ -185,7 +185,7 @@ const ContactPage = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="+91 98765 43210"
+                      placeholder="+91 40 1234 5678"
                     />
                   </div>
                   <div>

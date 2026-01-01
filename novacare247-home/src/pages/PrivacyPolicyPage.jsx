@@ -158,11 +158,11 @@ const PrivacyPolicyPage = () => {
                   privacy@novacare247.com
                 </a>
                 <a 
-                  href="tel:+919876543210" 
+                  href="tel:+914012345678" 
                   className="inline-flex items-center gap-2 bg-primary-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-400 transition-colors"
                 >
                   <Phone size={20} />
-                  +91 98765 43210
+                  +91 40 1234 5678
                 </a>
               </div>
             </div>

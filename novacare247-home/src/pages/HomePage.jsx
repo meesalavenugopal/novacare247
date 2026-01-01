@@ -117,8 +117,8 @@ const HomePage = () => {
               <p className="text-white/80 text-sm mb-4">
                 Quick response for urgent healthcare needs and consultations.
               </p>
-              <a href="tel:+919876543210" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
-                +91 98765 43210
+              <a href="tel:+914012345678" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
+                +91 40 1234 5678
               </a>
             </div>
             
@@ -319,7 +319,7 @@ const HomePage = () => {
                 Explore Physiotherapy
               </a>
               <a 
-                href="tel:+919876543210" 
+                href="tel:+914012345678" 
                 className="border border-white/50 hover:bg-white/10 text-white font-medium py-3 px-8 transition-colors flex items-center gap-2"
               >
                 <Phone size={18} />

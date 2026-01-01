@@ -1,4 +1,4 @@
-import { Activity, Phone, Mail, Clock, MapPin, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
+import { Activity, Phone, Mail, Clock, MapPin, Facebook, Instagram, Twitter, Linkedin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Layout = ({ children }) => {
@@ -62,13 +62,13 @@ const Layout = ({ children }) => {
               </div>
             </Link>
             <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-              <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-primary-600">
+              <a href="tel:+914012345678" className="flex items-center gap-2 hover:text-primary-600">
                 <Phone size={16} />
-                <span>+91 98765 43210</span>
+                <span>+91 40 1234 5678</span>
               </a>
-              <a href="mailto:info@novacare247.com" className="flex items-center gap-2 hover:text-primary-600">
+              <a href="mailto:care@novacare247.com" className="flex items-center gap-2 hover:text-primary-600">
                 <Mail size={16} />
-                <span>info@novacare247.com</span>
+                <span>care@novacare247.com</span>
               </a>
             </div>
           </div>
@@ -85,7 +85,7 @@ const Layout = ({ children }) => {
         <div className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {/* About Section */}
-            <div>
+            <div className="lg:col-span-1">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center">
                   <img 
@@ -107,7 +107,7 @@ const Layout = ({ children }) => {
                   </h3>
                   <p className="text-xs text-gray-400 flex items-center gap-1.5">
                     Your Health, Our Priority
-                    <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5 animate-pulse">24/7</span>
+                    <span className="bg-[#f29123] text-white text-[9px] font-bold px-1.5 py-0.5">24/7</span>
                   </p>
                 </div>
               </div>
@@ -116,18 +116,10 @@ const Layout = ({ children }) => {
                 Your journey to better health starts here.
               </p>
               <div className="flex gap-3">
-                <a href="#" className="w-9 h-9 bg-gray-800 rounded flex items-center justify-center hover:bg-primary-600 transition-colors">
-                  <Facebook size={18} />
-                </a>
-                <a href="#" className="w-9 h-9 bg-gray-800 rounded flex items-center justify-center hover:bg-primary-600 transition-colors">
-                  <Instagram size={18} />
-                </a>
-                <a href="#" className="w-9 h-9 bg-gray-800 rounded flex items-center justify-center hover:bg-primary-600 transition-colors">
-                  <Twitter size={18} />
-                </a>
-                <a href="#" className="w-9 h-9 bg-gray-800 rounded flex items-center justify-center hover:bg-primary-600 transition-colors">
-                  <Linkedin size={18} />
-                </a>
+                <a href="#" className="w-9 h-9 bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><Facebook size={18} /></a>
+                <a href="#" className="w-9 h-9 bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><Instagram size={18} /></a>
+                <a href="#" className="w-9 h-9 bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><Twitter size={18} /></a>
+                <a href="#" className="w-9 h-9 bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><Linkedin size={18} /></a>
               </div>
             </div>
 
@@ -135,11 +127,11 @@ const Layout = ({ children }) => {
             <div>
               <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Quick Links</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link to="/" className="hover:text-primary-400 transition-colors">Home</Link></li>
-                <li><Link to="/privacy-policy" className="hover:text-primary-400 transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/terms-of-service" className="hover:text-primary-400 transition-colors">Terms of Service</Link></li>
-                <li><Link to="/disclaimer" className="hover:text-primary-400 transition-colors">Disclaimer</Link></li>
-                <li><Link to="/contact" className="hover:text-primary-400 transition-colors">Contact Us</Link></li>
+                <li><Link to="/" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Home</Link></li>
+                <li><Link to="/privacy-policy" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Terms of Service</Link></li>
+                <li><Link to="/disclaimer" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Disclaimer</Link></li>
+                <li><Link to="/contact" className="hover:text-primary-400 transition-colors flex items-center gap-2"><ArrowRight size={14} /> Contact Us</Link></li>
               </ul>
             </div>
 
@@ -148,14 +140,13 @@ const Layout = ({ children }) => {
               <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Our Services</h4>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <a href="http://localhost:5173" className="hover:text-primary-400 transition-colors">
-                    Physiotherapy Clinics
+                  <a href="http://localhost:5173" className="hover:text-primary-400 transition-colors flex items-center gap-2">
+                    <ArrowRight size={14} /> Physiotherapy Clinics
                   </a>
                 </li>
-                <li>
-                  <span className="text-gray-500 cursor-not-allowed">
-                    General Medicine <span className="text-xs text-orange-400">(Coming Soon)</span>
-                  </span>
+                <li className="flex items-center gap-2">
+                  <ArrowRight size={14} className="text-gray-600" />
+                  <span className="text-gray-500">General Medicine <span className="text-xs text-orange-400">(Coming Soon)</span></span>
                 </li>
               </ul>
             </div>
@@ -204,7 +195,7 @@ const Layout = ({ children }) => {
               <p className="text-gray-500">
                 &copy; 2026 NovaCare<sup className="text-[10px] text-gray-400">™</sup> 24/7. All rights reserved.
               </p>
-              <div className="flex gap-6 mt-3 md:mt-0">
+              <div className="flex gap-6 mt-3 md:mt-0 flex-wrap justify-center">
                 <Link to="/privacy-policy" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</Link>
                 <Link to="/terms-of-service" className="text-gray-500 hover:text-primary-400 transition-colors">Terms of Service</Link>
                 <Link to="/disclaimer" className="text-gray-500 hover:text-primary-400 transition-colors">Disclaimer</Link>
