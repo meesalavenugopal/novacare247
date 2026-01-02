@@ -3,10 +3,8 @@ import Layout from '../components/Layout';
 
 const HomePage = () => {
   // Configure your application URLs here
-  const isDev = window.location.hostname === 'localhost';
-  
-  const PHYSIO_URL = isDev ? 'http://localhost:5173' : 'https://physio.novacare247.com';
-  const GENERAL_MEDICINE_URL = isDev ? '#' : 'https://medicine.novacare247.com';
+  const PHYSIO_URL = 'https://physio.novacare247.com';
+  const GENERAL_MEDICINE_URL = 'https://medicine.novacare247.com';
 
   const services = [
     {
@@ -14,40 +12,42 @@ const HomePage = () => {
       subtitle: 'Physiotherapy Clinics',
       badge: '24/7',
       icon: Activity,
-      description: 'Expert physiotherapy services for pain relief, rehabilitation, and wellness',
+      description: 'Expert physiotherapy services for pain relief, rehabilitation, and wellness. Personalized treatment plans delivered by certified physiotherapists to restore mobility and enhance your quality of life.',
       url: PHYSIO_URL,
       available: true,
       bgColor: 'bg-primary-50',
       iconBg: 'bg-primary-100',
       iconColor: 'text-primary-600',
       buttonBg: 'bg-primary-600 hover:bg-primary-700',
+      rounded: '',
     },
     {
       title: 'NovaCare™',
-      subtitle: 'General Medicine',
+      subtitle: 'General Medicine at Home',
       badge: '24/7',
       icon: Stethoscope,
-      description: 'Comprehensive general medicine care for all your health needs',
+      description: 'Comprehensive medical care at your doorstep. Our medical assistants visit with diagnostic equipment while physicians consult digitally for accurate diagnosis and treatment.',
       url: GENERAL_MEDICINE_URL,
       available: false,
-      bgColor: 'bg-blue-50',
-      iconBg: 'bg-blue-100',
-      iconColor: 'text-blue-600',
-      buttonBg: 'bg-blue-600 hover:bg-blue-700',
+      bgColor: 'bg-white',
+      iconBg: 'bg-primary-100',
+      iconColor: 'text-primary-600',
+      buttonBg: 'bg-primary-600 hover:bg-primary-700',
+      rounded: '',
     }
   ];
 
   const features = [
-    { icon: Heart, title: 'Personalized Care', desc: 'Treatment plans tailored to you' },
-    { icon: Zap, title: 'Modern Equipment', desc: 'Latest therapy technology' },
-    { icon: Shield, title: 'Safe & Effective', desc: 'Evidence-based treatments' },
-    { icon: CheckCircle, title: 'Expert Team', desc: 'Certified specialists' },
+    { icon: Heart, title: 'Personalized Care', desc: 'Tailored treatment for your needs' },
+    { icon: Zap, title: 'Modern Facilities', desc: 'Advanced clinics & home tech' },
+    { icon: Shield, title: 'Expert Guidance', desc: 'Certified specialists always' },
+    { icon: CheckCircle, title: 'Flexible Options', desc: 'Clinic visits or home care' },
   ];
 
   return (
     <Layout>
       {/* Hero Section - Clean Professional Design */}
-      <section className="relative min-h-[85vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+      <section className="relative min-h-[65vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}
         <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
@@ -59,19 +59,18 @@ const HomePage = () => {
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="min-h-[85vh] flex items-center py-16">
+          <div className="min-h-[65vh] flex items-center py-12">
             {/* Left Content */}
             <div className="max-w-xl">
               {/* Main Headline */}
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5 leading-tight">
                 Healthcare That
                 <br />
-                <span className="text-primary-600">Never Sleeps</span>
+                <span className="text-primary-600">Comes to You</span>
               </h1>
               
               <p className="text-base text-gray-600 mb-8 leading-relaxed">
-                At NovaCare™ 24/7, we provide personalized healthcare solutions to help you live healthier and pain-free. 
-                Our experienced specialists across physiotherapy and general medicine are dedicated to your well-being.
+                Experience comprehensive healthcare with NovaCare™ 24/7. From expert physiotherapy at our clinics to innovative home-based digital consultations for general medicine—bringing quality care wherever you need it.
               </p>
 
               {/* Info Pills */}
@@ -82,7 +81,7 @@ const HomePage = () => {
                 </div>
                 <div className="flex items-center gap-2 bg-primary-50 text-primary-700 px-4 py-2 rounded-full">
                   <MapPin size={18} />
-                  <span className="font-medium">Multiple Locations</span>
+                  <span className="font-medium">Clinic & Home Care</span>
                 </div>
               </div>
             </div>
@@ -99,9 +98,9 @@ const HomePage = () => {
               <div className="w-12 h-12 border-2 border-white/30 flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Personalized Care</h3>
+              <h3 className="text-lg font-semibold mb-2">Expert Care</h3>
               <p className="text-white/80 text-sm mb-4">
-                Treatment plans tailored to your specific needs and recovery goals.
+                Professional healthcare services tailored to your specific needs and preferences.
               </p>
               <a href={PHYSIO_URL} className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 Book Appointment
@@ -113,9 +112,9 @@ const HomePage = () => {
               <div className="w-12 h-12 border-2 border-white/30 flex items-center justify-center mb-4">
                 <Phone className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Emergency Care</h3>
+              <h3 className="text-lg font-semibold mb-2">24/7 Availability</h3>
               <p className="text-white/80 text-sm mb-4">
-                Quick response for urgent healthcare needs and consultations.
+                Round-the-clock home visits with real-time digital consultations from specialists.
               </p>
               <a href="tel:+914012345678" className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 +91 40 1234 5678
@@ -129,7 +128,7 @@ const HomePage = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Easy Booking</h3>
               <p className="text-white/80 text-sm mb-4">
-                Schedule your appointment online at your convenience.
+                Schedule clinic appointments or home visits online at your convenience.
               </p>
               <a href={PHYSIO_URL} className="inline-flex items-center gap-1 text-sm border border-white/50 px-4 py-2 hover:bg-white/10 transition-colors">
                 Make An Appointment
@@ -176,8 +175,7 @@ const HomePage = () => {
                 Why Choose <span className="text-primary-600">NovaCare™ 24/7?</span>
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed text-base">
-                At NovaCare™ 24/7, we combine decades of expertise with compassionate care to deliver 
-                exceptional outcomes. Our holistic approach ensures every treatment is personalized to your unique needs.
+                At NovaCare™ 24/7, we offer the best of both worlds—expert physiotherapy at our state-of-the-art clinics and innovative home-based digital consultations for general medicine. Our hybrid approach combines convenience with clinical excellence, ensuring you receive the right care in the right setting.
               </p>
               
               {/* Feature Grid */}
@@ -207,7 +205,7 @@ const HomePage = () => {
             <div className="flex flex-col gap-4">
               <div className="relative h-80 lg:h-96 overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80"
+                  src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80"
                   alt="Healthcare Excellence"
                   className="w-full h-full object-cover"
                 />
@@ -244,20 +242,8 @@ const HomePage = () => {
             {services.map((service, index) => (
               <div 
                 key={index}
-                className={`relative rounded-2xl overflow-hidden ${service.bgColor} transition-all duration-300 hover:shadow-xl`}
+                className={`relative ${service.rounded} overflow-hidden ${service.bgColor} shadow-sm transition-all duration-300 hover:shadow-lg`}
               >
-                {/* Coming Soon Overlay */}
-                {!service.available && (
-                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold text-lg mb-2">
-                        Coming Soon
-                      </div>
-                      <p className="text-gray-600">Launching in 2026</p>
-                    </div>
-                  </div>
-                )}
-
                 <div className="p-8">
                   {/* Badge */}
                   <div className="flex justify-between items-start mb-6">
@@ -287,11 +273,10 @@ const HomePage = () => {
                   {/* CTA Button */}
                   <a
                     href={service.url}
-                    className={`inline-flex items-center gap-2 px-6 py-3 ${service.buttonBg} text-white font-semibold rounded-xl transition-all ${!service.available ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    onClick={(e) => !service.available && e.preventDefault()}
+                    className={`inline-flex items-center gap-2 px-6 py-3 ${service.buttonBg} text-white font-semibold rounded-xl transition-all`}
                   >
-                    {service.available ? 'Visit Now' : 'Coming Soon'}
-                    {service.available && <ArrowRight size={18} />}
+                    Visit Now
+                    <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
@@ -309,18 +294,12 @@ const HomePage = () => {
               Ready to Get Started?
             </h2>
             <p className="text-primary-100 mb-8">
-              Choose the healthcare service that fits your needs and take the first step towards better health.
+              Our dedicated team is here to support your wellness journey every day.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a 
-                href={PHYSIO_URL}
-                className="bg-white text-primary-600 hover:bg-primary-50 font-medium py-3 px-8 transition-colors"
-              >
-                Explore Physiotherapy
-              </a>
-              <a 
                 href="tel:+914012345678" 
-                className="border border-white/50 hover:bg-white/10 text-white font-medium py-3 px-8 transition-colors flex items-center gap-2"
+                className="border-2 border-white text-white hover:bg-white hover:text-primary-600 font-medium py-3 px-8 transition-colors flex items-center gap-2"
               >
                 <Phone size={18} />
                 Call Now

@@ -2,6 +2,15 @@
 
 A full-stack web application for Novacare 24/7 Physiotherapy Clinics with React frontend and Python FastAPI backend.
 
+## Subdomain Structure
+
+| Domain | Application |
+|--------|-------------|
+| [novacare247.com](https://novacare247.com) | Main Landing Page |
+| [physio.novacare247.com](https://physio.novacare247.com) | Physiotherapy Clinics |
+| [medicine.novacare247.com](https://medicine.novacare247.com) | General Medicine |
+| [api.novacare247.com](https://api.novacare247.com) | Backend API |
+
 ## Features
 
 ### Public Features
@@ -199,6 +208,8 @@ chinamayi_physiotherapy_clinics/
 - POST `/api/contact` - Submit inquiry
 - GET `/api/contact` - List inquiries (admin)
 - PUT `/api/contact/{id}/read` - Mark as read (admin)
+
+
 
 ## License
 

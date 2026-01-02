@@ -21,16 +21,41 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setSubmitStatus('success');
-    setIsSubmitting(false);
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    
-    // Reset status after 5 seconds
-    setTimeout(() => setSubmitStatus(null), 5000);
+    try {
+      // Use relative path for Vercel deployment, localhost for development
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? '/api/contact' 
+        : 'http://localhost:3000/api/contact';
+        
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+        
+        // Reset status after 5 seconds
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus(null), 5000);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -66,7 +91,8 @@ const ContactPage = () => {
       title: 'NovaCare™ Physiotherapy',
       description: 'For physiotherapy related inquiries',
       email: 'physio@novacare247.com',
-      phone: '+91 40 1234 5680'
+      phone: '+91 40 1234 5680',
+      comingSoon: true
     },
     {
       icon: Stethoscope,
@@ -81,27 +107,39 @@ const ContactPage = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-50 via-white to-primary-50/30 py-16 lg:py-24">
-        <div className="max-w-4xl mx-auto px-6">
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 mb-8 font-medium"
-          >
-            <ArrowLeft size={20} />
-            Back to Home
-          </Link>
-          
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <MessageCircle size={18} />
-              Contact Us
+      <section className="relative min-h-[50vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+        {/* Background Image - Right Side */}
+        <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
+          <img 
+            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200&q=80"
+            alt="Contact Us"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="min-h-[50vh] flex flex-col justify-center py-12">
+            <Link 
+              to="/" 
+              className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 mb-8 font-medium w-fit"
+            >
+              <ArrowLeft size={20} />
+              Back to Home
+            </Link>
+            
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <MessageCircle size={18} />
+                Contact Us
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-5 leading-tight">
+                Get in Touch
+              </h1>
+              <p className="text-base text-gray-600 leading-relaxed">
+                Have questions or need assistance? We're here to help. Reach out to us through any of the channels below.
+              </p>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Get in Touch
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Have questions or need assistance? We're here to help. Reach out to us through any of the channels below.
-            </p>
           </div>
         </div>
       </section>
@@ -156,7 +194,7 @@ const ContactPage = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="John Doe"
+                      placeholder="Anil Reddy"
                     />
                   </div>
                   <div>
@@ -170,7 +208,7 @@ const ContactPage = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                      placeholder="john@example.com"
+                      placeholder="anil.reddy@example.com"
                     />
                   </div>
                 </div>
@@ -230,6 +268,15 @@ const ContactPage = () => {
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     Thank you! Your message has been sent successfully. We'll get back to you soon.
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="bg-red-50 text-red-700 px-4 py-3 rounded-xl flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    Failed to send message. Please try again later or contact us directly.
                   </div>
                 )}
 

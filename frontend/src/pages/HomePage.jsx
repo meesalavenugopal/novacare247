@@ -131,7 +131,7 @@ const HomePage = () => {
         }}
       />
       {/* Hero Section - Clean Professional Design */}
-      <section className="relative min-h-[85vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
+      <section className="relative min-h-[65vh] bg-gradient-to-r from-primary-50/80 via-white to-white overflow-hidden">
         {/* Background Image - Right Side */}
         <div className="absolute top-0 right-0 w-[55%] h-full hidden lg:block">
           <img 
@@ -143,7 +143,7 @@ const HomePage = () => {
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="min-h-[85vh] flex items-center py-16">
+          <div className="min-h-[65vh] flex items-center py-12">
             {/* Left Content */}
             <div className="max-w-xl">
               {/* Main Headline */}

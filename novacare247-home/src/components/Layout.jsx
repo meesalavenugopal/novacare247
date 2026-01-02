@@ -61,16 +61,11 @@ const Layout = ({ children }) => {
                 </p>
               </div>
             </Link>
-            <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-              <a href="tel:+914012345678" className="flex items-center gap-2 hover:text-primary-600">
-                <Phone size={16} />
-                <span>+91 40 1234 5678</span>
-              </a>
-              <a href="mailto:care@novacare247.com" className="flex items-center gap-2 hover:text-primary-600">
-                <Mail size={16} />
-                <span>care@novacare247.com</span>
-              </a>
-            </div>
+            <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-600">
+              <a href="https://physio.novacare247.com" className="hover:text-primary-600 transition-colors">Physiotherapy</a>
+              <a href="https://medicine.novacare247.com" className="hover:text-primary-600 transition-colors">General Medicine</a>
+              <Link to="/contact" className="border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white px-6 py-2 transition-colors">Contact</Link>
+            </nav>
           </div>
         </div>
       </header>
@@ -140,13 +135,14 @@ const Layout = ({ children }) => {
               <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Our Services</h4>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <a href="http://localhost:5173" className="hover:text-primary-400 transition-colors flex items-center gap-2">
+                  <a href="https://physio.novacare247.com" className="hover:text-primary-400 transition-colors flex items-center gap-2">
                     <ArrowRight size={14} /> Physiotherapy Clinics
                   </a>
                 </li>
-                <li className="flex items-center gap-2">
-                  <ArrowRight size={14} className="text-gray-600" />
-                  <span className="text-gray-500">General Medicine <span className="text-xs text-orange-400">(Coming Soon)</span></span>
+                <li>
+                  <a href="https://medicine.novacare247.com" className="hover:text-primary-400 transition-colors flex items-center gap-2">
+                    <ArrowRight size={14} /> General Medicine
+                  </a>
                 </li>
               </ul>
             </div>
@@ -155,8 +151,8 @@ const Layout = ({ children }) => {
             <div>
               <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Contact Info</h4>
               <ul className="space-y-4 text-sm">
-                <li className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <li className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0">
                     <MapPin size={16} className="text-primary-400" />
                   </div>
                   <span>Kukatpally, Hyderabad, Telangana 500072</span>
@@ -177,8 +173,8 @@ const Layout = ({ children }) => {
                     care@novacare247.com
                   </a>
                 </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <li className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gray-800 flex items-center justify-center flex-shrink-0">
                     <Clock size={16} className="text-primary-400" />
                   </div>
                   <span>Mon-Sun: 24/7 Available</span>
